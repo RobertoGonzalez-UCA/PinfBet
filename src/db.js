@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 
 export function createUser() {
   firebase
@@ -34,26 +35,30 @@ export function getUsers() {
     });
 }
 
-//PROBLEMA1: Obtener ID emisor e ID receptor
+//PROBLEMA1: Obtener ID receptor
 export function solicitarAmistad() {
-  emisor = new String();
-  receptor = new String();
-  firebase.firestore.collection("friendships").add({
+  var emisor = firebase.auth().currentUser;
+  var receptor;
+  firebase.firestore().collection("friendships").add({
     status: "PENDING",
-    uid_a: this.uid_a,
-    uid_b: this.uid_b
+    uid_a: "313",
+    uid_b: "123"
   });
 }
 //PROBLEMA1
 //PROBLEMA2: localizar la petición asociada a los 2 usuarios
 export function aceptarSolicitud() {
-  firebase.firestore.collection("friendships").doc().where().update({
-    status: "ACCEPTED"
-  });
+
+  //Obtenemos la petiicón asociada al remitente (no hace falta el receptor, claro)
+  var peticion = firebase.firestore().collection("friendships").whereEqualTo("uid_a", "313");
+
+
+  peticion.set({status:"ACCEPTED"});
+  
 }
 //PROBLEMA1 + PROBLEMA2
 export function rechazarSolicitud() {
-  firebase.firestore.collection("friendships").doc().where().update({
+  firebase.firestore().collection("friendships").doc().where().update({
     status: "REFUSED"
   });
 }
@@ -61,7 +66,7 @@ export function rechazarSolicitud() {
 //PROBLEMA3: Obtener por parámetro el degreeId
 //PROBLEMA4: Obtener los datos específicos del documento
 export function mostrarAsignaturas() {
-  firebase.firestore
+  firebase.firestore()
     .collection("subjects")
     .doc()
     .where("degreeId", "==")
@@ -83,19 +88,19 @@ export function crearApuesta() {
     .firestore()
     .collection("betContexts")
     .add({
-      acronym: 'zekeWasHere',
-      uid:666,
-      subjects:{
+      acronym: "July",
+      uid: 666,
+      subjects: {
         code: 69,
         degreeId: 6969,
-        name: 'Prueba de si lo he conseguio',
+        name: "Prueba de que julia esta aqui",
         year: 9
       }
     })
-      .then(function(docRef) {
+    .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.error("Error adding document: ", error);
     });
 }

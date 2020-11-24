@@ -1,7 +1,7 @@
 import React from "react";
 
 import initFirebase from "./firebase";
-import "./style.css";
+import "/css/tailwind.css";
 // import "firebase/auth";
 import { createUser, getUsers, solicitarAmistad } from "./db.js";
 
@@ -15,7 +15,9 @@ export default function App() {
 
       <button onClick={createUser}> Crear Usuario </button>
       <button onClick={getUsers}>Mostrar Usuarios</button>
-      <button onClick={solicitarAmistad}>Solicitar Amistad</button>
+      <button class="bg-purple" onClick={solicitarAmistad}>
+        Solicitar Amistad
+      </button>
     </div>
   );
 }

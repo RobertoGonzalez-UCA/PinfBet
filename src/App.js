@@ -11,7 +11,7 @@ export default function App() {
   return (
     <div>
       <h1>Hello PinfBetero!</h1>
-      <p>Esto es un párrafo.</p>
+      <p>Esto es un HUIHHIljpárrafo.</p>
 
       <button onClick={createUser}> Crear Usuario </button>
       <button onClick={getUsers}>Mostrar Usuarios</button>

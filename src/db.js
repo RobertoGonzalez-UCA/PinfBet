@@ -78,4 +78,24 @@ export function mostrarAsignaturas() {
 }
 
 //PROBLEMA5:
-export function crearApuesta() {}
+export function crearApuesta() {
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .add({
+      acronym: 'zekeWasHere',
+      uid:666,
+      subjects:{
+        code: 69,
+        degreeId: 6969,
+        name: 'Prueba de si lo he conseguio',
+        year: 9
+      }
+    })
+      .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+}

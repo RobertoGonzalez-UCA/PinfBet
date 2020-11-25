@@ -1,8 +1,8 @@
 import React from "react";
 import initFirebase from "./firebase";
+import Button from "./components/button";
 // import "firebase/auth";
 
-import "../css/tailwind.css";
 import {
   createUser,
   getUsers,
@@ -22,12 +22,14 @@ export default function App() {
       </h1>
       <p>Esto es un párrafo.</p>
 
-      <button onClick={createUser}>Crear Usuario</button>
-      <button onClick={getUsers}>Mostrar Usuarios</button>
-      <button onClick={crearApuesta}>CrearApuesta</button>
-      <button onClick={solicitarAmistad}>Solicitar Amistad</button>
-      <button onClick={aceptarSolicitud}>Aceptar Solicitud</button>
-      <button onClick={rechazarSolicitud}>Rechazar Solicitud</button>
+      <Button className="bg-purple-500" onClick={createUser}>
+        Crear Usuario
+      </Button>
+      <Button onClick={getUsers}>Mostrar Usuarios</Button>
+      <Button onClick={crearApuesta}>CrearApuesta</Button>
+      <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
+      <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
+      <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
     </div>
   );
 }

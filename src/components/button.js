@@ -12,9 +12,11 @@ import React from "react";
 
 const variants = {
   default:
-    "m-1 px-4 py-3 leading-none font-semibold rounded-lg bg-gray-300 text-gray-900 hover:bg-gray-400 focus:outline-none focus:bg-gray-400",
+    "m-1 px-4 py-3 leading-none font-semibold rounded-lg bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:bg-green-600",
   primary:
-    "ml-4 px-6 py-3 leading-none font-semibold rounded-lg bg-gray-800 text-white hover:bg-gray-900 focus:outline-none focus:bg-gray-900"
+    "ml-1 px-4 py-3 leading-none font-semibold rounded-lg bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100",
+  seleccion:
+    "ml-1 px-7 py-7 leading-none font-semibold bg-gray-600 text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
 };
 
 export default function Button({ variant = "default", className, ...rest }) {

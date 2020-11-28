@@ -21,7 +21,9 @@ export default function App() {
         Hello PinfBetero!
       </h1>
       <p>Esto es un párrafo.</p>
-      <Button onClick={createUser}>Crear Usuario</Button>
+      <Button className="bg-green-500 hover:bg-green-600" onClick={createUser}>
+        Crear Usuario
+      </Button>
       <Button onClick={getUsers}>Mostrar Usuarios</Button>
       <Button onClick={crearApuesta}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>

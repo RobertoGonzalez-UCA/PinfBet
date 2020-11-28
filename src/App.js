@@ -21,12 +21,9 @@ export default function App() {
         Hello PinfBetero!
       </h1>
       <p>Esto es un párrafo.</p>
-
-      <Button className="bg-purple-500" onClick={createUser}>
-        Crear Usuario
-      </Button>
+      <Button onClick={createUser}>Crear Usuario</Button>
       <Button onClick={getUsers}>Mostrar Usuarios</Button>
-      <Button onClick={crearApuesta}>CrearApuesta</Button>
+      <Button onClick={crearApuesta}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
       <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>

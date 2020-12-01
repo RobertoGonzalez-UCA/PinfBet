@@ -9,7 +9,8 @@ import {
   solicitarAmistad,
   aceptarSolicitud,
   rechazarSolicitud,
-  crearApuesta
+  crearApuesta,
+  registrarUsuario
 } from "./db.js";
 
 initFirebase();
@@ -31,6 +32,15 @@ export default function App() {
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
       <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
+      <form>
+        <input id="email" type="email" placeholder="Introduce el email"></input>
+        <input
+          id="password"
+          type="password"
+          placeholder="Introduce la contraseña"
+        ></input>
+        <Button onClick={registrarUsuario}>Enviar</Button>
+      </form>
     </div>
   );
 }

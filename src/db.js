@@ -48,13 +48,13 @@ export function solicitarAmistad() {
 //PROBLEMA1
 //PROBLEMA2: localizar la petición asociada a los 2 usuarios
 export function aceptarSolicitud() {
-
   //Obtenemos la petiicón asociada al remitente (no hace falta el receptor, claro)
-  var peticion = firebase.firestore().collection("friendships").whereEqualTo("uid_a", "313");
+  var peticion = firebase
+    .firestore()
+    .collection("friendships")
+    .whereEqualTo("uid_a", "313");
 
-
-  peticion.set({status:"ACCEPTED"});
-  
+  peticion.set({ status: "ACCEPTED" });
 }
 //PROBLEMA1 + PROBLEMA2
 export function rechazarSolicitud() {
@@ -66,7 +66,8 @@ export function rechazarSolicitud() {
 //PROBLEMA3: Obtener por parámetro el degreeId
 //PROBLEMA4: Obtener los datos específicos del documento
 export function mostrarAsignaturas() {
-  firebase.firestore()
+  firebase
+    .firestore()
     .collection("subjects")
     .doc()
     .where("degreeId", "==")
@@ -102,5 +103,22 @@ export function crearApuesta() {
     })
     .catch(function (error) {
       console.error("Error adding document: ", error);
+    });
+}
+
+export function registrarUsuario() {
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode);
+      console.log(errorMessage);
+      // ...
     });
 }

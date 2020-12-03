@@ -16,7 +16,7 @@ const variants = {
   primary:
     "ml-1 px-4 py-3 leading-none font-semibold rounded-lg bg-white text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100",
   seleccion:
-    "ml-1 px-7 py-7 leading-none font-semibold bg-gray-600 text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+    "ml-1 px-7 py-5 leading-none font-semibold bg-gray-600 text-white hover:text-green-400 focus:outline-none"
 };
 
 export default function Button({ variant = "default", className, ...rest }) {

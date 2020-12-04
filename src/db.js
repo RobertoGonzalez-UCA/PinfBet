@@ -106,9 +106,12 @@ export function crearApuesta() {
     });
 }
 
+//Funcion REGISTRAR USUARIO
+var errorMessage;
 export function registrarUsuario() {
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
+  var cadena = "The email address is already in use by another account.";
 
   firebase
     .auth()
@@ -116,9 +119,60 @@ export function registrarUsuario() {
     .catch(function (error) {
       // Handle Errors here.
       var errorCode = error.code;
-      var errorMessage = error.message;
+      errorMessage = error.message;
       console.log(errorCode);
       console.log(errorMessage);
       // ...
     });
+
+  var user = firebase.auth().currentUser;
+  console.log(user.id);
+  console.log(cadena != errorMessage);
+  console.log(cadena);
+  console.log(errorMessage);
+  if (errorMessage != cadena) {
+    firebase
+      .firestore()
+      .collection("users")
+      .add({
+        coins: 7777,
+        uid: user.uid.toString(),
+        stats: {
+          coinsEarned: 9400,
+          hitRate: 0,
+          hitStreak: 0
+        }
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
+  } else {
+    console.log("El usuario está repetido");
+  }
+}
+
+export function iniciarSesion() {
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      // [Voz de hacker] "Estoy dentro"
+      // Redirigir a pagina???
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorCode);
+      console.log(errorMessage);
+    });
+
+  var user = firebase.auth().currentUser;
+
+  console.log(user);
 }

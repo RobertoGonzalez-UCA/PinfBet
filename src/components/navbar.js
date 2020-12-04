@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../components/button";
+import DropdownProfile from "../components/dropdownProfile";
 import Input from "../components/input";
 
 export default function Navbar() {
@@ -12,16 +13,12 @@ export default function Navbar() {
           width="200"
         ></img>
       </div>
-      <div class="relative flex items-center justify-between h-15 mr-4">
+      <div class="relative flex items-center justify-between h-15">
         <Input placeholder="Buscar..." />
         <Button variant="seleccion">Apuestas</Button>
         <Button variant="seleccion">Social</Button>
         <Button variant="seleccion">Rankings</Button>
-        <img
-          src="https://i.imgur.com/PIRlphI.png"
-          alt="Menu Perfil"
-          width="40"
-        ></img>
+        <DropdownProfile />
       </div>
     </nav>
   );

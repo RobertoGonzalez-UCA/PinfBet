@@ -5,6 +5,7 @@ import Navbar from "./components/navbar";
 import Modal from "./components/modal";
 import Alert from "./components/alert";
 import Dropdown from "./components/dropdown";
+import DropdownProfile from "./components/dropdownProfile";
 
 // import "firebase/auth";
 
@@ -27,8 +28,13 @@ export default function App() {
       <Navbar />
       <br />
       <Alert />
-      <Modal />
-      <Dropdown />
+      <div class="relative flex items-center justify-between h-15">
+        <div class="relative flex items-center justify-between h-15">
+          <Modal />
+          <Dropdown />
+          <DropdownProfile />
+        </div>
+      </div>
       <br />
 
       <h1 className="ml-3 mb-4 block text-3xl font-bold leading-none">

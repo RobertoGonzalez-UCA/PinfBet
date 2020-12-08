@@ -73,6 +73,38 @@ export default function App() {
           type="text"
           placeholder="Introduce el uid para solicitar amistad"
         ></input>
+        <input
+          id="uidApostado"
+          type="text"
+          placeholder="UID del apostado"
+        ></input>
+        <input
+          id="apuestaNota"
+          type="checkbox"
+          placeholder="Apuestas pa nota?"
+        ></input>
+        <input
+          id="notaApostada"
+          type="number"
+          min="0"
+          max="10"
+          placeholder="Introduce el año"
+        ></input>
+        <input
+          id="idAsignatura"
+          type="text"
+          placeholder="Id asignatura apostada"
+        ></input>
+        <input
+          id="cantidadDinero"
+          type="text"
+          placeholder="Cantidad dinero"
+        ></input>
+        <input
+          id="cantidadDineroNota"
+          type="text"
+          placeholder="Cantidad dinero para Bet Nota"
+        ></input>
       </form>
     </div>
   );

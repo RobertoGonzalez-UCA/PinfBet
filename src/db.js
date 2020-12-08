@@ -141,20 +141,49 @@ export function mostrarAsignaturasYear() {
     });
 }
 
-//PROBLEMA5:
+//PROBLEMA5: Vamos a ver que carajo hacemos con esto
+//Necesitamos UID del apostador, apostado, id de la asignatura, tipo de apuesta, cantidad de dinero
 export function crearApuesta() {
+  var uidApostante = firebase.auth().currentUser.uid;
+  var uidApostado = document.getElementById("uidApostado").value;
+  var apuestaNota = document.getElementById("apuestaNota").value;
+  var notaApostada = document.getElementById("notaApostada").value;
+  var idAsignatura = document.getElementById("idAsignatura").value;
+  var cantidadDinero = document.getElementById("cantidadDinero").value;
+  var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
+  var idBetContext = docRef.id;
+
   firebase
     .firestore()
     .collection("betContexts")
     .add({
-      acronym: "Apostado",
-      uid: 666,
+      uid: uidApostante,
       subjects: {
-        code: 69,
-        degreeId: 6969,
-        name: "Prueba de que apuesta esta aqui",
-        year: 9
+        acronym: "Asignatura",
+        code: 666,
+        degreeId: idAsignatura,
+        name: "Asignatura nombre completo",
+        year: 666
       }
+    })
+    .then(function (docRef) {
+      console.log("Document written with ID: ", docRef.id);
+      idBetContext = docRef.id;
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+
+  firebase
+    .firestore()
+    .collection("bets")
+    .add({
+      amount: cantidadDinero,
+      betContext: "/betContext/" + idBetContext,
+      betContextId: idBetContext,
+      type: "APRUEBA_SUSPENDE",
+      uid: uidApostado,
+      value: true
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
@@ -162,6 +191,26 @@ export function crearApuesta() {
     .catch(function (error) {
       console.error("Error adding document: ", error);
     });
+
+  if (apuestaNota == true) {
+    firebase
+      .firestore()
+      .collection("bets")
+      .add({
+        amount: cantidadDineroNota,
+        betContext: "/betContext/" + idBetContext,
+        betContextId: idBetContext,
+        type: "NOTA",
+        uid: uidApostado,
+        value: notaApostada
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
+  }
 }
 
 //Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"

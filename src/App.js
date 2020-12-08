@@ -18,7 +18,8 @@ import {
   crearApuesta,
   registrarUsuario,
   iniciarSesion,
-  mostrarAsignaturasYear
+  mostrarAsignaturasYear,
+  cerrarSesion
 } from "./db.js";
 
 initFirebase();
@@ -52,6 +53,7 @@ export default function App() {
       <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
       <Button onClick={registrarUsuario}>Registrar Usuario</Button>
       <Button onClick={iniciarSesion}>Iniciar Sesión</Button>
+      <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
       <form>
         <input id="email" type="email" placeholder="Introduce la email"></input>
         <input

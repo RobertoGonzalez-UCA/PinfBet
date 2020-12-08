@@ -207,3 +207,15 @@ export function iniciarSesion() {
   console.log("El user es");
   console.log(user);
 }
+
+export function cerrarSesion() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function () {
+      console.log("Saliste correctamente.");
+    })
+    .catch(function (error) {
+      console.log("Error al salir.");
+    });
+}

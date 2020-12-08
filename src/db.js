@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
+
 export function createUser() {
   firebase
     .firestore()
@@ -123,37 +124,42 @@ export function registrarUsuario() {
       console.log(errorCode);
       console.log(errorMessage);
       // ...
-    });
+    }); //
 
-  var user = firebase.auth().currentUser;
-  console.log(user.id);
-  console.log(cadena != errorMessage);
-  console.log(cadena);
-  console.log(errorMessage);
-  if (errorMessage != cadena) {
-    firebase
-      .firestore()
-      .collection("users")
-      .add({
-        coins: 7777,
-        uid: user.uid.toString(),
-        stats: {
-          coinsEarned: 9400,
-          hitRate: 0,
-          hitStreak: 0
-        }
-      })
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
-  } else {
-    console.log("El usuario está repetido");
-  }
+    setTimeout(function(){ firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+  
+      var user = firebase.auth().currentUser;
+      
+    if (errorMessage != cadena) {
+      firebase
+        .firestore()
+        .collection("users")
+        .add({
+          coins: 7777,
+          uid: user.uid.toString(),
+          stats: {
+            coinsEarned: 9400,
+            hitRate: 0,
+            hitStreak: 0
+          }
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+    } else {
+      console.log("El usuario está repetido");
+    } }, 4000);
+    
 }
 
+
+
+// FUNCION INICIAR SESION
 export function iniciarSesion() {
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -164,15 +170,12 @@ export function iniciarSesion() {
     .then((user) => {
       // [Voz de hacker] "Estoy dentro"
       // Redirigir a pagina???
-    })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
     });
 
   var user = firebase.auth().currentUser;
 
-  console.log(user);
+  console.log("El introducido es");
+  console.log(email);
+  console.log("El de user es");
+  console.log(user.email);
 }

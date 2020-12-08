@@ -37,14 +37,11 @@ export function getUsers() {
     });
 }
 
-//PROBLEMA1: Obtener ID receptor (lo seleccionamos????)
+//PROBLEMA1: Obtener ID receptor (lo metemos desde la caja)
 export function solicitarAmistad() {
   var emisor = firebase.auth().currentUser;
-  var receptor; // = usuario seleccionado
-
   var uidEmisor = emisor.uid;
-  //var uidReceptor = document.getElementById("uidReceptor").value;
-  var uidReceptor = 1717; //Provisional
+  var uidReceptor = document.getElementById("uidReceptor").value;
 
   firebase.firestore().collection("friendships").add({
     status: "PENDING",
@@ -56,13 +53,15 @@ export function solicitarAmistad() {
 //PROBLEMA1
 //PROBLEMA2: localizar la petición asociada a los 2 usuarios
 export function aceptarSolicitud() {
+  //NO FUNCIONA
   //Obtenemos la petiicón asociada al remitente (no hace falta el receptor, claro)
-  var peticion = firebase
+  var receptor = firebase.auth().currentUser;
+  var uidReceptor = receptor.uid;
+  firebase
     .firestore()
     .collection("friendships")
-    .whereEqualTo("uid_a", "313");
-
-  peticion.set({ status: "ACCEPTED" });
+    .where("uid_a", "==", uidReceptor) //Buscar documentacion update data
+    .update({ status: "ACCEPTED" }); //O podría volver a hacer otra entrada y al carajo
 }
 //PROBLEMA1 + PROBLEMA2
 export function rechazarSolicitud() {

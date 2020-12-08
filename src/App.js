@@ -66,6 +66,11 @@ export default function App() {
           max="4"
           placeholder="Introduce el año"
         ></input>
+        <input
+          id="uidReceptor"
+          type="text"
+          placeholder="Introduce el uid para solicitar amistad"
+        ></input>
       </form>
     </div>
   );

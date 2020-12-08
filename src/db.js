@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-
+//FUNCION CREAR USUARIOS (usada en debugging, en producto final los usuarios son creados al registrarse)
 export function createUser() {
   firebase
     .firestore()
@@ -24,6 +24,7 @@ export function createUser() {
     });
 }
 
+//FUNCION MOSTRAR USUARIOS (muestra todos) (opcion filtrar por asignatura / año)
 export function getUsers() {
   firebase
     .firestore()
@@ -36,16 +37,22 @@ export function getUsers() {
     });
 }
 
-//PROBLEMA1: Obtener ID receptor
+//PROBLEMA1: Obtener ID receptor (lo seleccionamos????)
 export function solicitarAmistad() {
   var emisor = firebase.auth().currentUser;
-  var receptor;
+  var receptor; // = usuario seleccionado
+
+  var uidEmisor = emisor.uid;
+  //var uidReceptor = document.getElementById("uidReceptor").value;
+  var uidReceptor = 1717; //Provisional
+
   firebase.firestore().collection("friendships").add({
     status: "PENDING",
-    uid_a: "313",
-    uid_b: "123"
+    uid_a: uidEmisor,
+    uid_b: uidReceptor
   });
 }
+
 //PROBLEMA1
 //PROBLEMA2: localizar la petición asociada a los 2 usuarios
 export function aceptarSolicitud() {
@@ -84,18 +91,44 @@ export function mostrarAsignaturas() {
     });
 }
 
+//PROBLEMA3: Obtener por parámetro el degreeId
+//PROBLEMA4: Obtener los datos específicos del documento
+export function mostrarAsignaturasYear() {
+  //FUNCIONA (depurar para hacer mas legible)
+
+  var year = document.getElementById("year").value; //Obtenemos un string que posteriormente convertimos en int
+
+  console.log("entré");
+  var year2 = parseInt(year, 10); //No tocar el 10, es necesario
+
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("year", "==", year2)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
 //PROBLEMA5:
 export function crearApuesta() {
   firebase
     .firestore()
     .collection("betContexts")
     .add({
-      acronym: "July",
+      acronym: "Apostado",
       uid: 666,
       subjects: {
         code: 69,
         degreeId: 6969,
-        name: "Prueba de que julia esta aqui",
+        name: "Prueba de que apuesta esta aqui",
         year: 9
       }
     })
@@ -107,7 +140,7 @@ export function crearApuesta() {
     });
 }
 
-//Funcion REGISTRAR USUARIO
+//Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
 var errorMessage;
 export function registrarUsuario() {
   var email = document.getElementById("email").value;
@@ -126,12 +159,13 @@ export function registrarUsuario() {
       // ...
     }); //
 
-    setTimeout(function(){ firebase
+  setTimeout(function () {
+    firebase //Esperamos un momento a que se actualice firebase antes de autenticar
       .auth()
       .signInWithEmailAndPassword(email, password);
-  
-      var user = firebase.auth().currentUser;
-      
+
+    var user = firebase.auth().currentUser;
+
     if (errorMessage != cadena) {
       firebase
         .firestore()
@@ -153,13 +187,11 @@ export function registrarUsuario() {
         });
     } else {
       console.log("El usuario está repetido");
-    } }, 4000);
-    
+    }
+  }, 1500); //Esperamos 1'5 segundos, buen equilibrio. Buena solucion por ahora, deberia buscar funcion que comprobara que se ha creado la cuenta nueva.
 }
 
-
-
-// FUNCION INICIAR SESION
+// FUNCION INICIAR SESION "FUNCIONA"
 export function iniciarSesion() {
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
@@ -172,10 +204,7 @@ export function iniciarSesion() {
       // Redirigir a pagina???
     });
 
-  var user = firebase.auth().currentUser;
-
-  console.log("El introducido es");
-  console.log(email);
-  console.log("El de user es");
-  console.log(user.email);
+  var user = firebase.auth().currentUser; //Deberiamos hacer esto una variable global para tenerlo disponible siempre??
+  console.log("El user es");
+  console.log(user);
 }

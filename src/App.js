@@ -17,7 +17,8 @@ import {
   rechazarSolicitud,
   crearApuesta,
   registrarUsuario,
-  iniciarSesion
+  iniciarSesion,
+  mostrarAsignaturasYear
 } from "./db.js";
 
 initFirebase();
@@ -42,6 +43,9 @@ export default function App() {
       </h1>
       <Button onClick={createUser}>Crear Usuario</Button>
       <Button onClick={getUsers}>Mostrar Usuarios</Button>
+      <Button onClick={mostrarAsignaturasYear}>
+        Mostrar asignaturas por año
+      </Button>
       <Button onClick={crearApuesta}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
@@ -52,8 +56,15 @@ export default function App() {
         <input id="email" type="email" placeholder="Introduce la email"></input>
         <input
           id="password"
-          type=""
+          type="password"
           placeholder="Introduce la contraseña"
+        ></input>
+        <input
+          id="year"
+          type="number"
+          min="1"
+          max="4"
+          placeholder="Introduce el año"
         ></input>
       </form>
     </div>

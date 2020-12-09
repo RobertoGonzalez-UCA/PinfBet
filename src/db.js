@@ -151,58 +151,40 @@ export function crearApuesta() {
   var idAsignatura = document.getElementById("idAsignatura").value;
   var cantidadDinero = document.getElementById("cantidadDinero").value;
   var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
-  var idBetContext = docRef.id;
+  var idBetContext = 777;
 
-  firebase
-    .firestore()
-    .collection("betContexts")
-    .add({
-      uid: uidApostante,
-      subjects: {
-        acronym: "Asignatura",
-        code: 666,
-        degreeId: idAsignatura,
-        name: "Asignatura nombre completo",
-        year: 666
-      }
-    })
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
-      idBetContext = docRef.id;
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
+  if (sonAmigos(uidApostante, uidApostado)) {
+    firebase
+      .firestore()
+      .collection("betContexts")
+      .add({
+        uid: uidApostante,
+        subjects: {
+          acronym: "Asignatura",
+          code: 666,
+          degreeId: idAsignatura,
+          name: "Asignatura nombre completo",
+          year: 666
+        }
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        idBetContext = docRef.id;
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
 
-  firebase
-    .firestore()
-    .collection("bets")
-    .add({
-      amount: cantidadDinero,
-      betContext: "/betContext/" + idBetContext,
-      betContextId: idBetContext,
-      type: "APRUEBA_SUSPENDE",
-      uid: uidApostado,
-      value: true
-    })
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
-
-  if (apuestaNota == true) {
     firebase
       .firestore()
       .collection("bets")
       .add({
-        amount: cantidadDineroNota,
+        amount: cantidadDinero,
         betContext: "/betContext/" + idBetContext,
         betContextId: idBetContext,
-        type: "NOTA",
+        type: "APRUEBA_SUSPENDE",
         uid: uidApostado,
-        value: notaApostada
+        value: true
       })
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
@@ -210,6 +192,28 @@ export function crearApuesta() {
       .catch(function (error) {
         console.error("Error adding document: ", error);
       });
+
+    if (apuestaNota == true) {
+      firebase
+        .firestore()
+        .collection("bets")
+        .add({
+          amount: cantidadDineroNota,
+          betContext: "/betContext/" + idBetContext,
+          betContextId: idBetContext,
+          type: "NOTA",
+          uid: uidApostado,
+          value: notaApostada
+        })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+    }
+  } else {
+    console.log("No son amigos");
   }
 }
 
@@ -292,4 +296,27 @@ export function cerrarSesion() {
     .catch(function (error) {
       console.log("Error al salir.");
     });
+}
+
+//Lo que planteo: Busco los documentos asocidados a los 2 usuarios
+//Si hay alguno con solicitud
+function sonAmigos(uid_a, uid_b) {
+  var amigos = false;
+  var solicitudes = firebase.firestore().collection("friendships");
+  var query = solicitudes
+    .where("uid_a", "==", uid_a)
+    .where("uid_b", "==", uid_b);
+  query
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+
+  return amigos;
 }

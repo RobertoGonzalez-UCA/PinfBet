@@ -4,12 +4,22 @@ import DropdownProfile from "../components/dropdownProfile";
 import Input from "../components/input";
 
 export default function Navbar() {
+  const [showMenu, setShowMenu] = React.useState(false);
+  const openMenu = () => {
+    setShowMenu(true);
+  };
+  const closeMenu = () => {
+    setShowMenu(false);
+  };
   return (
     <nav class="bg-gray-600">
       <div class="relative flex items-center justify-between h-16">
         <div class="block sm:hidden">
           <button
             id="boton"
+            onClick={() => {
+              showMenu ? closeMenu() : openMenu();
+            }}
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             aria-expanded="false"
           >
@@ -73,34 +83,38 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <div id="menu" class="hidden sm:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <a
-            href="#"
-            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Apuestas
-          </a>
-          <a
-            href="#"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Social
-          </a>
-          <a
-            href="#"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Rankings
-          </a>
-          <a
-            href="#"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Perfil
-          </a>
-        </div>
-      </div>
+      {showMenu ? (
+        <>
+          <div id="menu" class="sm:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+              <a
+                href="#"
+                class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Apuestas
+              </a>
+              <a
+                href="#"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Social
+              </a>
+              <a
+                href="#"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Rankings
+              </a>
+              <a
+                href="#"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Perfil
+              </a>
+            </div>
+          </div>
+        </>
+      ) : null}
     </nav>
   );
 }

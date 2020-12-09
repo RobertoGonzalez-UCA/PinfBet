@@ -24,6 +24,9 @@ import {
 
 initFirebase();
 
+const boton = document.querySelector("#boton");
+const menu = document.querySelector("#menu");
+
 export default function App() {
   return (
     <div>
@@ -109,3 +112,9 @@ export default function App() {
     </div>
   );
 }
+
+boton.addEventListener("click", () => {
+  console.log("click");
+
+  menu.classList.toggle("hidden");
+});

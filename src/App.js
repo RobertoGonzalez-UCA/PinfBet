@@ -6,6 +6,7 @@ import Modal from "./components/modal";
 import Alert from "./components/alert";
 import Dropdown from "./components/dropdown";
 import DropdownProfile from "./components/dropdownProfile";
+import Input from "./components/input";
 
 // import "firebase/auth";
 
@@ -40,9 +41,8 @@ export default function App() {
           <DropdownProfile />
         </div>
       </div>
-      <br />
 
-      <h1 className="ml-3 mb-4 block text-3xl font-bold leading-none">
+      <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Botones de prueba
       </h1>
       <Button onClick={createUser}>Crear Usuario</Button>
@@ -57,57 +57,62 @@ export default function App() {
       <Button onClick={registrarUsuario}>Registrar Usuario</Button>
       <Button onClick={iniciarSesion}>Iniciar Sesión</Button>
       <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
+
+      <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
+        Inputs de prueba
+      </h1>
+
       <form>
-        <input id="email" type="email" placeholder="Introduce la email"></input>
-        <input
+        <Input id="email" type="email" placeholder="Introduce el email"></Input>
+        <Input
           id="password"
           type="password"
           placeholder="Introduce la contraseña"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="year"
           type="number"
           min="1"
           max="4"
           placeholder="Introduce el año"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="uidReceptor"
           type="text"
           placeholder="Introduce el uid para solicitar amistad"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="uidApostado"
           type="text"
           placeholder="UID del apostado"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="apuestaNota"
           type="checkbox"
           placeholder="Apuestas pa nota?"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="notaApostada"
           type="number"
           min="0"
           max="10"
           placeholder="Introduce el año"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="idAsignatura"
           type="text"
           placeholder="Id asignatura apostada"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="cantidadDinero"
           type="text"
           placeholder="Cantidad dinero"
-        ></input>
-        <input
+        ></Input>
+        <Input
           id="cantidadDineroNota"
           type="text"
           placeholder="Cantidad dinero para Bet Nota"
-        ></input>
+        ></Input>
       </form>
     </div>
   );

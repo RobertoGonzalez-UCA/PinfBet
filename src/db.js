@@ -298,25 +298,32 @@ export function cerrarSesion() {
     });
 }
 
-//Lo que planteo: Busco los documentos asocidados a los 2 usuarios
-//Si hay alguno con solicitud
 function sonAmigos(uid_a, uid_b) {
   var amigos = false;
   var solicitudes = firebase.firestore().collection("friendships");
   var query = solicitudes
-    .where("uid_a", "==", uid_a)
-    .where("uid_b", "==", uid_b);
-  query
+    .where("uid_a", "==", uid_b)
+    .where("uid_b", "==", uid_a);
+  amigos = query
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
+        if (doc.data().status == "ACCEPTED") {
+          console.log("amigos es true");
+          amigos = true;
+        } else {
+          amigos = false;
+          console.log("amigos es false");
+        }
+        return amigos;
       });
+      return amigos;
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
     });
-
+  console.log(amigos);
   return amigos;
 }

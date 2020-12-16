@@ -21,7 +21,8 @@ import {
   iniciarSesion,
   mostrarAsignaturasYear,
   cerrarSesion,
-  cursarAsignatura
+  cursarAsignatura,
+  actualizarNota
 } from "./db.js";
 
 initFirebase();
@@ -56,6 +57,7 @@ export default function App() {
       <Button onClick={iniciarSesion}>Iniciar Sesión</Button>
       <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
+      <Button onClick={actualizarNota}>Actualizar Nota</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba

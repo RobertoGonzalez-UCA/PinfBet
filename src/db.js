@@ -328,12 +328,11 @@ function sonAmigos(uid_a, uid_b) {
   return amigos;
 }
 
-export function cursarAsignatura(){
-  
+export function cursarAsignatura() {
   var degreeId = document.getElementById("degreeId").value;
   var subjectId = document.getElementById("subjectId").value;
   var user = firebase.auth().currentUser;
-  
+
   firebase
     .firestore()
     .collection("userSubjects")
@@ -341,7 +340,7 @@ export function cursarAsignatura(){
       degreeId: degreeId,
       grade: -1,
       subjectId: subjectId,
-      uid: user.uid 
+      uid: user.uid
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
@@ -350,6 +349,45 @@ export function cursarAsignatura(){
     .catch(function (error) {
       console.error("Error adding document: ", error);
     });
+}
 
+export function actualizarNota() {
+  var subjectId = document.getElementById("subjectId").value;
+  var user = firebase.auth().currentUser;
 
+  firebase
+    .firestore()
+    .collection("userSubjects")
+    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .where("subjectId", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("userSubjects")
+          .doc(doc.id)
+          .update({ grade: 666 });
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+
+  firebase
+    .firestore()
+    .collection("userSubjects")
+    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .where("subjectId", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("userSubjects")
+          .doc(doc.id)
+          .update({ grade: 666 });
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+
+  //Llamar a funcion actualizar apuestas
 }

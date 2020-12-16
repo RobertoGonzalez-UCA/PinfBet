@@ -327,3 +327,29 @@ function sonAmigos(uid_a, uid_b) {
   console.log(amigos);
   return amigos;
 }
+
+export function cursarAsignatura(){
+  
+  var degreeId = document.getElementById("degreeId").value;
+  var subjectId = document.getElementById("subjectId").value;
+  var user = firebase.auth().currentUser;
+  
+  firebase
+    .firestore()
+    .collection("userSubjects")
+    .add({
+      degreeId: degreeId,
+      grade: -1,
+      subjectId: subjectId,
+      uid: user.uid 
+    })
+    .then(function (docRef) {
+      console.log("Document written with ID: ", docRef.id);
+      idBetContext = docRef.id;
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+
+
+}

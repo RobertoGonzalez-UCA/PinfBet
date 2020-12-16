@@ -20,7 +20,8 @@ import {
   registrarUsuario,
   iniciarSesion,
   mostrarAsignaturasYear,
-  cerrarSesion
+  cerrarSesion,
+  cursarAsignatura
 } from "./db.js";
 
 initFirebase();
@@ -54,6 +55,7 @@ export default function App() {
       <Button onClick={registrarUsuario}>Registrar Usuario</Button>
       <Button onClick={iniciarSesion}>Iniciar Sesión</Button>
       <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
+      <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba
@@ -107,8 +109,15 @@ export default function App() {
         ></Input>
         <Input
           id="cantidadDineroNota"
-          type="text"
+          type="number"
           placeholder="Cantidad dinero para Bet Nota"
+        ></Input>
+        <Input id="degreeId" type="text" placeholder="Id del degree"></Input>
+        <Input id="subjectId" type="text" placeholder="Id del subject"></Input>
+        <Input
+          id="nota"
+          type="number"
+          placeholder="Nota de la asignatura"
         ></Input>
       </form>
     </div>

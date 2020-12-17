@@ -71,13 +71,13 @@ export default function Navbar() {
           ></img>
         </div>
         <div class="relative flex items-center">
-          <span class="mr-4 font-semibold text-green-600">0.00 PFC</span>
           <div class="hidden sm:block">
             <div class="relative flex items-center ">
               <Input placeholder="Buscar..." />
               <Button variant="seleccion">Apuestas</Button>
               <Button variant="seleccion">Social</Button>
               <Button variant="seleccion">Rankings</Button>
+              <span class="mr-4 font-semibold text-green-600">0.00 PFC</span>
               <DropdownProfile />
             </div>
           </div>

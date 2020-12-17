@@ -7,6 +7,7 @@ import Alert from "./components/alert";
 import Dropdown from "./components/dropdown";
 import DropdownProfile from "./components/dropdownProfile";
 import Input from "./components/input";
+import Select from "./components/select";
 
 // import "firebase/auth";
 
@@ -38,6 +39,11 @@ export default function App() {
           <Modal />
           <Dropdown />
           <DropdownProfile />
+          <Select>
+            <option value="AA">AA</option>
+            <option value="BB">BB</option>
+            <option value="CC">CC</option>
+          </Select>
         </div>
       </div>
 
@@ -85,7 +91,7 @@ export default function App() {
         <Input
           id="uidApostado"
           type="text"
-          placeholder="UID del apostado (realizar apuesta)"
+          placeholder="UID del apostado"
         ></Input>
         <Input
           id="apuestaNota"
@@ -97,37 +103,29 @@ export default function App() {
           type="number"
           min="0"
           max="10"
-          placeholder="Nota apostada (realizar apuesta)"
+          placeholder="Introduce el año"
         ></Input>
         <Input
           id="idAsignatura"
           type="text"
-          placeholder="Id asignatura apostada (realizar apuesta)"
+          placeholder="Id asignatura apostada"
         ></Input>
         <Input
           id="cantidadDinero"
           type="text"
-          placeholder="Cantidad dinero (realizar apuesta)"
+          placeholder="Cantidad dinero"
         ></Input>
         <Input
           id="cantidadDineroNota"
           type="number"
-          placeholder="Cantidad dinero para Bet Nota (realizar apuesta)"
+          placeholder="Cantidad dinero para Bet Nota"
         ></Input>
-        <Input
-          id="degreeId"
-          type="text"
-          placeholder="Id del degree (añadir asignatura o actualizar nota)"
-        ></Input>
-        <Input
-          id="subjectId"
-          type="text"
-          placeholder="Id del subject (añadir asignatura o actualizar nota)"
-        ></Input>
+        <Input id="degreeId" type="text" placeholder="Id del degree"></Input>
+        <Input id="subjectId" type="text" placeholder="Id del subject"></Input>
         <Input
           id="nota"
           type="number"
-          placeholder="Nota de la asignatura (actualizar nota)"
+          placeholder="Nota de la asignatura"
         ></Input>
       </form>
     </div>

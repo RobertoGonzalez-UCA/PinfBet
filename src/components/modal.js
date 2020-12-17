@@ -1,4 +1,7 @@
 import React from "react";
+import Input from "../components/input";
+import Label from "../components/label";
+import Select from "../components/select";
 
 export default function Modal() {
   const [showModal, setShowModal] = React.useState(false);
@@ -37,9 +40,17 @@ export default function Modal() {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-gray-600 text-lg leading-relaxed">
-                    Aquí podríamos poner las cosas para apostar
-                  </p>
+                  <div className="relative flex items-center">
+                    <Label text="Aprueba/Supende" />
+                    <Select className="mr-7">
+                      {" "}
+                      <option value="AA">AA</option>
+                      <option value="BB">BB</option>
+                      <option value="CC">CC</option>
+                    </Select>
+                    <Label text="Cantidad" />
+                    <Input type="number" />
+                  </div>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">

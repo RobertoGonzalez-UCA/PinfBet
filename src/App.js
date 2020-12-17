@@ -8,6 +8,7 @@ import Dropdown from "./components/dropdown";
 import DropdownProfile from "./components/dropdownProfile";
 import Input from "./components/input";
 import Select from "./components/select";
+import Panel from "./components/panel";
 
 // import "firebase/auth";
 
@@ -44,6 +45,7 @@ export default function App() {
             <option value="BB">BB</option>
             <option value="CC">CC</option>
           </Select>
+          <Panel />
         </div>
       </div>
 

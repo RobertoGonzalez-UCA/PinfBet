@@ -85,7 +85,7 @@ export default function App() {
         <Input
           id="uidApostado"
           type="text"
-          placeholder="UID del apostado"
+          placeholder="UID del apostado (realizar apuesta)"
         ></Input>
         <Input
           id="apuestaNota"
@@ -97,29 +97,37 @@ export default function App() {
           type="number"
           min="0"
           max="10"
-          placeholder="Introduce el año"
+          placeholder="Nota apostada (realizar apuesta)"
         ></Input>
         <Input
           id="idAsignatura"
           type="text"
-          placeholder="Id asignatura apostada"
+          placeholder="Id asignatura apostada (realizar apuesta)"
         ></Input>
         <Input
           id="cantidadDinero"
           type="text"
-          placeholder="Cantidad dinero"
+          placeholder="Cantidad dinero (realizar apuesta)"
         ></Input>
         <Input
           id="cantidadDineroNota"
           type="number"
-          placeholder="Cantidad dinero para Bet Nota"
+          placeholder="Cantidad dinero para Bet Nota (realizar apuesta)"
         ></Input>
-        <Input id="degreeId" type="text" placeholder="Id del degree"></Input>
-        <Input id="subjectId" type="text" placeholder="Id del subject"></Input>
+        <Input
+          id="degreeId"
+          type="text"
+          placeholder="Id del degree (añadir asignatura o actualizar nota)"
+        ></Input>
+        <Input
+          id="subjectId"
+          type="text"
+          placeholder="Id del subject (añadir asignatura o actualizar nota)"
+        ></Input>
         <Input
           id="nota"
           type="number"
-          placeholder="Nota de la asignatura"
+          placeholder="Nota de la asignatura (actualizar nota)"
         ></Input>
       </form>
     </div>

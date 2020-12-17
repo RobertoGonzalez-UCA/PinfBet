@@ -353,12 +353,12 @@ export function cursarAsignatura() {
 
 export function actualizarNota() {
   var subjectId = document.getElementById("subjectId").value;
-  var user = firebase.auth().currentUser;
-
+  var user = firebase.auth().currentUser.uid;
+/*
   firebase
     .firestore()
     .collection("userSubjects")
-    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .where("uid", "==", user) //Buscar documentacion update data
     .where("subjectId", "==", subjectId)
     .get()
     .then(function (querySnapshot) {
@@ -370,24 +370,53 @@ export function actualizarNota() {
           .update({ grade: 666 });
         console.log(doc.id, " => ", doc.data());
       });
-    });
+    });*/
 
-  firebase
-    .firestore()
-    .collection("userSubjects")
-    .where("uid", "==", user.uid) //Buscar documentacion update data
-    .where("subjectId", "==", subjectId)
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("userSubjects")
-          .doc(doc.id)
-          .update({ grade: 666 });
-        console.log(doc.id, " => ", doc.data());
-      });
-    });
+  resultadoApuesta(user);
 
   //Llamar a funcion actualizar apuestas
+}
+
+function resultadoApuesta(uid) {
+  console.log("Hey");
+
+
+  var betContexts = firebase
+    .firestore()
+    .collection("bets")
+    .where("uid", "==", uid) //Buscar documentacion update data
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("betContexts")
+          .doc(doc.data().betContextId) //Accedemos a las entradas de betContexts a las que pertencen los bets
+         // console.log(doc.id, " => ", doc.data());
+        });
+    });
+
+   /* firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", betContexts.uid) //Buscar documentacion update data
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(doc.id)
+          .update({ coins: 753951 });
+      });
+    });*/
+
+    var betContexts = firebase //EN CONSTRUCCION
+    .firestore()
+    .collection("bets");
+    //.doc("8A0qOZFg1i0t22cHH4db");
+
+    var query = betContexts.where("uid", "==", "TwbHneKb1rRXRVjHg3SqXt9a25f2");
+    console.log(query)
+
 }

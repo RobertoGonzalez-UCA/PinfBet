@@ -60,36 +60,50 @@ export default function Modal() {
                       alt="Avatar de usuario"
                     ></img>
                   </div>
-                  <div className="pt-3 pb-10 relative flex justify-center">
+                  <div className="pt-3 pb-7 relative flex justify-center">
                     <Label
-                      className=""
+                      className="text-xl"
                       text="Usuario"
+                    />
+                  </div>
+                  <div className="pb-10 relative flex justify-center">
+                    <Label
+                      className="text-2xl block"
+                      text="Asignautra"
                     />
                   </div>
                   <div className="mb-5 relative flex items-center">
                     <Label text="Aprueba/Supende" />
                     <Select className="mr-7">
                       <option value="AA">
-                        AA
+                        Aprueba
                       </option>
                       <option value="BB">
-                        BB
-                      </option>
-                      <option value="CC">
-                        CC
+                        Suspende
                       </option>
                     </Select>
                     <Label text="Cantidad" />
-                    <Input type="number" />
+                    <Input
+                      type="number"
+                      variant="little"
+                      min="1"
+                    />
                   </div>
                   <div className="relative flex items-center">
                     <Label text="Nota" />
                     <Input
                       className="mr-7"
                       type="number"
+                      variant="little"
+                      min="0"
+                      max="10"
                     />
                     <Label text="Cantidad" />
-                    <Input type="number" />
+                    <Input
+                      type="number"
+                      variant="little"
+                      min="1"
+                    />
                   </div>
                 </div>
                 {/*footer*/}

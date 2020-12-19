@@ -4,14 +4,21 @@ import Label from "../components/label";
 import Select from "../components/select";
 
 export default function Modal() {
-  const [showModal, setShowModal] = React.useState(false);
+  const [
+    showModal,
+    setShowModal
+  ] = React.useState(false);
   return (
     <>
       <button
         className="m-4 bg-green-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
         type="button"
-        style={{ transition: "all .15s ease" }}
-        onClick={() => setShowModal(true)}
+        style={{
+          transition: "all .15s ease"
+        }}
+        onClick={() =>
+          setShowModal(true)
+        }
       >
         Apostar
       </button>
@@ -19,7 +26,9 @@ export default function Modal() {
         <>
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-            onClick={() => setShowModal(false)}
+            onClick={() =>
+              setShowModal(false)
+            }
           >
             <div className="relative w-auto my-6 mx-auto max-w-6xl">
               {/*content*/}
@@ -31,7 +40,11 @@ export default function Modal() {
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
                   >
                     <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                       ×
@@ -40,14 +53,41 @@ export default function Modal() {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <div className="relative flex items-center">
+                  <div className="relative flex justify-center">
+                    <img
+                      className="h-20"
+                      src="https://i.imgur.com/q385Ahc.png"
+                      alt="Avatar de usuario"
+                    ></img>
+                  </div>
+                  <div className="pt-3 pb-10 relative flex justify-center">
+                    <Label
+                      className=""
+                      text="Usuario"
+                    />
+                  </div>
+                  <div className="mb-5 relative flex items-center">
                     <Label text="Aprueba/Supende" />
                     <Select className="mr-7">
-                      {" "}
-                      <option value="AA">AA</option>
-                      <option value="BB">BB</option>
-                      <option value="CC">CC</option>
+                      <option value="AA">
+                        AA
+                      </option>
+                      <option value="BB">
+                        BB
+                      </option>
+                      <option value="CC">
+                        CC
+                      </option>
                     </Select>
+                    <Label text="Cantidad" />
+                    <Input type="number" />
+                  </div>
+                  <div className="relative flex items-center">
+                    <Label text="Nota" />
+                    <Input
+                      className="mr-7"
+                      type="number"
+                    />
                     <Label text="Cantidad" />
                     <Input type="number" />
                   </div>
@@ -57,16 +97,30 @@ export default function Modal() {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => setShowModal(false)}
+                    style={{
+                      transition:
+                        "all .15s ease"
+                    }}
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
                   >
                     Cancelar
                   </button>
                   <button
                     className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                     type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => setShowModal(false)}
+                    style={{
+                      transition:
+                        "all .15s ease"
+                    }}
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
                   >
                     Apostar
                   </button>

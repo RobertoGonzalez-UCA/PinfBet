@@ -380,42 +380,51 @@ export function actualizarNota() {
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         actualizarBets(doc);
-     //  console.log(doc.id, " => ", doc.data());
+        //  console.log(doc.id, " => ", doc.data());
       });
     });
 
-    //console.log(documento.size);
+  //console.log(documento.size);
 
   //Llamar a funcion actualizar apuestas
 }
 
-function actualizarBets(document){
-  
+function actualizarBets(document) {
   firebase
     .firestore()
     .collection("betContexts")
-    .doc(document.get('betContextId')) //FUNCIONA
+    .doc(document.get("betContextId")) //FUNCIONA
     .get()
-    .then(function(doc) {
+    .then(function (doc) {
       console.log(doc.id, " => ", doc.data());
-      actualizarBets2(document, doc) //opcion nuclear
-  }).catch(function(error) {
+      actualizarBets2(document, doc); //opcion nuclear
+    })
+    .catch(function (error) {
       console.log("Error getting document:", error);
-  });
+    });
 
   // LIMPIAR console.log(document.get('betContextId'));
-  console.log(document.get('betContextId')); //FUNCIONA
+  console.log(document.get("betContextId")); //FUNCIONA
 }
 
-function actualizarBets2(document1, document2){
-
-  var uid = document2.get('uid');
+function actualizarBets2(document1, document2) {
+  var uid = document2.get("uid");
 
   firebase
     .firestore()
     .collection("users")
     .where("uid", "==", uid)
-    .update({ coins: 69 });
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(doc.id)
+          .update({ coins: 79 });
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
 
   console.log(uid); //FUNCIONA
 }

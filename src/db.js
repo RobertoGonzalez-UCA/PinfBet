@@ -368,26 +368,54 @@ export function actualizarNota() {
           .collection("userSubjects")
           .doc(doc.id)
           .update({ grade: 666 });
-        console.log(doc.id, " => ", doc.data());
+        //console.log(doc.id, " => ", doc.data());
       });
     });
 
-  firebase
+  var documento = firebase
     .firestore()
-    .collection("userSubjects")
+    .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
-    .where("subjectId", "==", subjectId)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("userSubjects")
-          .doc(doc.id)
-          .update({ grade: 666 });
-        console.log(doc.id, " => ", doc.data());
+        actualizarBets(doc);
+     //  console.log(doc.id, " => ", doc.data());
       });
     });
 
+    //console.log(documento.size);
+
   //Llamar a funcion actualizar apuestas
+}
+
+function actualizarBets(document){
+  
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .doc(document.get('betContextId')) //FUNCIONA
+    .get()
+    .then(function(doc) {
+      console.log(doc.id, " => ", doc.data());
+      actualizarBets2(document, doc) //opcion nuclear
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
+
+  // LIMPIAR console.log(document.get('betContextId'));
+  console.log(document.get('betContextId')); //FUNCIONA
+}
+
+function actualizarBets2(document1, document2){
+
+  var uid = document2.get('uid');
+
+  firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", uid)
+    .update({ coins: 69 });
+
+  console.log(uid); //FUNCIONA
 }

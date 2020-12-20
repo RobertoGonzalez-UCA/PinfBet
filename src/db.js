@@ -161,7 +161,7 @@ export function crearApuesta() {
         uid: uidApostante,
         subjects: {
           acronym: "Asignatura",
-          code: 666,
+          code: 686,
           degreeId: idAsignatura,
           name: "Asignatura nombre completo",
           year: 666
@@ -304,12 +304,16 @@ function sonAmigos(uid_a, uid_b) {
   var query = solicitudes
     .where("uid_a", "==", uid_b)
     .where("uid_b", "==", uid_a);
-  amigos = query
+
+  query
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
+        console.log("hoal9");
+        //console.log(doc.data().status);
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        var x = firebase.firestore().collection("friendships").doc(doc.id);
+        console.log(x.status);
         if (doc.data().status == "ACCEPTED") {
           console.log("amigos es true");
           amigos = true;
@@ -344,7 +348,6 @@ export function cursarAsignatura() {
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
-      idBetContext = docRef.id;
     })
     .catch(function (error) {
       console.error("Error adding document: ", error);

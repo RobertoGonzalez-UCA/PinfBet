@@ -25,7 +25,7 @@ export function createUser() {
     });
 }
 
-//FUNCION MOSTRAR USUARIOS (muestra todos) (opcion filtrar por asignatura / año)
+//FUNCION MOSTRAR USUARIOS (muestra todos) (opcion filtrar por asignatura / año?)
 export function getUsers() {
   firebase
     .firestore()
@@ -38,7 +38,7 @@ export function getUsers() {
     });
 }
 
-//PROBLEMA1: Obtener ID receptor (lo metemos desde la caja)
+//FUNCION SOLICITAR AMISTAD
 export function solicitarAmistad() {
   var emisor = firebase.auth().currentUser;
   var uidEmisor = emisor.uid;
@@ -51,31 +51,46 @@ export function solicitarAmistad() {
   });
 }
 
-//PROBLEMA1
-//PROBLEMA2: localizar la petición asociada a los 2 usuarios
-export function aceptarSolicitud() {
-  //ACEPTA TODAS LAS SOLICITUDES
-  //Obtenemos la petiicón asociada al remitente (no hace falta el receptor, claro)
-  var receptor = firebase.auth().currentUser;
+//FUNCION MOSTRAR SOLICITUDES DE AMISTAD
+export function mostrarSolicitud() {
   var uidReceptor = receptor.uid;
+
   firebase
     .firestore()
     .collection("friendships")
-    .where("uid_b", "==", uidReceptor) //Buscar documentacion update data
+    .where("uid_b", "==", uidReceptor)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+}
+
+//FUNCION ACEPTAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
+export function aceptarSolicitud() {
+  var receptor = firebase.auth().currentUser;
+  var uidReceptor = receptor.uid;
+  var docId = document.getElementById("docId").value;
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_b", "==", uidReceptor)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("friendships")
-          .doc(doc.id)
+          .doc(docId)
           .update({ status: "ACCEPTED" });
         console.log(doc.id, " => ", doc.data());
       });
     });
 }
 
-//PROBLEMA1 + PROBLEMA2
+//FUNCION RACHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function rechazarSolicitud() {
   var receptor = firebase.auth().currentUser;
   var uidReceptor = receptor.uid;
@@ -89,15 +104,14 @@ export function rechazarSolicitud() {
         firebase
           .firestore()
           .collection("friendships")
-          .doc(doc.id)
+          .doc(docId)
           .update({ status: "REFUSED" });
         console.log(doc.id, " => ", doc.data());
       });
     });
 }
 
-//PROBLEMA3: Obtener por parámetro el degreeId
-//PROBLEMA4: Obtener los datos específicos del documento
+//FUNCION MOSTRAR ASIGNATURAS (TODAS) (NO USADA ACTUALMENTE)
 export function mostrarAsignaturas() {
   firebase
     .firestore()
@@ -116,24 +130,18 @@ export function mostrarAsignaturas() {
     });
 }
 
-//PROBLEMA3: Obtener por parámetro el degreeId
-//PROBLEMA4: Obtener los datos específicos del documento
+//FUNCION MOSTRAR ASIGNATURAS POR AÑO
 export function mostrarAsignaturasYear() {
-  //FUNCIONA (depurar para hacer mas legible)
-
-  var year = document.getElementById("year").value; //Obtenemos un string que posteriormente convertimos en int
-
-  console.log("entré");
-  var year2 = parseInt(year, 10); //No tocar el 10, es necesario
+  var string = document.getElementById("year").value; //Obtenemos un string que posteriormente convertimos en int
+  var year = parseInt(string, 10); //No tocar el 10, es necesario para base decimal
 
   firebase
     .firestore()
     .collection("subjects")
-    .where("year", "==", year2)
+    .where("year", "==", year)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
       });
     })
@@ -142,8 +150,7 @@ export function mostrarAsignaturasYear() {
     });
 }
 
-//PROBLEMA5: Vamos a ver que carajo hacemos con esto
-//Necesitamos UID del apostador, apostado, id de la asignatura, tipo de apuesta, cantidad de dinero
+//FUNCION CREAR APUESTA (EN CONSTRUCCION)
 export function crearApuesta() {
   var uidApostante = firebase.auth().currentUser.uid;
   var uidApostado = document.getElementById("uidApostado").value;
@@ -153,6 +160,7 @@ export function crearApuesta() {
   var cantidadDinero = document.getElementById("cantidadDinero").value;
   var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
   var idBetContext = 777;
+  var subject = firebase.firestore().collection("subjects");
 
   if (sonAmigos(uidApostante, uidApostado)) {
     firebase
@@ -161,10 +169,10 @@ export function crearApuesta() {
       .add({
         uid: uidApostante,
         subjects: {
-          acronym: "Asignatura",
-          code: 686,
-          degreeId: idAsignatura,
-          name: "Asignatura nombre completo",
+          acronym: "",
+          code: idAsignatura,
+          degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
+          name: "",
           year: 666
         }
       })
@@ -434,7 +442,6 @@ function actualizarBets2(document1, document2) {
 }
 
 export function createSubject() {
-
   var acronym = document.getElementById("acronym").value;
   var code = document.getElementById("code").value;
   var degreeId = document.getElementById("degreeId").value;

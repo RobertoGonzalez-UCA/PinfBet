@@ -14,9 +14,9 @@ import Table from "./components/table";
 // import "firebase/auth";
 
 import {
-  createUser,
   getUsers,
   solicitarAmistad,
+  mostrarSolicitud,
   aceptarSolicitud,
   rechazarSolicitud,
   crearApuesta,
@@ -67,6 +67,7 @@ export default function App() {
       </Button>
       <Button onClick={crearApuesta}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
+      <Button onClick={mostrarSolicitud}>Mostrar Solicitudes</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
       <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
       <Button onClick={registrarUsuario}>Registrar Usuario</Button>
@@ -81,23 +82,19 @@ export default function App() {
       </h1>
 
       <form>
-        <Input id="email" type="email" placeholder="Introduce el email"></Input>
-        <Input
-          id="password"
-          type="password"
-          placeholder="Introduce la contraseña"
-        ></Input>
+        <Input id="email" type="email" placeholder="Email"></Input>
+        <Input id="password" type="password" placeholder="Contraseña"></Input>
         <Input
           id="year"
           type="number"
           min="1"
           max="4"
-          placeholder="Introduce el año"
+          placeholder="Año (mostrar asignaturas)"
         ></Input>
         <Input
           id="uidReceptor"
           type="text"
-          placeholder="Introduce el uid para solicitar amistad"
+          placeholder="UID (solicitar amistad)"
         ></Input>
         <Input
           id="uidApostado"
@@ -143,6 +140,11 @@ export default function App() {
         <Input id="degreeId" type="text" placeholder="degreeId"></Input>
         <Input id="name" type="text" placeholder="name"></Input>
         <Input id="year" type="number" placeholder="year"></Input>
+        <Input
+          id="docIf"
+          type="text"
+          placeholder="Id de solicitud de amistad"
+        ></Input>
       </form>
     </div>
   );

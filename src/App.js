@@ -25,7 +25,8 @@ import {
   mostrarAsignaturasYear,
   cerrarSesion,
   cursarAsignatura,
-  actualizarNota
+  actualizarNota,
+  createSubject
 } from "./db.js";
 
 initFirebase();
@@ -60,7 +61,6 @@ export default function App() {
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Botones de prueba
       </h1>
-      <Button onClick={createUser}>Crear Usuario</Button>
       <Button onClick={getUsers}>Mostrar Usuarios</Button>
       <Button onClick={mostrarAsignaturasYear}>
         Mostrar asignaturas por año
@@ -74,6 +74,7 @@ export default function App() {
       <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
+      <Button onClick={createSubject}>Crear asignatura (test)</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba
@@ -137,6 +138,11 @@ export default function App() {
           type="number"
           placeholder="Nota de la asignatura"
         ></Input>
+        <Input id="acronym" type="text" placeholder="acronym"></Input>
+        <Input id="code" type="text" placeholder="code"></Input>
+        <Input id="degreeId" type="text" placeholder="degreeId"></Input>
+        <Input id="name" type="text" placeholder="name"></Input>
+        <Input id="year" type="number" placeholder="year"></Input>
       </form>
     </div>
   );

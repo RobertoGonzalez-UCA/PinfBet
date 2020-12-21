@@ -3,6 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 //FUNCION CREAR USUARIOS (usada en debugging, en producto final los usuarios son creados al registrarse)
+//<Button onClick={createUser}>Crear Usuario (debugging, no usar)</Button>
 export function createUser() {
   firebase
     .firestore()
@@ -430,4 +431,30 @@ function actualizarBets2(document1, document2) {
     });
 
   console.log(uid); //FUNCIONA
+}
+
+export function createSubject() {
+
+  var acronym = document.getElementById("acronym").value;
+  var code = document.getElementById("code").value;
+  var degreeId = document.getElementById("degreeId").value;
+  var name = document.getElementById("name").value;
+  var year = document.getElementById("year").value;
+
+  firebase
+    .firestore()
+    .collection("subjects")
+    .add({
+      acronym: acronym,
+      code: code,
+      degreeId: degreeId.toString(),
+      name: name,
+      year: year
+    })
+    .then(function (docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
 }

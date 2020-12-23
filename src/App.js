@@ -26,7 +26,9 @@ import {
   cerrarSesion,
   cursarAsignatura,
   actualizarNota,
-  createSubject
+  createSubject,
+  sonAmigosPrueba,
+  prueba
 } from "./db.js";
 
 initFirebase();
@@ -76,6 +78,7 @@ export default function App() {
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
       <Button onClick={createSubject}>Crear asignatura (test)</Button>
+      <Button onClick={prueba}>Somos amigos compadre??</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba

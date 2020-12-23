@@ -10,6 +10,7 @@ import Input from "./components/input";
 import Select from "./components/select";
 import Subject from "./components/subject";
 import Table from "./components/table";
+import Chat from "./components/chat";
 
 // import "firebase/auth";
 
@@ -55,6 +56,7 @@ export default function App() {
             subjectFullname="Matemática discreta"
             friends="2"
           />
+          <Chat />
         </div>
       </div>
       <br />

@@ -16,10 +16,6 @@ const DropdownProfile = ({ color }) => {
     setDropdownPopoverShow(false);
   };
   // bg colors
-  let bgColor;
-  color === "white"
-    ? (bgColor = "bg-green-500")
-    : (bgColor = "bg-" + color + "-500");
   return (
     <>
       <div className="flex flex-wrap">
@@ -29,10 +25,8 @@ const DropdownProfile = ({ color }) => {
               type="image"
               src="https://i.imgur.com/q385Ahc.png"
               alt="Menu Perfil"
+              className="focus:outline-none"
               width="40"
-              style={{
-                transition: "all .15s ease"
-              }}
               ref={btnDropdownRef}
               onClick={() => {
                 dropdownPopoverShow
@@ -44,27 +38,20 @@ const DropdownProfile = ({ color }) => {
               ref={popoverDropdownRef}
               className={
                 (dropdownPopoverShow ? "block " : "hidden ") +
-                (color === "white" ? "bg-white " : bgColor + " ") +
-                "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
+                "text-base z-50 float-left list-none text-left rounded-lg shadow-lg mt-1 bg-gray-500"
               }
               style={{ minWidth: "12rem" }}
             >
               <a
                 href="#link"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent " +
-                  (color === "white" ? " text-gray-800" : "text-white")
-                }
+                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
                 onClick={(e) => e.preventDefault()}
               >
                 Perfil
               </a>
               <a
                 href="#link"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent " +
-                  (color === "white" ? " text-gray-800" : "text-white")
-                }
+                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
                 onClick={(e) => e.preventDefault()}
               >
                 Configuración
@@ -72,10 +59,7 @@ const DropdownProfile = ({ color }) => {
               <div className="h-0 my-2 border border-solid border-t-0 border-gray-900 opacity-25" />
               <a
                 href="#link"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent " +
-                  (color === "white" ? " text-gray-800" : "text-white")
-                }
+                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
                 onClick={(e) => e.preventDefault()}
               >
                 Cerrar sesión

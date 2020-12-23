@@ -1,14 +1,16 @@
 import React from "react";
 
 const variants = {
-  red: "bg-red-100 text-red-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center",
+  red:
+    "transition duration-250 bg-red-100 text-red-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center focus:outline-none hover:bg-red-200 transform hover:scale-105",
   yellow:
-    "bg-yellow-100 text-yellow-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center",
-  blue: "bg-blue-100 text-blue-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center",
+    "transition duration-250 bg-yellow-100 text-yellow-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center focus:outline-none hover:bg-yellow-200 transform hover:scale-105",
+  blue:
+    "transition duration-250 bg-blue-100 text-blue-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center focus:outline-none hover:bg-blue-200 transform hover:scale-105",
   green:
-    "bg-green-100 text-green-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center",
+    "transition duration-250 bg-green-100 text-green-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center focus:outline-none hover:bg-green-200 transform hover:scale-105",
   purple:
-    "bg-purple-100 text-purple-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center"
+    "transition duration-250 bg-purple-100 text-purple-500 ml-4 mr-4 px-5 py-5 rounded-xl text-center focus:outline-none hover:bg-purple-200 transform hover:scale-105"
 };
 
 export default function Subject({

@@ -9,7 +9,7 @@ export default function Label({
     <label
       className={[
         className,
-        "pr-2"
+        "leading-7 text-sm text-gray-600"
       ].join(" ")}
       {...rest}
     >

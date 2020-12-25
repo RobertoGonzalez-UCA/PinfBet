@@ -1,9 +1,16 @@
 import React from "react";
 
-export default function Label({ className, text, ...rest }) {
+export default function Label({
+  className,
+  text,
+  ...rest
+}) {
   return (
     <label
-      className={[className, "pr-2 text-lg font-semibold"].join(" ")}
+      className={[
+        className,
+        "pr-2"
+      ].join(" ")}
       {...rest}
     >
       {text}

@@ -6,8 +6,8 @@ import {
   Link
 } from "react-router-dom";
 
-import Navbar from "./components/navbar";
 import Test from "./pages/test";
+import Signup from "./pages/signup";
 import Login from "./pages/login";
 import Profile from "./pages/profile";
 import Bets from "./pages/bets";
@@ -21,10 +21,12 @@ initFirebase();
 export default function App() {
   return (
     <Router>
-      <Navbar />
       <Switch>
         <Route path="/test">
           <Test />
+        </Route>
+        <Route path="/signup">
+          <Signup />
         </Route>
         <Route path="/login">
           <Login />

@@ -38,6 +38,7 @@ initFirebase();
 export default function Test() {
   return (
     <div>
+      <Navbar />
       <h1 className="mt-7 ml-6 mb-4 block text-3xl font-bold leading-none">
         Componentes
       </h1>

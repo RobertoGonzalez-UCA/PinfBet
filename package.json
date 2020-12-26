@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "4.11.2",
     "autoprefixer": "10.0.2",
     "firebase": "^8.0.2",
     "popper.js": "1.16.1",

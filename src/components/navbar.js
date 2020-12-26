@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../components/button";
 import DropdownProfile from "../components/dropdownProfile";
 import Input from "../components/input";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 export default function Navbar() {
   const [showMenu, setShowMenu] = React.useState(false);
@@ -20,7 +21,7 @@ export default function Navbar() {
             onClick={() => {
               showMenu ? closeMenu() : openMenu();
             }}
-            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
             aria-expanded="false"
           >
             <span class="sr-only">Open main menu</span>
@@ -74,9 +75,15 @@ export default function Navbar() {
           <div class="hidden sm:block">
             <div class="relative flex items-center ">
               <Input placeholder="Buscar..." />
-              <Button variant="seleccion">Apuestas</Button>
-              <Button variant="seleccion">Social</Button>
-              <Button variant="seleccion">Rankings</Button>
+              <Link to="/bets">
+                <Button variant="seleccion">Apuestas</Button>
+              </Link>
+              <Link to="/social">
+                <Button variant="seleccion">Social</Button>
+              </Link>
+              <Link to="/rankings">
+                <Button variant="seleccion">Rankings</Button>
+              </Link>
               <span class="mr-4 font-semibold text-green-600">0.00 PFC</span>
               <DropdownProfile />
             </div>
@@ -87,30 +94,30 @@ export default function Navbar() {
         <>
           <div id="menu" class="sm:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
-              <a
-                href="#"
-                class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+              <Link
+                to="/bets"
+                class="transition duration-250 text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Apuestas
-              </a>
-              <a
-                href="#"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              </Link>
+              <Link
+                to="/social"
+                class="transition duration-250 text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Social
-              </a>
-              <a
-                href="#"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              </Link>
+              <Link
+                to="/rankings"
+                class="transition duration-250 text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Rankings
-              </a>
-              <a
-                href="#"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              </Link>
+              <Link
+                to="/profile"
+                class="transition duration-250 text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Perfil
-              </a>
+              </Link>
             </div>
           </div>
         </>

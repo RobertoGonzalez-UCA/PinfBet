@@ -154,15 +154,19 @@ export function mostrarAsignaturasYear() {
 export function crearApuesta() {
   var uidApostante = firebase.auth().currentUser.uid;
   var uidApostado = document.getElementById("uidApostado").value;
-  var apuestaNota = document.getElementById("apuestaNota").value;
+  var apuestaNota = document.getElementById("apuestaNota").checked;
   var notaApostada = document.getElementById("notaApostada").value;
   var idAsignatura = document.getElementById("idAsignatura").value;
   var cantidadDinero = document.getElementById("cantidadDinero").value;
   var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
-  var idBetContext = 777;
+  var idBetContext;
   var subject = firebase.firestore().collection("subjects");
 
-  if (sonAmigos(uidApostante, uidApostado)) {
+  //if (sonAmigos(uidApostante, uidApostado)){
+
+  console.log(apuestaNota);
+
+
     firebase
       .firestore()
       .collection("betContexts")
@@ -173,16 +177,18 @@ export function crearApuesta() {
           code: idAsignatura,
           degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
           name: "",
-          year: 666
+          year: 0
         }
       })
       .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        //console.log("Document written with ID: ", docRef.id);
         idBetContext = docRef.id;
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
+       // console.error("Error adding document: ", error);
       });
+    
+     // console.log(idBetContext + " Hello");
 
     firebase
       .firestore()
@@ -196,13 +202,15 @@ export function crearApuesta() {
         value: true
       })
       .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
+     //   console.log("Document written with ID: ", docRef.id);
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
+     //  console.error("Error adding document: ", error);
       });
 
-    if (apuestaNota == true) {
+    if (apuestaNota.checked == true) {
+
+      console.log("Attak on Titan mola")
       firebase
         .firestore()
         .collection("bets")
@@ -221,9 +229,9 @@ export function crearApuesta() {
           console.error("Error adding document: ", error);
         });
     }
-  } else {
+  /*} else {
     console.log("No son amigos");
-  }
+  }*/
 }
 
 //Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
@@ -343,8 +351,22 @@ function sonAmigos(uid_a, uid_b) {
 }
 
 export function prueba(){
-  var comando = sonAmigosPrueba(comando);
-  console.log(comando);
+ // var comando = sonAmigosPrueba(comando);
+ //var notaApostada = document.getElementById("apuestaNota").checked;
+
+ firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", "cWr273EKn4TRFWlZmrBKhQIGPWQ2")
+    .get()
+    .then(function (docRef) {
+      var probando = false;
+      console.log("2" + probando);
+    });
+
+
+
+  console.log("3" + probando);
 }
 
 export function sonAmigosPrueba(comando) {
@@ -393,9 +415,10 @@ export function cursarAsignatura() {
 
 export function actualizarNota() {
   var subjectId = document.getElementById("subjectId").value;
+  var nota = document.getElementById("nota").value;
   var user = firebase.auth().currentUser;
 
-  firebase
+  firebase //Esta parte se encarga de actualizar la nota
     .firestore()
     .collection("userSubjects")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -407,21 +430,26 @@ export function actualizarNota() {
           .firestore()
           .collection("userSubjects")
           .doc(doc.id)
-          .update({ grade: 666 });
+          .update({ grade: nota }); //cambiar a nota introducida por el ususario
         //console.log(doc.id, " => ", doc.data());
       });
     });
+//Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
 
-  var documento = firebase
+firebase
     .firestore()
     .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        actualizarBets(doc);
+        console.log(doc.id, " => ", doc.data());
+        fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
         //  console.log(doc.id, " => ", doc.data());
       });
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
     });
 
   //console.log(documento.size);
@@ -429,15 +457,18 @@ export function actualizarNota() {
   //Llamar a funcion actualizar apuestas
 }
 
-function actualizarBets(document) {
+function fetchBetcontext(bet, nota) {
+
+  console.log(nota);
+
   firebase
     .firestore()
     .collection("betContexts")
     .doc(document.get("betContextId")) //FUNCIONA
     .get()
     .then(function (doc) {
-      console.log(doc.id, " => ", doc.data());
-      actualizarBets2(document, doc); //opcion nuclear
+    //  console.log(doc.id, " => ", doc.data());
+      actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
     })
     .catch(function (error) {
       console.log("Error getting document:", error);
@@ -447,8 +478,21 @@ function actualizarBets(document) {
   console.log(document.get("betContextId")); //FUNCIONA
 }
 
-function actualizarBets2(document1, document2) {
-  var uid = document2.get("uid");
+function actualizarBets(bet, nota, betContext) {
+  var uid = betContext.get("uid");
+  var aumento;
+  aumento = bet.get("amount"); //sacamos el dinero que ha apostado
+
+
+  if ((bet.get("type") == "APRUEBA_SUSPENDE") && (nota > 5)){
+    aumento = aumento*1.5;
+  }
+  if ((bet.get("type") == "NOTA") && (nota = bet.get("value"))){
+    aumento = aumento*3;
+  }
+  else{
+    aumento = 0;
+  }
 
   firebase
     .firestore()
@@ -461,12 +505,14 @@ function actualizarBets2(document1, document2) {
           .firestore()
           .collection("users")
           .doc(doc.id)
-          .update({ coins: 79 });
-        console.log(doc.id, " => ", doc.data());
+          .update({
+            coins: firebase.firestore.FieldValue.increment(aumento)});
+            console.log("Pos vale");
+       // console.log(doc.id, " => ", doc.data());
       });
     });
 
-  console.log(uid); //FUNCIONA
+
 }
 
 export function createSubject() {

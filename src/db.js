@@ -162,74 +162,72 @@ export function crearApuesta() {
   var idBetContext;
   var subject = firebase.firestore().collection("subjects");
 
-  //if (sonAmigos(uidApostante, uidApostado)){
+  if (sonAmigos(uidApostante, uidApostado)) {
+    console.log(apuestaNota);
 
-  console.log(apuestaNota);
-
-  firebase
-    .firestore()
-    .collection("betContexts")
-    .add({
-      uid: uidApostante,
-      subjects: {
-        acronym: "",
-        code: idAsignatura,
-        degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
-        name: "",
-        year: 0
-      }
-    })
-    .then(function (docRef) {
-      //console.log("Document written with ID: ", docRef.id);
-      idBetContext = docRef.id;
-    })
-    .catch(function (error) {
-      // console.error("Error adding document: ", error);
-    });
-
-  // console.log(idBetContext + " Hello");
-
-  firebase
-    .firestore()
-    .collection("bets")
-    .add({
-      amount: cantidadDinero,
-      betContext: "/betContext/" + idBetContext,
-      betContextId: idBetContext,
-      type: "APRUEBA_SUSPENDE",
-      uid: uidApostado,
-      value: true
-    })
-    .then(function (docRef) {
-      //   console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function (error) {
-      //  console.error("Error adding document: ", error);
-    });
-
-  if (apuestaNota.checked == true) {
-    console.log("Attak on Titan mola");
     firebase
       .firestore()
-      .collection("bets")
+      .collection("betContexts")
       .add({
-        amount: cantidadDineroNota,
-        betContext: "/betContext/" + idBetContext,
-        betContextId: idBetContext,
-        type: "NOTA",
-        uid: uidApostado,
-        value: notaApostada
+        uid: uidApostante,
+        subjects: {
+          acronym: "",
+          code: idAsignatura,
+          degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
+          name: "",
+          year: 0
+        }
       })
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
+
+        firebase
+          .firestore()
+          .collection("bets")
+          .add({
+            amount: cantidadDinero,
+            betContext: "/betContext/" + docRef.id,
+            betContextId: docRef.id,
+            type: "APRUEBA_SUSPENDE",
+            uid: uidApostado,
+            value: true
+          })
+          .then(function (docRef) {
+            //   console.log("Document written with ID: ", docRef.id);
+          })
+          .catch(function (error) {
+            //  console.error("Error adding document: ", error);
+          });
+
+        if (apuestaNota.checked == true) {
+          console.log("Attak on Titan mola");
+          firebase
+            .firestore()
+            .collection("bets")
+            .add({
+              amount: cantidadDineroNota,
+              betContext: "/betContext/" + idBetContext,
+              betContextId: idBetContext,
+              type: "NOTA",
+              uid: uidApostado,
+              value: notaApostada
+            })
+            .then(function (docRef) {
+              console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function (error) {
+              console.error("Error adding document: ", error);
+            });
+        }
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
+        // console.error("Error adding document: ", error);
       });
-  }
-  /*} else {
+
+    // console.log(idBetContext + " Hello");
+  } else {
     console.log("No son amigos");
-  }*/
+  }
 }
 
 //Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
@@ -324,21 +322,18 @@ function sonAmigos(uid_a, uid_b) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        console.log("hoal9");
-        //console.log(doc.data().status);
+        console.log(doc.data());
         // doc.data() is never undefined for query doc snapshots
-        var x = firebase.firestore().collection("friendships").doc(doc.id);
-        console.log(x.status);
-        if (doc.data().status == "ACCEPTED") {
+        //var x = firebase.firestore().collection("friendships").doc(doc.id);
+        //console.log(x.status);
+        /** if (doc.data().status == "ACCEPTED") {
           console.log("amigos es true");
           amigos = true;
         } else {
           amigos = false;
           console.log("amigos es false");
-        }
-        return amigos;
+        }**/
       });
-      return amigos;
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);

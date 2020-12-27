@@ -53,15 +53,16 @@ export function solicitarAmistad() {
 
 //FUNCION MOSTRAR SOLICITUDES DE AMISTAD
 export function mostrarSolicitud() {
-  var uidReceptor = receptor.uid;
+  var uidReceptor = document.getElementById("uidReceptor").value;
 
   firebase
     .firestore()
     .collection("friendships")
     .where("uid_b", "==", uidReceptor)
     .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
+    .then((querySnapshot) => {
+      console.log(querySnapshot.docs);
+      querySnapshot.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
       });
     });
@@ -163,7 +164,7 @@ export function crearApuesta() {
   var subject = firebase.firestore().collection("subjects");
 
   if (sonAmigos(uidApostante, uidApostado)) {
-    console.log(apuestaNota);
+    //console.log(apuestaNota);
 
     firebase
       .firestore()
@@ -315,31 +316,29 @@ function sonAmigos(uid_a, uid_b) {
   var amigos = false;
   var solicitudes = firebase.firestore().collection("friendships");
   var query = solicitudes
-    .where("uid_a", "==", uid_b)
-    .where("uid_b", "==", uid_a);
+    .where("uid_a", "==", uid_a)
+    .where("uid_b", "==", uid_b);
 
-  query
+  amigos = query
     .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.data());
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        //console.log(doc.data(), doc.id);
         // doc.data() is never undefined for query doc snapshots
         //var x = firebase.firestore().collection("friendships").doc(doc.id);
         //console.log(x.status);
-        /** if (doc.data().status == "ACCEPTED") {
+        if (doc.data().status == "ACCEPTED") {
           console.log("amigos es true");
-          amigos = true;
+          return true;
         } else {
-          amigos = false;
           console.log("amigos es false");
-        }**/
+          return false;
+        }
       });
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
     });
-  console.log(amigos);
-  return amigos;
 }
 
 export function prueba() {

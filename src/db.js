@@ -166,69 +166,67 @@ export function crearApuesta() {
 
   console.log(apuestaNota);
 
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .add({
+      uid: uidApostante,
+      subjects: {
+        acronym: "",
+        code: idAsignatura,
+        degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
+        name: "",
+        year: 0
+      }
+    })
+    .then(function (docRef) {
+      //console.log("Document written with ID: ", docRef.id);
+      idBetContext = docRef.id;
+    })
+    .catch(function (error) {
+      // console.error("Error adding document: ", error);
+    });
 
-    firebase
-      .firestore()
-      .collection("betContexts")
-      .add({
-        uid: uidApostante,
-        subjects: {
-          acronym: "",
-          code: idAsignatura,
-          degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
-          name: "",
-          year: 0
-        }
-      })
-      .then(function (docRef) {
-        //console.log("Document written with ID: ", docRef.id);
-        idBetContext = docRef.id;
-      })
-      .catch(function (error) {
-       // console.error("Error adding document: ", error);
-      });
-    
-     // console.log(idBetContext + " Hello");
+  // console.log(idBetContext + " Hello");
 
+  firebase
+    .firestore()
+    .collection("bets")
+    .add({
+      amount: cantidadDinero,
+      betContext: "/betContext/" + idBetContext,
+      betContextId: idBetContext,
+      type: "APRUEBA_SUSPENDE",
+      uid: uidApostado,
+      value: true
+    })
+    .then(function (docRef) {
+      //   console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function (error) {
+      //  console.error("Error adding document: ", error);
+    });
+
+  if (apuestaNota.checked == true) {
+    console.log("Attak on Titan mola");
     firebase
       .firestore()
       .collection("bets")
       .add({
-        amount: cantidadDinero,
+        amount: cantidadDineroNota,
         betContext: "/betContext/" + idBetContext,
         betContextId: idBetContext,
-        type: "APRUEBA_SUSPENDE",
+        type: "NOTA",
         uid: uidApostado,
-        value: true
+        value: notaApostada
       })
       .then(function (docRef) {
-     //   console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID: ", docRef.id);
       })
       .catch(function (error) {
-     //  console.error("Error adding document: ", error);
+        console.error("Error adding document: ", error);
       });
-
-    if (apuestaNota.checked == true) {
-
-      console.log("Attak on Titan mola")
-      firebase
-        .firestore()
-        .collection("bets")
-        .add({
-          amount: cantidadDineroNota,
-          betContext: "/betContext/" + idBetContext,
-          betContextId: idBetContext,
-          type: "NOTA",
-          uid: uidApostado,
-          value: notaApostada
-        })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
-    }
+  }
   /*} else {
     console.log("No son amigos");
   }*/
@@ -316,7 +314,6 @@ export function cerrarSesion() {
 }
 
 function sonAmigos(uid_a, uid_b) {
-
   var amigos = false;
   var solicitudes = firebase.firestore().collection("friendships");
   var query = solicitudes
@@ -350,11 +347,11 @@ function sonAmigos(uid_a, uid_b) {
   return amigos;
 }
 
-export function prueba(){
- // var comando = sonAmigosPrueba(comando);
- //var notaApostada = document.getElementById("apuestaNota").checked;
+export function prueba() {
+  // var comando = sonAmigosPrueba(comando);
+  //var notaApostada = document.getElementById("apuestaNota").checked;
 
- firebase
+  firebase
     .firestore()
     .collection("users")
     .where("uid", "==", "cWr273EKn4TRFWlZmrBKhQIGPWQ2")
@@ -364,27 +361,26 @@ export function prueba(){
       console.log("2" + probando);
     });
 
-
-
   console.log("3" + probando);
 }
 
 export function sonAmigosPrueba(comando) {
-
   var uid_a = firebase.auth().currentUser.uid.toString();
   var uid_b = "cWr273EKn4TRFWlZmrBKhQIGPWQ2";
   var amigos;
 
   amigos = firebase
     .firestore()
-    .collection("friendships")/*
+    .collection(
+      "friendships"
+    ) /*
     .where("uid_a", "==", uid_a)
     .where("uid_b", "==", uid_b)
     .where("status", "==", "ACCEPTED")*/;
 
   console.log("LOL" + amigos);
 
-    /*if( comando == true){
+  /*if( comando == true){
       return true;
     } else {
       return false
@@ -434,9 +430,9 @@ export function actualizarNota() {
         //console.log(doc.id, " => ", doc.data());
       });
     });
-//Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
+  //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
 
-firebase
+  firebase
     .firestore()
     .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -458,7 +454,6 @@ firebase
 }
 
 function fetchBetcontext(bet, nota) {
-
   console.log(nota);
 
   firebase
@@ -467,7 +462,7 @@ function fetchBetcontext(bet, nota) {
     .doc(document.get("betContextId")) //FUNCIONA
     .get()
     .then(function (doc) {
-    //  console.log(doc.id, " => ", doc.data());
+      //  console.log(doc.id, " => ", doc.data());
       actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
     })
     .catch(function (error) {
@@ -483,14 +478,12 @@ function actualizarBets(bet, nota, betContext) {
   var aumento;
   aumento = bet.get("amount"); //sacamos el dinero que ha apostado
 
-
-  if ((bet.get("type") == "APRUEBA_SUSPENDE") && (nota > 5)){
-    aumento = aumento*1.5;
+  if (bet.get("type") == "APRUEBA_SUSPENDE" && nota > 5) {
+    aumento = aumento * 1.5;
   }
-  if ((bet.get("type") == "NOTA") && (nota = bet.get("value"))){
-    aumento = aumento*3;
-  }
-  else{
+  if (bet.get("type") == "NOTA" && (nota = bet.get("value"))) {
+    aumento = aumento * 3;
+  } else {
     aumento = 0;
   }
 
@@ -506,13 +499,12 @@ function actualizarBets(bet, nota, betContext) {
           .collection("users")
           .doc(doc.id)
           .update({
-            coins: firebase.firestore.FieldValue.increment(aumento)});
-            console.log("Pos vale");
-       // console.log(doc.id, " => ", doc.data());
+            coins: firebase.firestore.FieldValue.increment(aumento)
+          });
+        console.log("Pos vale");
+        // console.log(doc.id, " => ", doc.data());
       });
     });
-
-
 }
 
 export function createSubject() {

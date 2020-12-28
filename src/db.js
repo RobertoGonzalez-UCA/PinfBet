@@ -105,7 +105,7 @@ export function rechazarSolicitud() {
         firebase
           .firestore()
           .collection("friendships")
-          .doc(docId)
+          .doc(doc.id)
           .update({ status: "REFUSED" });
         console.log(doc.id, " => ", doc.data());
       });

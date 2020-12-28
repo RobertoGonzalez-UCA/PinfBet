@@ -88,7 +88,7 @@ export default function Chat() {
                   <input
                     type="image"
                     src="https://cdn.iconscout.com/icon/free/png-512/back-arrow-1767531-1502435.png"
-                    alt="Amigo"
+                    alt="Atras"
                     width="30"
                     onClick={() => {
                       openFriendlist();

@@ -6,6 +6,7 @@ import {
   Link
 } from "react-router-dom";
 
+// PAGES
 import Test from "./pages/test";
 import Signup from "./pages/signup";
 import Login from "./pages/login";
@@ -15,45 +16,50 @@ import Rankings from "./pages/rankings";
 import Social from "./pages/social";
 import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
-import Forgotpass from "./pages/forgotpass";
 
+// COMPONENTS
+import Footer from "./components/footer";
+
+// FIREBASE
 import initFirebase from "./firebase";
 
 initFirebase();
 
 export default function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/test">
-          <Test />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
-        <Route path="/login">
-          <Login />
-          <Forgotpass />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/bets">
-          <Bets />
-        </Route>
-        <Route path="/rankings">
-          <Rankings />
-        </Route>
-        <Route path="/social">
-          <Social />
-        </Route>
-        <Route path="/userconfig">
-          <Userconfig />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
+    <div>
+      <Router>
+        <Switch>
+          <Route path="/test">
+            <Test />
+          </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/bets">
+            <Bets />
+          </Route>
+          <Route path="/rankings">
+            <Rankings />
+          </Route>
+          <Route path="/social">
+            <Social />
+          </Route>
+          <Route path="/userconfig">
+            <Userconfig />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+      <Footer />
+    </div>
   );
 }

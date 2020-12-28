@@ -2,10 +2,18 @@ import React from "react";
 import Button from "../components/button";
 import DropdownProfile from "../components/dropdownProfile";
 import Input from "../components/input";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 export default function Navbar() {
-  const [showMenu, setShowMenu] = React.useState(false);
+  const [
+    showMenu,
+    setShowMenu
+  ] = React.useState(false);
   const openMenu = () => {
     setShowMenu(true);
   };
@@ -19,12 +27,16 @@ export default function Navbar() {
           <button
             id="boton"
             onClick={() => {
-              showMenu ? closeMenu() : openMenu();
+              showMenu
+                ? closeMenu()
+                : openMenu();
             }}
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
             aria-expanded="false"
           >
-            <span class="sr-only">Open main menu</span>
+            <span class="sr-only">
+              Open main menu
+            </span>
             <svg
               class="block h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
@@ -58,33 +70,43 @@ export default function Navbar() {
           </button>
         </div>
         <div class="ml-4 mr-4 flex-shrink-0 flex items-center">
-          <img
-            src="https://i.imgur.com/TYNeajA.png"
-            alt="Logo PinfBet"
-            width="40"
-            class="mr-1 sm:"
-          ></img>
-          <img
-            src="https://i.imgur.com/3X91WvI.png"
-            alt="Logo PinfBet"
-            width="140"
-            class="hidden sm:block"
-          ></img>
+          <Link to="/">
+            <img
+              src="https://i.imgur.com/TYNeajA.png"
+              alt="Logo PinfBet"
+              width="40"
+              class="mr-1 sm:"
+            ></img>
+            <img
+              src="https://i.imgur.com/3X91WvI.png"
+              alt="Logo PinfBet"
+              width="140"
+              class="hidden sm:block"
+            ></img>
+          </Link>
         </div>
         <div class="relative flex items-center">
           <div class="hidden sm:block">
             <div class="relative flex items-center ">
               <Input placeholder="Buscar..." />
               <Link to="/bets">
-                <Button variant="seleccion">Apuestas</Button>
+                <Button variant="seleccion">
+                  Apuestas
+                </Button>
               </Link>
               <Link to="/social">
-                <Button variant="seleccion">Social</Button>
+                <Button variant="seleccion">
+                  Social
+                </Button>
               </Link>
               <Link to="/rankings">
-                <Button variant="seleccion">Rankings</Button>
+                <Button variant="seleccion">
+                  Rankings
+                </Button>
               </Link>
-              <span class="mr-4 font-semibold text-green-600">0.00 PFC</span>
+              <span class="mr-4 font-semibold text-green-600">
+                0.00 PFC
+              </span>
               <DropdownProfile />
             </div>
           </div>
@@ -92,7 +114,10 @@ export default function Navbar() {
       </div>
       {showMenu ? (
         <>
-          <div id="menu" class="sm:hidden">
+          <div
+            id="menu"
+            class="sm:hidden"
+          >
             <div class="px-2 pt-2 pb-3 space-y-1">
               <Link
                 to="/bets"

@@ -24,28 +24,40 @@ export default function Profile() {
       </div>
       <div className="absolute mt-4 left-60 flex">
         <Button>Añadir amigo</Button>
-        <Button>Bloquear</Button>
-        <Button>Reportar</Button>
+        <Button variant="secondary">
+          Bloquear
+        </Button>
+        <Button className="" variant="tertiary">
+          Reportar
+        </Button>
       </div>
       <div className="mt-14 transform scale-90">
-      <h2 className="mb-4 block text-2xl font-bold leading-none flex justify-center">
+        <h2 className="mb-4 block text-2xl font-bold leading-none flex justify-center">
           Asignaturas
         </h2>
         <div className="flex justify-center">
-          <Subject variant="yellow" subjectName="MD" subjectFullname="" />
+          <Subject
+            variant="yellow"
+            subjectName="MD"
+            subjectFullname=""
+          />
           <Subject variant="red" />
           <Subject variant="blue" />
           <Subject variant="green" />
           <Subject variant="purple" />
         </div>
         <div className="flex justify-center">
-          <Subject variant="yellow" subjectName="PCTR" subjectFullname="" />
+          <Subject
+            variant="yellow"
+            subjectName="PCTR"
+            subjectFullname=""
+          />
           <Subject variant="red" />
           <Subject variant="blue" />
           <Subject variant="green" />
           <Subject variant="purple" />
         </div>
-</div>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 import Test from "./pages/test";
 import Signup from "./pages/signup";
@@ -10,6 +15,7 @@ import Rankings from "./pages/rankings";
 import Social from "./pages/social";
 import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
+import Forgotpass from "./pages/forgotpass";
 
 import initFirebase from "./firebase";
 
@@ -27,6 +33,7 @@ export default function App() {
         </Route>
         <Route path="/login">
           <Login />
+          <Forgotpass />
         </Route>
         <Route path="/profile">
           <Profile />

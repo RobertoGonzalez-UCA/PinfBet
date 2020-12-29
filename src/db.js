@@ -2,35 +2,6 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-//FUNCION CREAR USUARIOS (usada en debugging, en producto final los usuarios son creados al registrarse)
-//<Button onClick={createUser}>Crear Usuario (debugging, no usar)</Button>
-export function createUser() {
-  firebase
-    .firestore()
-    .collection("users")
-    .add({
-      coins: 400,
-      uid: "1",
-      stats: {
-        coinsEarned: 400,
-        hitRate: 0,
-        hitStreak: 0
-      }
-    })
-    .then(function (docRef) {
-      console.log(
-        "Document written with ID: ",
-        docRef.id
-      );
-    })
-    .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
-    });
-}
-
 //FUNCION MOSTRAR USUARIOS (muestra todos) (opcion filtrar por asignatura / año?)
 export function getUsers() {
   firebase
@@ -128,8 +99,7 @@ export function rechazarSolicitud() {
   firebase
     .firestore()
     .collection("friendships")
-    .where("uid_b", "==", uidReceptor) //Buscar documentacion update data
-    .get()
+    .where("uid_b", "==", uidReceptor)
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (
         doc
@@ -162,7 +132,6 @@ export function mostrarAsignaturas() {
       querySnapshot.forEach(function (
         doc
       ) {
-        // doc.data() is never undefined for query doc snapshots
         console.log(
           doc.id,
           " => ",
@@ -239,8 +208,6 @@ export function crearApuesta() {
   if (
     sonAmigos(uidApostante, uidApostado)
   ) {
-    //console.log(apuestaNota);
-
     firebase
       .firestore()
       .collection("betContexts")
@@ -281,11 +248,8 @@ export function crearApuesta() {
           });
 
         if (
-          apuestaNota.checked == true
+          apuestaNota.checked === true
         ) {
-          console.log(
-            "Attak on Titan mola"
-          );
           firebase
             .firestore()
             .collection("bets")
@@ -324,100 +288,80 @@ export function crearApuesta() {
 }
 
 //Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
-var errorMessage;
-export function registrarUsuario() {
-  var email = document.getElementById(
-    "email"
-  ).value;
-  var password = document.getElementById(
-    "password"
-  ).value;
+export async function registrarUsuario(
+  email,
+  password
+) {
   var cadena =
     "The email address is already in use by another account.";
 
-  firebase
+  await firebase
     .auth()
     .createUserWithEmailAndPassword(
       email,
       password
     )
-    .catch(function (error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
-      // ...
-    }); //
+    .catch((error) => {
+      // var errorCode = error.code;
+      var errorMessage = error.message;
+      var user = firebase.auth()
+        .currentUser;
 
-  setTimeout(function () {
-    firebase //Esperamos un momento a que se actualice firebase antes de autenticar
-      .auth()
-      .signInWithEmailAndPassword(
-        email,
-        password
-      );
+      if (errorMessage !== cadena) {
+        firebase
+          .firestore()
+          .collection("users")
+          .add({
+            coins: 0,
+            uid: user.uid.toString(),
+            stats: {
+              coinsEarned: 0,
+              hitRate: 0,
+              hitStreak: 0
+            }
+          })
+          .then(() => {
+            console.log(
+              "Usuario creado con éxito" // ¿Por qué no aparece cuando se crea con éxito?
+            );
+          })
+          .catch(function (error) {
+            console.error(
+              "Error adding document: ",
+              error
+            );
+          });
+      } else {
+        console.log(
+          "Este usuario ya existe."
+        );
+      }
+    });
 
-    var user = firebase.auth()
-      .currentUser;
-
-    if (errorMessage != cadena) {
-      firebase
-        .firestore()
-        .collection("users")
-        .add({
-          coins: 7777,
-          uid: user.uid.toString(),
-          stats: {
-            coinsEarned: 9400,
-            hitRate: 0,
-            hitStreak: 0
-          }
-        })
-        .then(function (docRef) {
-          console.log(
-            "Document written with ID: ",
-            docRef.id
-          );
-        })
-        .catch(function (error) {
-          console.error(
-            "Error adding document: ",
-            error
-          );
-        });
-    } else {
-      console.log(
-        "El usuario está repetido"
-      );
-    }
-  }, 1500); //Esperamos 1'5 segundos, buen equilibrio. Buena solucion por ahora, deberia buscar funcion que comprobara que se ha creado la cuenta nueva.
-}
-
-// FUNCION INICIAR SESION "FUNCIONA"
-export function iniciarSesion() {
-  var email = document.getElementById(
-    "email"
-  ).value;
-  var password = document.getElementById(
-    "password"
-  ).value;
-
-  firebase
+  await firebase
     .auth()
     .signInWithEmailAndPassword(
       email,
       password
-    )
-    .then((user) => {
-      // [Voz de hacker] "Estoy dentro"
-      // Redirigir a pagina???
-    });
+    );
+}
 
-  var user = firebase.auth()
-    .currentUser; //Deberiamos hacer esto una variable global para tenerlo disponible siempre??
-  console.log("El user es");
-  console.log(user);
+// FUNCION INICIAR SESION "FUNCIONA"
+export async function iniciarSesion(
+  email,
+  password
+) {
+  await firebase
+    .auth()
+    .signInWithEmailAndPassword(
+      email,
+      password
+    );
+
+  console.log(
+    "El user es: " +
+      firebase.auth().currentUser.uid
+  );
 }
 
 export function cerrarSesion() {
@@ -447,10 +391,6 @@ function sonAmigos(uid_a, uid_b) {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        //console.log(doc.data(), doc.id);
-        // doc.data() is never undefined for query doc snapshots
-        //var x = firebase.firestore().collection("friendships").doc(doc.id);
-        //console.log(x.status);
         if (
           doc.data().status ==
           "ACCEPTED"
@@ -474,52 +414,10 @@ function sonAmigos(uid_a, uid_b) {
 }
 
 export function prueba() {
-  // var comando = sonAmigosPrueba(comando);
-  //var notaApostada = document.getElementById("apuestaNota").checked;
-
-  firebase
-    .firestore()
-    .collection("users")
-    .where(
-      "uid",
-      "==",
-      "cWr273EKn4TRFWlZmrBKhQIGPWQ2"
-    )
-    .get()
-    .then(function (docRef) {
-      var probando = false;
-      console.log("2" + probando);
-    });
-
-  console.log("3" + probando);
-}
-
-export function sonAmigosPrueba(
-  comando
-) {
-  var uid_a = firebase
-    .auth()
-    .currentUser.uid.toString();
-  var uid_b =
-    "cWr273EKn4TRFWlZmrBKhQIGPWQ2";
-  var amigos;
-
-  amigos = firebase
-    .firestore()
-    .collection(
-      "friendships"
-    ) /*
-    .where("uid_a", "==", uid_a)
-    .where("uid_b", "==", uid_b)
-    .where("status", "==", "ACCEPTED")*/;
-
-  console.log("LOL" + amigos);
-
-  /*if( comando == true){
-      return true;
-    } else {
-      return false
-    }*/
+  console.log(
+    "El user es: " +
+      firebase.auth().currentUser.uid
+  );
 }
 
 export function cursarAsignatura() {
@@ -537,7 +435,7 @@ export function cursarAsignatura() {
     .collection("userSubjects")
     .add({
       degreeId: degreeId,
-      grade: -1,
+      grade: -1, //Nota por defecto cuando se crea
       subjectId: subjectId,
       uid: user.uid
     })
@@ -580,7 +478,6 @@ export function actualizarNota() {
           .collection("userSubjects")
           .doc(doc.id)
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
-        //console.log(doc.id, " => ", doc.data());
       });
     });
   //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
@@ -600,7 +497,6 @@ export function actualizarNota() {
           doc.data()
         );
         fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
-        //  console.log(doc.id, " => ", doc.data());
       });
     })
     .catch(function (error) {
@@ -610,14 +506,10 @@ export function actualizarNota() {
       );
     });
 
-  //console.log(documento.size);
-
   //Llamar a funcion actualizar apuestas
 }
 
 function fetchBetcontext(bet, nota) {
-  console.log(nota);
-
   firebase
     .firestore()
     .collection("betContexts")
@@ -633,11 +525,6 @@ function fetchBetcontext(bet, nota) {
         error
       );
     });
-
-  // LIMPIAR console.log(document.get('betContextId'));
-  console.log(
-    document.get("betContextId")
-  ); //FUNCIONA
 }
 
 function actualizarBets(

@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+
+// COMPONENTS
 import Label from "../components/label";
 import Input from "../components/input";
 import Button from "../components/button";
 
+// FUNCTIONS
+import { registrarUsuario } from "../db.js";
+
 export default function Signup() {
+  const [email, setEmail] = useState(
+    ""
+  );
+  const [
+    password,
+    setPassword
+  ] = useState("");
+  const [
+    confirmPassword,
+    setConfirmPassword
+  ] = useState("");
+
   return (
     <div
       className="bg-cover bg-center"
       style={{
         "background-image":
-          "url(https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)"
+          "url(https://i.imgur.com/Hip5s6W.png)"
       }}
     >
       <section className="flex items-center justify-center min-h-screen text-gray-600 body-font">
@@ -28,6 +45,11 @@ export default function Signup() {
               id="email"
               name="email"
               className="w-full"
+              onChange={(ev) =>
+                setEmail(
+                  ev.target.value
+                )
+              }
             />
           </div>
           <div className="relative mb-2">
@@ -41,6 +63,11 @@ export default function Signup() {
               id="p"
               name="email"
               className="w-full"
+              onChange={(ev) =>
+                setPassword(
+                  ev.target.value
+                )
+              }
             />
           </div>
           <div className="relative mb-6">
@@ -54,9 +81,22 @@ export default function Signup() {
               id="pass-confirmation"
               name="pass-confirmation"
               className="w-full"
+              onChange={(ev) =>
+                setConfirmPassword(
+                  ev.target.value
+                )
+              }
             />
           </div>
-          <Button className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">
+          <Button
+            className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg"
+            onClick={() =>
+              registrarUsuario(
+                email,
+                password
+              )
+            }
+          >
             Regístrate
           </Button>
           <p className="text-xs text-gray-500 mt-3">

@@ -3,24 +3,38 @@ import Input from "../components/input";
 import Popper from "popper.js";
 
 export default function Chat() {
-  const [friendlistShow, setFriendlistShow] = React.useState(false);
-  const [chatShow, setChatShow] = React.useState(false);
+  const [
+    friendlistShow,
+    setFriendlistShow
+  ] = React.useState(false);
+  const [
+    chatShow,
+    setChatShow
+  ] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverListDropdownRef = React.createRef();
   const popoverChatDropdownRef = React.createRef();
   const openFriendlist = () => {
-    new Popper(btnDropdownRef.current, popoverListDropdownRef.current, {
-      placement: "top-end"
-    });
+    new Popper(
+      btnDropdownRef.current,
+      popoverListDropdownRef.current,
+      {
+        placement: "top-end"
+      }
+    );
     setFriendlistShow(true);
   };
   const closeFriendlist = () => {
     setFriendlistShow(false);
   };
   const openChat = () => {
-    new Popper(btnDropdownRef.current, popoverChatDropdownRef.current, {
-      placement: "top-end"
-    });
+    new Popper(
+      btnDropdownRef.current,
+      popoverChatDropdownRef.current,
+      {
+        placement: "top-end"
+      }
+    );
     setChatShow(true);
   };
   const closeChat = () => {
@@ -28,7 +42,7 @@ export default function Chat() {
   };
   return (
     <>
-      <div className="fixed bottom-0 right-0">
+      <div className="fixed bottom-16 right-0">
         <div className="flex flex-wrap">
           <div className="w-full sm:w-6/12 md:w-4/12 px-4">
             <div className="relative inline-flex align-middle w-full">
@@ -41,18 +55,31 @@ export default function Chat() {
                 className="block focus:outline-none"
                 ref={btnDropdownRef}
                 onClick={() => {
-                  friendlistShow ? closeFriendlist() : openFriendlist();
-                  chatShow ? closeFriendlist() : closeChat();
-                  chatShow ? closeChat() : closeChat();
+                  friendlistShow
+                    ? closeFriendlist()
+                    : openFriendlist();
+                  chatShow
+                    ? closeFriendlist()
+                    : closeChat();
+                  chatShow
+                    ? closeChat()
+                    : closeChat();
                 }}
               ></input>
               <div
-                ref={popoverListDropdownRef}
+                ref={
+                  popoverListDropdownRef
+                }
                 className={
-                  (friendlistShow ? "block " : "hidden ") +
+                  (friendlistShow
+                    ? "block "
+                    : "hidden ") +
                   "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
-                style={{ minWidth: "13rem", minHeight: "14rem" }}
+                style={{
+                  minWidth: "13rem",
+                  minHeight: "14rem"
+                }}
               >
                 <div
                   className="relative flex items-center px-2 hover:bg-gray-200"
@@ -77,12 +104,19 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                ref={popoverChatDropdownRef}
+                ref={
+                  popoverChatDropdownRef
+                }
                 className={
-                  (chatShow ? "block " : "hidden ") +
+                  (chatShow
+                    ? "block "
+                    : "hidden ") +
                   "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
-                style={{ minWidth: "13rem", minHeight: "14rem" }}
+                style={{
+                  minWidth: "13rem",
+                  minHeight: "14rem"
+                }}
               >
                 <div className="relative flex items-center px-2">
                   <input
@@ -103,7 +137,10 @@ export default function Chat() {
                 <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
                 <div className="block py-16"></div>
                 <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
-                <Input variant="chat" placeholder="Escribe un mensaje..." />
+                <Input
+                  variant="chat"
+                  placeholder="Escribe un mensaje..."
+                />
               </div>
             </div>
           </div>

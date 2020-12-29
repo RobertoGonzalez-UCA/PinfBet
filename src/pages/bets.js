@@ -3,12 +3,15 @@ import Button from "../components/button";
 import Navbar from "../components/navbar";
 import Subject from "../components/subject";
 import Chat from "../components/chat";
+import Grade from "../components/grade";
 
 export default function Bets() {
-  const [courseShow, setCourseShow] = React.useState(true);
+  const [courseShow, setCourseShow] = React.useState(false);
   const [subjectsShow, setSubjectsShow] = React.useState(false);
+  const [gradeShow, setGradeShow] = React.useState(true);
   const courseRef = React.createRef();
   const subjectsRef = React.createRef();
+  const gradeRef = React.createRef();
   const openCourse = () => {
     setCourseShow(true);
   };
@@ -21,14 +24,52 @@ export default function Bets() {
   const closeSubjects = () => {
     setSubjectsShow(false);
   };
+  const openGrade = () => {
+    setGradeShow(true);
+  };
+  const closeGrade = () => {
+    setGradeShow(false);
+  };
   return (
     <div>
       <Navbar />
       <Chat />
-      <div ref={courseRef} className={courseShow ? "block " : "hidden "}>
+      <div ref={gradeRef} className={gradeShow ? "block " : "hidden "}>
         <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
-          Selecciona sobre que curso quieres apostar.
+          Selecciona sobre que grado quieres apostar.
         </h1>
+        <div
+          className="flex justify-center"
+          onClick={() => {
+            closeGrade();
+            openCourse();
+          }}
+        >
+          <Grade
+            variant="ordenador"
+            gradeName="GII"
+            gradeFullname="Grado en Ingeniería Informática"
+          />
+        </div>
+      </div>
+      <div ref={courseRef} className={courseShow ? "block " : "hidden "}>
+        <div className="relative flex justify-center items-center">
+          <input
+            type="image"
+            src="https://cdn.iconscout.com/icon/free/png-512/back-arrow-1767531-1502435.png"
+            alt="Atras"
+            width="30"
+            height="30"
+            onClick={() => {
+              openGrade();
+              closeCourse();
+            }}
+            className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
+          />
+          <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
+            Selecciona sobre que curso quieres apostar.
+          </h1>
+        </div>
         <div className="flex justify-center">
           <Button
             className="py-5 px-6 m-3 text-xl"

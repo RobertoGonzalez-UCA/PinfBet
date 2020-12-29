@@ -5,8 +5,7 @@ const variants = {
     "block border border-gray-300 rounded bg-white px-3 py-2 leading-tight focus:outline-none focus:border-gray-600",
   little:
     "block w-20 border border-gray-300 rounded bg-gray-100 px-3 py-2 leading-tight focus:outline-none focus:border-gray-600 focus:bg-white",
-  chat:
-    "block px-3 leading-tight focus:outline-none"
+  chat: "block px-3 leading-tight focus:outline-none"
 };
 
 export default function Input({
@@ -17,10 +16,7 @@ export default function Input({
 }) {
   return (
     <input
-      className={[
-        variants[variant],
-        className
-      ].join(" ")}
+      className={[variants[variant], className].join(" ")}
       placeholder={placeholder}
       {...rest}
     />

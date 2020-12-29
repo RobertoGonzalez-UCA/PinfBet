@@ -2,7 +2,8 @@ import React from "react";
 
 export default function Blocktextright({
   title,
-  children
+  children,
+  icon
 }) {
   return (
     <div>
@@ -15,28 +16,8 @@ export default function Blocktextright({
             {children}
           </p>
         </div>
-        <div class="sm:w-32 sm:order-none order-first sm:h-32 h-20 w-20 sm:ml-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="sm:w-16 sm:h-16 w-10 h-10"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              cx="6"
-              cy="6"
-              r="3"
-            ></circle>
-            <circle
-              cx="6"
-              cy="18"
-              r="3"
-            ></circle>
-            <path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"></path>
-          </svg>
+        <div class="sm:w-32 sm:order-none order-first sm:h-32 h-20 w-20 sm:ml-10 inline-flex items-center justify-center rounded-full bg-green-100 text-green-500 flex-shrink-0">
+          {icon}
         </div>
       </div>
     </div>

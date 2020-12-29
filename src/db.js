@@ -287,63 +287,65 @@ export function crearApuesta() {
   }
 }
 
-//Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
-export async function registrarUsuario(
+export function registrarUsuario(
   email,
   password
 ) {
-  var cadena =
-    "The email address is already in use by another account.";
-
-  await firebase
+  firebase
     .auth()
     .createUserWithEmailAndPassword(
       email,
       password
     )
+    .then((user) => {
+      firebase
+        .firestore()
+        .collection("users")
+        .add({
+          coins: 0,
+          uid: firebase.auth()
+            .currentUser.uid,
+          stats: {
+            coinsEarned: 0,
+            hitRate: 0,
+            hitStreak: 0
+          }
+        })
+        .then(function (docRef) {
+          console.log(
+            "Document written with ID: ",
+            docRef.id
+          );
+        })
+        .catch(function (error) {
+          console.error(
+            "Error adding document: ",
+            error
+          );
+        });
+    })
     .catch((error) => {
-      // var errorCode = error.code;
+      var errorCode = error.code;
       var errorMessage = error.message;
-      var user = firebase.auth()
-        .currentUser;
 
-      if (errorMessage !== cadena) {
-        firebase
-          .firestore()
-          .collection("users")
-          .add({
-            coins: 0,
-            uid: user.uid.toString(),
-            stats: {
-              coinsEarned: 0,
-              hitRate: 0,
-              hitStreak: 0
-            }
-          })
-          .then(() => {
-            console.log(
-              "Usuario creado con éxito" // ¿Por qué no aparece cuando se crea con éxito?
-            );
-          })
-          .catch(function (error) {
-            console.error(
-              "Error adding document: ",
-              error
-            );
-          });
-      } else {
-        console.log(
-          "Este usuario ya existe."
-        );
+      if (errorCode != null) {
+        console.log(errorMessage);
       }
     });
+}
 
-  await firebase
+export function userLogged() {
+  firebase
     .auth()
-    .signInWithEmailAndPassword(
-      email,
-      password
-    );
+    .onAuthStateChanged(function (
+      user
+    ) {
+      if (user) {
+        console.log("User logged.");
+      } else {
+        console.log("User NO logged.");
+      }
+    });
 }
 
 // FUNCION INICIAR SESION "FUNCIONA"
@@ -411,13 +413,6 @@ function sonAmigos(uid_a, uid_b) {
         error
       );
     });
-}
-
-export function prueba() {
-  console.log(
-    "El user es: " +
-      firebase.auth().currentUser.uid
-  );
 }
 
 export function cursarAsignatura() {
@@ -615,4 +610,19 @@ export function createSubject() {
         error
       );
     });
+}
+
+export function leerArchivo() {
+  document
+    .getElementById("file")
+    .addEventListener(
+      "change",
+      (event) => {
+        var fileReader = new FileReader();
+
+        fileReader.onload = function (e) {
+          var contents = fileReader.result;
+      };
+      }
+    );
 }

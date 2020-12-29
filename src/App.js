@@ -2,8 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 // PAGES
@@ -16,6 +15,7 @@ import Rankings from "./pages/rankings";
 import Social from "./pages/social";
 import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
+import Legalterms from "./pages/legalterms";
 
 // COMPONENTS
 import Footer from "./components/footer";
@@ -53,6 +53,9 @@ export default function App() {
           </Route>
           <Route path="/userconfig">
             <Userconfig />
+          </Route>
+          <Route path="/legalterms">
+            <Legalterms />
           </Route>
           <Route path="/">
             <Home />

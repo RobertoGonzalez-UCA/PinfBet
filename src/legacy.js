@@ -54,3 +54,56 @@ export function sonAmigosPrueba(
       return false
     }*/
 }
+
+/* var cadena =
+    "The email address is already in use by another account.";
+
+ await firebase
+    .auth()
+    .createUserWithEmailAndPassword(
+      email,
+      password
+    )
+    .then((user) => {
+      console.log(
+        "Usuario creado con éxito" // ¿Por qué no aparece cuando se crea con éxito?
+      );
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var user = firebase.auth()
+        .currentUser;
+
+      if (errorMessage !== cadena) {
+        firebase
+          .firestore()
+          .collection("users")
+          .add({
+            coins: 0,
+            uid: user.uid.toString(),
+            stats: {
+              coinsEarned: 0,
+              hitRate: 0,
+              hitStreak: 0
+            }
+          })
+          .catch(function (error) {
+            console.error(
+              "Error adding document: ",
+              error
+            );
+          });
+      } else {
+        console.log(
+          "Este usuario ya existe."
+        );
+      }
+    });
+
+  await firebase
+    .auth()
+    .signInWithEmailAndPassword(
+      email,
+      password
+    ); */

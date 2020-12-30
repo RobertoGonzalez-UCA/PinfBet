@@ -101,7 +101,7 @@ export default function Profile() {
             }}
           >
             <Input
-              variant="chat"
+              variant="long"
               placeholder="Escribe un comentario..."
               className="absolute bottom-0"
             />

@@ -6,12 +6,12 @@
     "@material-ui/core": "4.11.2",
     "autoprefixer": "10.0.2",
     "firebase": "^8.0.2",
+    "pdfreader": "1.2.8",
     "popper.js": "1.16.1",
     "postcss-cli": "8.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "5.2.0",
-    "reactfire": "3.0.0-rc.0",
     "tailwindcss": "2.0.1"
   },
   "scripts": {

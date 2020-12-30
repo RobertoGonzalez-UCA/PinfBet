@@ -412,11 +412,13 @@ export default function Legalterms() {
             acertar en el aprobado o
             suspenso, el apostante
             perderá la totalidad de los
-            créditos apostados. - No es
-            posible acertar en nota
-            predecida y fallar en
-            aprobado/suspenso (más
-            información a continuación).
+            créditos apostados.
+            <br />
+            <br /> - No es posible
+            acertar en notas predecida y
+            fallar en aprobado/suspenso
+            (más información a
+            continuación).
             <br />
             <br />
             El valor de la nota depende

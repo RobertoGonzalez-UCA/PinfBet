@@ -7,7 +7,10 @@ import Button from "../components/button";
 
 // FUNCTIONS
 import { iniciarSesion } from "../db.js";
-import { Redirect } from "react-router-dom";
+import {
+  Link,
+  Redirect
+} from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState(
@@ -71,13 +74,13 @@ export default function Login() {
                   }
                 />
               </div>
-              <a
+              <Link
+                to="/forgotpass"
                 className="mb-2 flex justify-center text-xs text-blue-400 hover:underline"
-                href="./profile.js"
               >
                 ¿Has olvidado la
                 contraseña?
-              </a>
+              </Link>
               <Button
                 className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg"
                 onClick={() =>

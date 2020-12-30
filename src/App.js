@@ -16,6 +16,7 @@ import Social from "./pages/social";
 import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
 import Legalterms from "./pages/legalterms";
+import Forgotpass from "./pages/forgotpass";
 
 // COMPONENTS
 import Footer from "./components/footer";
@@ -56,6 +57,9 @@ export default function App() {
           </Route>
           <Route path="/legalterms">
             <Legalterms />
+          </Route>
+          <Route path="/forgotpass">
+            <Forgotpass />
           </Route>
           <Route path="/">
             <Home />

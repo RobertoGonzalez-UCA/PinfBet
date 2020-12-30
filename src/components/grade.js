@@ -9,7 +9,8 @@ export default function Grade({
   variant = "ordenador",
   gradeName,
   gradeFullname,
-  friends
+  friends,
+  ...rest
 }) {
   return (
     <button
@@ -19,15 +20,28 @@ export default function Grade({
         maxWidth: "165px",
         maxHeight: "175px"
       }}
+      {...rest}
     >
       <div>
-        <div className="text-2xl font-semibold">{gradeName}</div>
-        <div className="text-xs text-gray-900">({gradeFullname})</div>
-        <div className="flex justify-center">
-          <img src={variants[variant]} alt="Icono" width="40" />
+        <div className="text-2xl font-semibold">
+          {gradeName}
         </div>
-        <div className="text-sm text-gray-900">({friends} amigos en este</div>
-        <div className="text-sm text-gray-900">grado)</div>
+        <div className="text-xs text-gray-900">
+          ({gradeFullname})
+        </div>
+        <div className="flex justify-center">
+          <img
+            src={variants[variant]}
+            alt="Icono"
+            width="40"
+          />
+        </div>
+        <div className="text-sm text-gray-900">
+          ({friends} amigos en este
+        </div>
+        <div className="text-sm text-gray-900">
+          grado)
+        </div>
       </div>
     </button>
   );

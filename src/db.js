@@ -288,6 +288,7 @@ export function crearApuesta() {
 }
 
 export function registrarUsuario(
+  nick,
   email,
   password
 ) {
@@ -302,6 +303,7 @@ export function registrarUsuario(
         .firestore()
         .collection("users")
         .add({
+          nickname: nick,
           coins: 0,
           uid: firebase.auth()
             .currentUser.uid,
@@ -620,9 +622,12 @@ export function leerArchivo() {
       (event) => {
         var fileReader = new FileReader();
 
-        fileReader.onload = function (e) {
-          var contents = fileReader.result;
-      };
+        fileReader.onload = function (
+          e
+        ) {
+          var contents =
+            fileReader.result;
+        };
       }
     );
 }

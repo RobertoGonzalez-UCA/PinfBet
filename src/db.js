@@ -17,20 +17,28 @@ export function getUsers() {
 
 //FUNCION SOLICITAR AMISTAD
 export function solicitarAmistad() {
-  var emisor = firebase.auth().currentUser;
+  var emisor = firebase.auth()
+    .currentUser;
   var uidEmisor = emisor.uid;
-  var uidReceptor = document.getElementById("uidReceptor").value;
+  var uidReceptor = document.getElementById(
+    "uidReceptor"
+  ).value;
 
-  firebase.firestore().collection("friendships").add({
-    status: "PENDING",
-    uid_a: uidEmisor,
-    uid_b: uidReceptor
-  });
+  firebase
+    .firestore()
+    .collection("friendships")
+    .add({
+      status: "PENDING",
+      uid_a: uidEmisor,
+      uid_b: uidReceptor
+    });
 }
 
 //FUNCION MOSTRAR SOLICITUDES DE AMISTAD
 export function mostrarSolicitud() {
-  var uidReceptor = document.getElementById("uidReceptor").value;
+  var uidReceptor = document.getElementById(
+    "uidReceptor"
+  ).value;
 
   firebase
     .firestore()
@@ -40,16 +48,23 @@ export function mostrarSolicitud() {
     .then((querySnapshot) => {
       console.log(querySnapshot.docs);
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
       });
     });
 }
 
 //FUNCION ACEPTAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function aceptarSolicitud() {
-  var receptor = firebase.auth().currentUser;
+  var receptor = firebase.auth()
+    .currentUser;
   var uidReceptor = receptor.uid;
-  var docId = document.getElementById("docId").value;
+  var docId = document.getElementById(
+    "docId"
+  ).value;
 
   firebase
     .firestore()
@@ -57,29 +72,50 @@ export function aceptarSolicitud() {
     .where("uid_b", "==", uidReceptor)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        firebase.firestore().collection("friendships").doc(docId).update({
-          status: "ACCEPTED"
-        });
-        console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        firebase
+          .firestore()
+          .collection("friendships")
+          .doc(docId)
+          .update({
+            status: "ACCEPTED"
+          });
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
       });
     });
 }
 
 //FUNCION RACHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function rechazarSolicitud() {
-  var receptor = firebase.auth().currentUser;
+  var receptor = firebase.auth()
+    .currentUser;
   var uidReceptor = receptor.uid;
   firebase
     .firestore()
     .collection("friendships")
     .where("uid_b", "==", uidReceptor)
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        firebase.firestore().collection("friendships").doc(doc.id).update({
-          status: "REFUSED"
-        });
-        console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        firebase
+          .firestore()
+          .collection("friendships")
+          .doc(doc.id)
+          .update({
+            status: "REFUSED"
+          });
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
       });
     });
 }
@@ -93,18 +129,29 @@ export function mostrarAsignaturas() {
     .where("degreeId", "==")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
       });
     })
     .catch(function (error) {
-      console.log("Error getting documents: ", error);
+      console.log(
+        "Error getting documents: ",
+        error
+      );
     });
 }
 
 //FUNCION MOSTRAR ASIGNATURAS POR AÑO
 export function mostrarAsignaturasYear() {
-  var string = document.getElementById("year").value; //Obtenemos un string que posteriormente convertimos en int
+  var string = document.getElementById(
+    "year"
+  ).value; //Obtenemos un string que posteriormente convertimos en int
   var year = parseInt(string, 10); //No tocar el 10, es necesario para base decimal
 
   firebase
@@ -113,28 +160,54 @@ export function mostrarAsignaturasYear() {
     .where("year", "==", year)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
       });
     })
     .catch(function (error) {
-      console.log("Error getting documents: ", error);
+      console.log(
+        "Error getting documents: ",
+        error
+      );
     });
 }
 
 //FUNCION CREAR APUESTA (EN CONSTRUCCION)
 export function crearApuesta() {
-  var uidApostante = firebase.auth().currentUser.uid;
-  var uidApostado = document.getElementById("uidApostado").value;
-  var apuestaNota = document.getElementById("apuestaNota").checked;
-  var notaApostada = document.getElementById("notaApostada").value;
-  var idAsignatura = document.getElementById("idAsignatura").value;
-  var cantidadDinero = document.getElementById("cantidadDinero").value;
-  var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
+  var uidApostante = firebase.auth()
+    .currentUser.uid;
+  var uidApostado = document.getElementById(
+    "uidApostado"
+  ).value;
+  var apuestaNota = document.getElementById(
+    "apuestaNota"
+  ).checked;
+  var notaApostada = document.getElementById(
+    "notaApostada"
+  ).value;
+  var idAsignatura = document.getElementById(
+    "idAsignatura"
+  ).value;
+  var cantidadDinero = document.getElementById(
+    "cantidadDinero"
+  ).value;
+  var cantidadDineroNota = document.getElementById(
+    "cantidadDineroNota"
+  ).value;
   var idBetContext;
-  var subject = firebase.firestore().collection("subjects");
+  var subject = firebase
+    .firestore()
+    .collection("subjects");
 
-  if (sonAmigos(uidApostante, uidApostado)) {
+  if (
+    sonAmigos(uidApostante, uidApostado)
+  ) {
     firebase
       .firestore()
       .collection("betContexts")
@@ -149,14 +222,19 @@ export function crearApuesta() {
         }
       })
       .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        console.log(
+          "Document written with ID: ",
+          docRef.id
+        );
 
         firebase
           .firestore()
           .collection("bets")
           .add({
             amount: cantidadDinero,
-            betContext: "/betContext/" + docRef.id,
+            betContext:
+              "/betContext/" +
+              docRef.id,
             betContextId: docRef.id,
             type: "APRUEBA_SUSPENDE",
             uid: uidApostado,
@@ -169,23 +247,33 @@ export function crearApuesta() {
             //  console.error("Error adding document: ", error);
           });
 
-        if (apuestaNota.checked === true) {
+        if (
+          apuestaNota.checked === true
+        ) {
           firebase
             .firestore()
             .collection("bets")
             .add({
               amount: cantidadDineroNota,
-              betContext: "/betContext/" + idBetContext,
+              betContext:
+                "/betContext/" +
+                idBetContext,
               betContextId: idBetContext,
               type: "NOTA",
               uid: uidApostado,
               value: notaApostada
             })
             .then(function (docRef) {
-              console.log("Document written with ID: ", docRef.id);
+              console.log(
+                "Document written with ID: ",
+                docRef.id
+              );
             })
             .catch(function (error) {
-              console.error("Error adding document: ", error);
+              console.error(
+                "Error adding document: ",
+                error
+              );
             });
         }
       })
@@ -199,52 +287,83 @@ export function crearApuesta() {
   }
 }
 
-//Funcion REGISTRAR USUARIO (necesita revision donde esperamos 1 segundo y medio) "FUNCIONA"
-export async function registrarUsuario(email, password) {
-  var cadena = "The email address is already in use by another account.";
-
-  await firebase
+export function registrarUsuario(
+  nick,
+  email,
+  password
+) {
+  firebase
     .auth()
-    .createUserWithEmailAndPassword(email, password)
+    .createUserWithEmailAndPassword(
+      email,
+      password
+    )
+    .then((user) => {
+      firebase
+        .firestore()
+        .collection("users")
+        .add({
+          nickname: nick,
+          coins: 0,
+          uid: firebase.auth()
+            .currentUser.uid,
+          stats: {
+            coinsEarned: 0,
+            hitRate: 0,
+            hitStreak: 0
+          }
+        })
+        .then(function (docRef) {
+          console.log(
+            "Document written with ID: ",
+            docRef.id
+          );
+        })
+        .catch(function (error) {
+          console.error(
+            "Error adding document: ",
+            error
+          );
+        });
+    })
     .catch((error) => {
-      // var errorCode = error.code;
-      var errorMessage = error.message;
-      var user = firebase.auth().currentUser;
-
-      if (errorMessage !== cadena) {
-        firebase
-          .firestore()
-          .collection("users")
-          .add({
-            coins: 0,
-            uid: user.uid.toString(),
-            stats: {
-              coinsEarned: 0,
-              hitRate: 0,
-              hitStreak: 0
-            }
-          })
-          .then(() => {
-            console.log(
-              "Usuario creado con éxito" // ¿Por qué no aparece cuando se crea con éxito?
-            );
-          })
-          .catch(function (error) {
-            console.error("Error adding document: ", error);
-          });
-      } else {
-        console.log("Este usuario ya existe.");
+      if (errorCode != null) {
+        console.log(error.message);
       }
     });
+}
 
-  await firebase.auth().signInWithEmailAndPassword(email, password);
+export function userLogged() {
+  firebase
+    .auth()
+    .onAuthStateChanged(function (
+      user
+    ) {
+      if (user) {
+        return true;
+      } else {
+        return false;
+      }
+    });
 }
 
 // FUNCION INICIAR SESION "FUNCIONA"
-export async function iniciarSesion(email, password) {
-  await firebase.auth().signInWithEmailAndPassword(email, password);
-
-  console.log("El user es: " + firebase.auth().currentUser.uid);
+export function iniciarSesion(
+  email,
+  password
+) {
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(
+      email,
+      password
+    )
+    .then((user) => {
+      console.log("Logged.");
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 }
 
 export function cerrarSesion() {
@@ -252,7 +371,9 @@ export function cerrarSesion() {
     .auth()
     .signOut()
     .then(function () {
-      console.log("Saliste correctamente.");
+      console.log(
+        "Saliste correctamente."
+      );
     })
     .catch(function (error) {
       console.log("Error al salir.");
@@ -261,7 +382,9 @@ export function cerrarSesion() {
 
 function sonAmigos(uid_a, uid_b) {
   var amigos = false;
-  var solicitudes = firebase.firestore().collection("friendships");
+  var solicitudes = firebase
+    .firestore()
+    .collection("friendships");
   var query = solicitudes
     .where("uid_a", "==", uid_a)
     .where("uid_b", "==", uid_b);
@@ -270,28 +393,37 @@ function sonAmigos(uid_a, uid_b) {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        if (doc.data().status == "ACCEPTED") {
+        if (
+          doc.data().status ==
+          "ACCEPTED"
+        ) {
           console.log("amigos es true");
           return true;
         } else {
-          console.log("amigos es false");
+          console.log(
+            "amigos es false"
+          );
           return false;
         }
       });
     })
     .catch(function (error) {
-      console.log("Error getting documents: ", error);
+      console.log(
+        "Error getting documents: ",
+        error
+      );
     });
 }
 
-export function prueba() {
-  console.log("El user es: " + firebase.auth().currentUser.uid);
-}
-
 export function cursarAsignatura() {
-  var degreeId = document.getElementById("degreeId").value;
-  var subjectId = document.getElementById("subjectId").value;
-  var user = firebase.auth().currentUser;
+  var degreeId = document.getElementById(
+    "degreeId"
+  ).value;
+  var subjectId = document.getElementById(
+    "subjectId"
+  ).value;
+  var user = firebase.auth()
+    .currentUser;
 
   firebase
     .firestore()
@@ -303,17 +435,28 @@ export function cursarAsignatura() {
       uid: user.uid
     })
     .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      console.log(
+        "Document written with ID: ",
+        docRef.id
+      );
     })
     .catch(function (error) {
-      console.error("Error adding document: ", error);
+      console.error(
+        "Error adding document: ",
+        error
+      );
     });
 }
 
 export function actualizarNota() {
-  var subjectId = document.getElementById("subjectId").value;
-  var nota = document.getElementById("nota").value;
-  var user = firebase.auth().currentUser;
+  var subjectId = document.getElementById(
+    "subjectId"
+  ).value;
+  var nota = document.getElementById(
+    "nota"
+  ).value;
+  var user = firebase.auth()
+    .currentUser;
 
   firebase //Esta parte se encarga de actualizar la nota
     .firestore()
@@ -322,7 +465,9 @@ export function actualizarNota() {
     .where("subjectId", "==", subjectId)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
+      querySnapshot.forEach(function (
+        doc
+      ) {
         firebase
           .firestore()
           .collection("userSubjects")
@@ -338,13 +483,22 @@ export function actualizarNota() {
     .where("uid", "==", user.uid) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        console.log(
+          doc.id,
+          " => ",
+          doc.data()
+        );
         fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
       });
     })
     .catch(function (error) {
-      console.log("Error getting document:", error);
+      console.log(
+        "Error getting document:",
+        error
+      );
     });
 
   //Llamar a funcion actualizar apuestas
@@ -361,19 +515,33 @@ function fetchBetcontext(bet, nota) {
       actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
     })
     .catch(function (error) {
-      console.log("Error getting document:", error);
+      console.log(
+        "Error getting document:",
+        error
+      );
     });
 }
 
-function actualizarBets(bet, nota, betContext) {
+function actualizarBets(
+  bet,
+  nota,
+  betContext
+) {
   var uid = betContext.get("uid");
   var aumento;
   aumento = bet.get("amount"); //sacamos el dinero que ha apostado
 
-  if (bet.get("type") == "APRUEBA_SUSPENDE" && nota > 5) {
+  if (
+    bet.get("type") ==
+      "APRUEBA_SUSPENDE" &&
+    nota > 5
+  ) {
     aumento = aumento * 1.5;
   }
-  if (bet.get("type") == "NOTA" && (nota = bet.get("value"))) {
+  if (
+    bet.get("type") == "NOTA" &&
+    (nota = bet.get("value"))
+  ) {
     aumento = aumento * 3;
   } else {
     aumento = 0;
@@ -385,13 +553,17 @@ function actualizarBets(bet, nota, betContext) {
     .where("uid", "==", uid)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
+      querySnapshot.forEach(function (
+        doc
+      ) {
         firebase
           .firestore()
           .collection("users")
           .doc(doc.id)
           .update({
-            coins: firebase.firestore.FieldValue.increment(aumento)
+            coins: firebase.firestore.FieldValue.increment(
+              aumento
+            )
           });
         console.log("Pos vale");
         // console.log(doc.id, " => ", doc.data());
@@ -400,11 +572,21 @@ function actualizarBets(bet, nota, betContext) {
 }
 
 export function createSubject() {
-  var acronym = document.getElementById("acronym").value;
-  var code = document.getElementById("code").value;
-  var degreeId = document.getElementById("degreeId").value;
-  var name = document.getElementById("name").value;
-  var year = document.getElementById("year").value;
+  var acronym = document.getElementById(
+    "acronym"
+  ).value;
+  var code = document.getElementById(
+    "code"
+  ).value;
+  var degreeId = document.getElementById(
+    "degreeId"
+  ).value;
+  var name = document.getElementById(
+    "name"
+  ).value;
+  var year = document.getElementById(
+    "year"
+  ).value;
 
   firebase
     .firestore()
@@ -417,16 +599,27 @@ export function createSubject() {
       year: year
     })
     .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      console.log(
+        "Document written with ID: ",
+        docRef.id
+      );
     })
     .catch(function (error) {
-      console.error("Error adding document: ", error);
+      console.error(
+        "Error adding document: ",
+        error
+      );
     });
 }
 
 export function leerArchivo() {
-  var PdfReader = require("pdfreader").PdfReader;
-  new PdfReader().parseFileItems("sample.pdf", function (err, item) {
-    if (item && item.text) console.log(item.text);
-  });
+  var PdfReader = require("pdfreader")
+    .PdfReader;
+  new PdfReader().parseFileItems(
+    "sample.pdf",
+    function (err, item) {
+      if (item && item.text)
+        console.log(item.text);
+    }
+  );
 }

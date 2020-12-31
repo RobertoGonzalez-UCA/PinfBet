@@ -1,7 +1,10 @@
 import React from "react";
 
 const Alert = () => {
-  const [showAlert, setShowAlert] = React.useState(true);
+  const [
+    showAlert,
+    setShowAlert
+  ] = React.useState(true);
   return (
     <>
       {showAlert ? (
@@ -14,12 +17,16 @@ const Alert = () => {
             <i className="fas fa-bell" />
           </span>
           <span className="inline-block align-middle mr-8">
-            <b className="capitalize">OH!</b> Parece que ha ocurrido un error...
-            Por favor inténtelo más tarde
+            <b className="capitalize">
+              OH!
+            </b>
+            {text}
           </span>
           <button
             className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
-            onClick={() => setShowAlert(false)}
+            onClick={() =>
+              setShowAlert(false)
+            }
           >
             <span>×</span>
           </button>
@@ -29,7 +36,9 @@ const Alert = () => {
   );
 };
 
-export default function ClosingAlert() {
+export default function ClosingAlert({
+  text
+}) {
   return (
     <>
       <Alert />

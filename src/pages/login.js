@@ -6,7 +6,10 @@ import Input from "../components/input";
 import Button from "../components/button";
 
 // FUNCTIONS
-import { iniciarSesion } from "../db.js";
+import {
+  iniciarSesion,
+  userLogged
+} from "../db.js";
 import {
   Link,
   Redirect
@@ -21,11 +24,9 @@ export default function Login() {
     setPassword
   ] = useState("");
 
-  const loggedIn = false; // Hay que mirar el estado en Firebase
-
   return (
     <div>
-      {!loggedIn && (
+      {!userLogged() && (
         <div
           className="bg-cover bg-center"
           style={{
@@ -96,7 +97,9 @@ export default function Login() {
           </section>
         </div>
       )}
-      {loggedIn && <Redirect to="/" />}
+      {userLogged() && (
+        <Redirect to="/" />
+      )}
     </div>
   );
 }

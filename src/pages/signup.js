@@ -5,6 +5,9 @@ import Label from "../components/label";
 import Input from "../components/input";
 import Button from "../components/button";
 
+// FIREBASE
+import firebase from "firebase/app";
+
 // FUNCTIONS
 import { registrarUsuario } from "../db.js";
 import {
@@ -22,11 +25,6 @@ export default function Signup() {
   const [
     password,
     setPassword
-  ] = useState("");
-
-  const [
-    confirmPassword,
-    setConfirmPassword
   ] = useState("");
 
   const loggedIn = false; // Hay que mirar el estado en Firebase
@@ -64,7 +62,7 @@ export default function Signup() {
                   }
                 />
               </div>
-              <div className="relative mb-2">
+              <div className="relative mb-1">
                 <Label
                   for="email"
                   className="leading-7 text-sm text-gray-600"
@@ -82,7 +80,7 @@ export default function Signup() {
                   }
                 />
               </div>
-              <div className="relative mb-2">
+              <div className="relative mb-3">
                 <Label
                   for="password"
                   className="leading-7 text-sm text-gray-600"
@@ -100,24 +98,7 @@ export default function Signup() {
                   }
                 />
               </div>
-              <div className="relative mb-6">
-                <Label
-                  for="password"
-                  className="leading-7 text-sm text-gray-600"
-                  text="Confirma la contraseña"
-                />
-                <Input
-                  type="password"
-                  id="pass-confirmation"
-                  name="pass-confirmation"
-                  className="w-full"
-                  onChange={(ev) =>
-                    setConfirmPassword(
-                      ev.target.value
-                    )
-                  }
-                />
-              </div>
+
               <Button
                 className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg"
                 onClick={() =>
@@ -130,36 +111,37 @@ export default function Signup() {
               >
                 Regístrate
               </Button>
+
               <p className="text-xs text-gray-500 mt-3">
                 Al hacer clic en
                 Registrarte, aceptas
                 nuestras{" "}
-                <a
+                <Link
                   className="text-blue-400 hover:underline"
-                  href="#asd"
+                  to="/legalterms"
                 >
                   Condiciones
-                </a>
+                </Link>
                 . Obtén más información
                 sobre cómo recopilamos,
                 usamos y compartimos tu
                 información en la{" "}
-                <a
+                <Link
                   className="text-blue-400 hover:underline"
-                  href="#asd"
+                  to="/legalterms"
                 >
                   Política de datos
-                </a>
+                </Link>
                 , así como el uso que
                 hacemos de las cookies y
                 tecnologías similares en
                 nuestra{" "}
-                <a
+                <Link
                   className="text-blue-400 hover:underline"
-                  href="#asd"
+                  to="/legalterms"
                 >
                   Política de cookies
-                </a>
+                </Link>
                 .
               </p>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer class="text-gray-600 body-font fixed bottom-0 right-0 left-0">
+    <footer class="text-gray-600 body-font">
       <div class="px-4 py-3 mx-auto flex items-center sm:flex-row flex-col bg-gray-100">
         <a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
           <img

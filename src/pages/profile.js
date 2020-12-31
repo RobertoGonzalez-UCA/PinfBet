@@ -4,6 +4,7 @@ import Chat from "../components/chat";
 import Button from "../components/button";
 import Subject from "../components/subject";
 import Input from "../components/input";
+import Footer from "../components/footer";
 
 export default function Profile() {
   return (
@@ -108,6 +109,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

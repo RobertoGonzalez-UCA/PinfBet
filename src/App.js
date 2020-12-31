@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // PAGES
 import Test from "./pages/test";
@@ -66,7 +62,6 @@ export default function App() {
           </Route>
         </Switch>
       </Router>
-      <Footer />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import Chat from "../components/chat";
 import Button from "../components/button";
 import Input from "../components/input";
+import Footer from "../components/footer";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 export default function Userconfig() {
@@ -85,6 +86,7 @@ export default function Userconfig() {
           <Button className="mt-4 mb-20">Guardar cambios</Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -6,11 +6,10 @@ import {
   withRouter,
   Redirect
 } from "react-router";
+import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { AuthContext } from "../Auth";
-
-import { BrowserRouter as Link } from "react-router-dom";
 
 import Label from "../components/label";
 import Input from "../components/input";
@@ -87,12 +86,11 @@ const Login = ({ history }) => {
                 type="password"
               />
             </div>
-            <Link to="/forgotpass">
-              <p className="mb-2 flex justify-center text-xs text-blue-400 hover:underline">
-                ¿Olvidaste la
-                contrasña????????????
-                SOLUCIONAR
-              </p>
+            <Link
+              className="mt-1 mb-2 flex justify-center text-xs text-blue-400 hover:underline"
+              to="/forgotpass"
+            >
+              ¿Olvidaste la contrasña?
             </Link>
 
             <Button type="submit">

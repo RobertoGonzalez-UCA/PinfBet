@@ -1,6 +1,5 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import "firebase/auth";
 
 //FUNCION MOSTRAR USUARIOS (muestra todos) (opcion filtrar por asignatura / año?)
 export function getUsers() {

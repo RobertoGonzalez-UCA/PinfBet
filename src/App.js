@@ -12,60 +12,71 @@ import Login from "./pages/login";
 import Profile from "./pages/profile";
 import Bets from "./pages/bets";
 import Rankings from "./pages/rankings";
-import Social from "./pages/social";
 import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
 import Legalterms from "./pages/legalterms";
 import Forgotpass from "./pages/forgotpass";
 
-// COMPONENTS
-import Footer from "./components/footer";
-
-// FIREBASE
-import initFirebase from "./firebase";
-
-initFirebase();
+import { AuthProvider } from "./Auth";
+import PrivateRoute from "./privateRoute";
 
 export default function App() {
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Switch>
-          <Route path="/test">
-            <Test />
-          </Route>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/bets">
-            <Bets />
-          </Route>
-          <Route path="/rankings">
-            <Rankings />
-          </Route>
-          <Route path="/social">
-            <Social />
-          </Route>
-          <Route path="/userconfig">
-            <Userconfig />
-          </Route>
-          <Route path="/legalterms">
-            <Legalterms />
-          </Route>
-          <Route path="/forgotpass">
-            <Forgotpass />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <PrivateRoute
+            exact
+            path="/"
+            component={Home}
+          />
+          <PrivateRoute
+            exact
+            path="/profile"
+            component={Profile}
+          />
+          <PrivateRoute
+            exact
+            path="/bets"
+            component={Bets}
+          />
+          <PrivateRoute
+            exact
+            path="/rankings"
+            component={Rankings}
+          />
+          <PrivateRoute
+            exact
+            path="/userconfig"
+            component={Userconfig}
+          />
+          <Route
+            exact
+            path="/test"
+            component={Test}
+          />
+          <Route
+            exact
+            path="/signup"
+            component={Signup}
+          />
+          <Route
+            exact
+            path="/login"
+            component={Login}
+          />
+          <Route
+            exact
+            path="/legalterms"
+            component={Legalterms}
+          />
+          <Route
+            exact
+            path="/forgotpass"
+            component={Forgotpass}
+          />
         </Switch>
       </Router>
-    </div>
+    </AuthProvider>
   );
 }

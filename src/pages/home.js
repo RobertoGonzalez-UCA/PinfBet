@@ -1,13 +1,24 @@
 import React from "react";
+
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+
 import Navbar from "../components/navbar";
+import Button from "../components/button";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <Navbar />
-      <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
-        Estás en la HOME page.
-      </h1>
-    </div>
+      <h1>Home</h1>
+      <Button
+        onClick={() =>
+          firebase.auth().signOut()
+        }
+      >
+        Sign out
+      </Button>
+    </>
   );
 }

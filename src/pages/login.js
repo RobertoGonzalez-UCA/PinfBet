@@ -1,9 +1,124 @@
-import React, { useState } from "react";
+import React, {
+  useCallback,
+  useContext
+} from "react";
+import {
+  withRouter,
+  Redirect
+} from "react-router";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { AuthContext } from "../Auth";
 
-// COMPONENTS
+import { BrowserRouter as Link } from "react-router-dom";
+
 import Label from "../components/label";
 import Input from "../components/input";
 import Button from "../components/button";
+
+const Login = ({ history }) => {
+  const handleLogin = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const {
+        email,
+        password
+      } = event.target.elements;
+      try {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(
+            email.value,
+            password.value
+          );
+        history.push("/");
+      } catch (error) {
+        alert(error);
+      }
+    },
+    [history]
+  );
+
+  const { currentUser } = useContext(
+    AuthContext
+  );
+
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
+
+  return (
+    <div>
+      <div
+        className="bg-cover bg-center"
+        style={{
+          "background-image":
+            "url(https://i.imgur.com/Hip5s6W.png)"
+        }}
+      >
+        <form
+          className="flex items-center justify-center min-h-screen text-gray-600 body-font"
+          onSubmit={handleLogin}
+        >
+          <div className="w-96 bg-gray-100 rounded-lg p-8 flex flex-col">
+            <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
+              Inicia sesión
+            </h2>
+            <div className="relative mb-2">
+              <Label
+                for="email"
+                className="leading-7 text-sm text-gray-600"
+              >
+                Email
+              </Label>
+              <Input
+                className="w-full"
+                id="email"
+                name="email"
+                type="email"
+              />
+            </div>
+
+            <div className="relative mb-2">
+              <Label
+                for="password"
+                className="leading-7 text-sm text-gray-600"
+              >
+                Password
+              </Label>
+              <Input
+                className="w-full"
+                id="password"
+                name="password"
+                type="password"
+              />
+            </div>
+            <p className="mb-2 flex justify-center text-xs text-blue-400 hover:underline">
+              <Link to="/forgotpass">
+                ¿Olvidaste la
+                contrasña????????????
+                SOLUCIONAR
+              </Link>
+            </p>
+
+            <Button type="submit">
+              Entrar
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default withRouter(Login);
+
+/*
+
+// COMPONENTS
+import Label from "../components/Label";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 // FUNCTIONS
 import {
@@ -103,3 +218,5 @@ export default function Login() {
     </div>
   );
 }
+
+*/

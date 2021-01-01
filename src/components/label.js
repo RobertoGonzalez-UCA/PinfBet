@@ -1,8 +1,8 @@
 import React from "react";
 
 export default function Label({
+  children,
   className,
-  text,
   ...rest
 }) {
   return (
@@ -13,7 +13,7 @@ export default function Label({
       ].join(" ")}
       {...rest}
     >
-      {text}
+      {children}
     </label>
   );
 }

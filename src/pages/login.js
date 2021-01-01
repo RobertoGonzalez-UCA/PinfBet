@@ -65,10 +65,7 @@ const Login = ({ history }) => {
               Inicia sesión
             </h2>
             <div className="relative mb-2">
-              <Label
-                for="email"
-                className="leading-7 text-sm text-gray-600"
-              >
+              <Label for="email">
                 Email
               </Label>
               <Input
@@ -80,10 +77,7 @@ const Login = ({ history }) => {
             </div>
 
             <div className="relative mb-2">
-              <Label
-                for="password"
-                className="leading-7 text-sm text-gray-600"
-              >
+              <Label for="password">
                 Password
               </Label>
               <Input
@@ -93,13 +87,13 @@ const Login = ({ history }) => {
                 type="password"
               />
             </div>
-            <p className="mb-2 flex justify-center text-xs text-blue-400 hover:underline">
-              <Link to="/forgotpass">
+            <Link to="/forgotpass">
+              <p className="mb-2 flex justify-center text-xs text-blue-400 hover:underline">
                 ¿Olvidaste la
                 contrasña????????????
                 SOLUCIONAR
-              </Link>
-            </p>
+              </p>
+            </Link>
 
             <Button type="submit">
               Entrar

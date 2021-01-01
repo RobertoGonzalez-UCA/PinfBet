@@ -74,7 +74,7 @@ export default function App() {
             exact
             path="/forgotpass"
             component={Forgotpass}
-          />
+        />
         </Switch>
       </Router>
     </AuthProvider>

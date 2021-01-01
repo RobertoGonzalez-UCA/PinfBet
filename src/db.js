@@ -204,6 +204,7 @@ export function crearApuesta() {
     .firestore()
     .collection("subjects");
 
+
   if (
     sonAmigos(uidApostante, uidApostado)
   ) {
@@ -247,7 +248,7 @@ export function crearApuesta() {
           });
 
         if (
-          apuestaNota.checked === true
+          apuestaNota === true
         ) {
           firebase
             .firestore()
@@ -286,49 +287,38 @@ export function crearApuesta() {
   }
 }
 
-export function registrarUsuario(
-  nick,
-  email,
-  password
-) {
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(
-      email,
-      password
-    )
-    .then((user) => {
-      firebase
-        .firestore()
-        .collection("users")
-        .add({
-          nickname: nick,
-          coins: 0,
-          uid: firebase.auth()
-            .currentUser.uid,
-          stats: {
-            coinsEarned: 0,
-            hitRate: 0,
-            hitStreak: 0
-          }
-        })
-        .then(function (docRef) {
+function sonAmigos(uid_a, uid_b) {
+  var amigos = false;
+  var solicitudes = firebase
+    .firestore()
+    .collection("friendships");
+  var query = solicitudes
+    .where("uid_a", "==", uid_a)
+    .where("uid_b", "==", uid_b);
+
+
+  amigos = query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (
+          doc.data().status ==
+          "ACCEPTED"
+        ) {
+          console.log("amigos es true");
+          return true;
+        } else {
           console.log(
-            "Document written with ID: ",
-            docRef.id
-          );
-        })
-        .catch(function (error) {
-          console.error(
-            "Error adding document: ",
-            error
-          );
-        });
+            "amigos es false");
+          return false;
+        }
+      });
     })
-    .catch((error) => {
-      if (errorCode != null) {
-        console.log(error.message);
-      }
+    .catch(function (error) {
+      console.log(
+        "Error getting documents: ",
+        error
+      );
     });
 }
 
@@ -376,41 +366,6 @@ export function cerrarSesion() {
     })
     .catch(function (error) {
       console.log("Error al salir.");
-    });
-}
-
-function sonAmigos(uid_a, uid_b) {
-  var amigos = false;
-  var solicitudes = firebase
-    .firestore()
-    .collection("friendships");
-  var query = solicitudes
-    .where("uid_a", "==", uid_a)
-    .where("uid_b", "==", uid_b);
-
-  amigos = query
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (
-          doc.data().status ==
-          "ACCEPTED"
-        ) {
-          console.log("amigos es true");
-          return true;
-        } else {
-          console.log(
-            "amigos es false"
-          );
-          return false;
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log(
-        "Error getting documents: ",
-        error
-      );
     });
 }
 
@@ -611,12 +566,13 @@ export function createSubject() {
     });
 }
 
+
 export function leerArchivo() {
   var PdfReader = require("pdfreader")
     .PdfReader;
   new PdfReader().parseFileItems(
     "sample.pdf",
-    function (err, item) {
+   function (err, item) {
       if (item && item.text)
         console.log(item.text);
     }

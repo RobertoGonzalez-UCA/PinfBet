@@ -20,7 +20,6 @@ const Alert = () => {
             <b className="capitalize">
               OH!
             </b>
-            {text}
           </span>
           <button
             className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
@@ -36,9 +35,7 @@ const Alert = () => {
   );
 };
 
-export default function ClosingAlert({
-  text
-}) {
+export default function ClosingAlert() {
   return (
     <>
       <Alert />

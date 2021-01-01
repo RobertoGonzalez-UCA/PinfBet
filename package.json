@@ -5,8 +5,8 @@
   "dependencies": {
     "@material-ui/core": "4.11.2",
     "autoprefixer": "10.0.2",
+    "convertapi-js": "1.0.6",
     "firebase": "^8.0.2",
-    "pdfreader": "1.2.8",
     "popper.js": "1.16.1",
     "postcss-cli": "8.3.0",
     "react": "^17.0.1",

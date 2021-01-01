@@ -16,24 +16,6 @@ export default function Bets() {
   const subjectsRef = React.createRef();
   const gradeRef = React.createRef();
   const userRef = React.createRef();
-  const openCourse = () => {
-    setCourseShow(true);
-  };
-  const closeCourse = () => {
-    setCourseShow(false);
-  };
-  const openSubjects = () => {
-    setSubjectsShow(true);
-  };
-  const closeSubjects = () => {
-    setSubjectsShow(false);
-  };
-  const openGrade = () => {
-    setGradeShow(true);
-  };
-  const closeGrade = () => {
-    setGradeShow(false);
-  };
   return (
     <div className="flex flex-col h-screen">
       <Navbar />

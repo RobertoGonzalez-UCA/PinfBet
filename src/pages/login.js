@@ -1,11 +1,5 @@
-import React, {
-  useCallback,
-  useContext
-} from "react";
-import {
-  withRouter,
-  Redirect
-} from "react-router";
+import React, { useCallback, useContext } from "react";
+import { withRouter, Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -19,17 +13,11 @@ const Login = ({ history }) => {
   const handleLogin = useCallback(
     async (event) => {
       event.preventDefault();
-      const {
-        email,
-        password
-      } = event.target.elements;
+      const { email, password } = event.target.elements;
       try {
         await firebase
           .auth()
-          .signInWithEmailAndPassword(
-            email.value,
-            password.value
-          );
+          .signInWithEmailAndPassword(email.value, password.value);
         history.push("/");
       } catch (error) {
         alert(error);
@@ -38,9 +26,7 @@ const Login = ({ history }) => {
     [history]
   );
 
-  const { currentUser } = useContext(
-    AuthContext
-  );
+  const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
     return <Redirect to="/" />;
@@ -51,8 +37,7 @@ const Login = ({ history }) => {
       <div
         className="bg-cover bg-center"
         style={{
-          "background-image":
-            "url(https://i.imgur.com/Hip5s6W.png)"
+          "background-image": "url(https://i.imgur.com/Hip5s6W.png)"
         }}
       >
         <form
@@ -64,21 +49,12 @@ const Login = ({ history }) => {
               Inicia sesión
             </h2>
             <div className="relative mb-2">
-              <Label for="email">
-                Email
-              </Label>
-              <Input
-                className="w-full"
-                id="email"
-                name="email"
-                type="email"
-              />
+              <Label for="email">Email</Label>
+              <Input className="w-full" id="email" name="email" type="email" />
             </div>
 
             <div className="relative mb-2">
-              <Label for="password">
-                Password
-              </Label>
+              <Label for="password">Password</Label>
               <Input
                 className="w-full"
                 id="password"
@@ -92,10 +68,14 @@ const Login = ({ history }) => {
             >
               ¿Olvidaste la contrasña?
             </Link>
+            <Link
+              className="mt-1 mb-2 flex justify-center text-xs text-blue-400 hover:underline"
+              to="/signup"
+            >
+              ¿No eres miembro aún? Regístrate
+            </Link>
 
-            <Button type="submit">
-              Entrar
-            </Button>
+            <Button type="submit">Entrar</Button>
           </div>
         </form>
       </div>

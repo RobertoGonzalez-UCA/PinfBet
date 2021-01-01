@@ -25,13 +25,7 @@ export default function Userconfig() {
 
           <div className="flex-none">
             <div className="flex items-center">
-              <Button variant="upload" className="mt-2 ml-4">
-                Elegir archivo
-              </Button>
-              <p className="text-sm ml-2">
-                {" "}
-                No se ha seleccionado ningún archivo{" "}
-              </p>
+              <input className="ml-4" type="file" />
             </div>
             <p className="text-xs mt-2 mb-2 ml-4 text-gray-500 w-1/3">
               Las imágenes cargadas se redimensionarán y se cortarán de forma

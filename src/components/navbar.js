@@ -2,12 +2,10 @@ import React from "react";
 import Button from "../components/button";
 import DropdownProfile from "../components/dropdownProfile";
 import Input from "../components/input";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
 export default function Navbar() {
   const [
@@ -20,6 +18,22 @@ export default function Navbar() {
   const closeMenu = () => {
     setShowMenu(false);
   };
+
+  var user = firebase.auth()
+    .currentUser;
+
+  /* var pinfCoins = firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", user.uid)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.data().coins;
+      });
+    });
+  */
+
   return (
     <nav class="bg-gray-600">
       <div class="relative flex items-center justify-between h-16">

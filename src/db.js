@@ -179,6 +179,8 @@ export function mostrarAsignaturasYear() {
 
 //FUNCION CREAR APUESTA (EN CONSTRUCCION)
 export function crearApuesta() {
+  console.log("Entré");
+
   var uidApostante = firebase.auth()
     .currentUser.uid;
   var uidApostado = document.getElementById(
@@ -200,91 +202,136 @@ export function crearApuesta() {
     "cantidadDineroNota"
   ).value;
   var idBetContext;
-  var subject = firebase
+  var subject = firebase //No usado por ahora
     .firestore()
     .collection("subjects");
 
+  //var amigos = false;
 
-  if (
-    sonAmigos(uidApostante, uidApostado)
-  ) {
-    firebase
-      .firestore()
-      .collection("betContexts")
-      .add({
-        uid: uidApostante,
-        subjects: {
-          acronym: "",
-          code: idAsignatura,
-          degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
-          name: "",
-          year: 0
+    
+  var solicitudes = firebase
+    .firestore()
+    .collection("friendships");
+
+  var query = solicitudes
+    .where("uid_a", "==", uidApostante)
+    .where("uid_b", "==", uidApostado);
+
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (
+          doc.data().status ===
+          "ACCEPTED"
+        ) {
+          console.log("amigos es true");
+          escribirApuesta(
+            uidApostante,
+            idAsignatura,
+            cantidadDinero,
+            uidApostado,
+            apuestaNota,
+            cantidadDineroNota,
+            idBetContext,
+            notaApostada
+          );
+        } else {
+          console.log(
+            "Amigos es false. No se procede"
+          );
         }
-      })
-      .then(function (docRef) {
-        console.log(
-          "Document written with ID: ",
-          docRef.id
-        );
+      });
+    })
+    .catch(function (error) {
+      console.log(
+        "Error getting documents: ",
+        error
+      );
+    });
+}
 
+function escribirApuesta(
+  uidApostante,
+  idAsignatura,
+  cantidadDinero,
+  uidApostado,
+  apuestaNota,
+  cantidadDineroNota,
+  idBetContext,
+  notaApostada
+) {
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .add({
+      uid: uidApostante,
+      subjects: {
+        acronym: "",
+        code: idAsignatura,
+        degreeId: "02104342", //Provisionalmente, pues por ahora solo tenemos asignaturas de GII
+        name: "",
+        year: 0
+      }
+    })
+    .then(function (docRef) {
+      console.log(
+        "Document written with ID: ",
+        docRef.id
+      );
+
+      firebase
+        .firestore()
+        .collection("bets")
+        .add({
+          amount: cantidadDinero,
+          betContext:
+            "/betContext/" + docRef.id,
+          betContextId: docRef.id,
+          type: "APRUEBA_SUSPENDE",
+          uid: uidApostado,
+          value: true
+        })
+        .then(function (docRef) {
+          //   console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          //  console.error("Error adding document: ", error);
+        });
+
+      if (apuestaNota === true) {
         firebase
           .firestore()
           .collection("bets")
           .add({
-            amount: cantidadDinero,
+            amount: cantidadDineroNota,
             betContext:
               "/betContext/" +
-              docRef.id,
-            betContextId: docRef.id,
-            type: "APRUEBA_SUSPENDE",
+              idBetContext,
+            betContextId: idBetContext,
+            type: "NOTA",
             uid: uidApostado,
-            value: true
+            value: notaApostada
           })
           .then(function (docRef) {
-            //   console.log("Document written with ID: ", docRef.id);
+            console.log(
+              "Document written with ID: ",
+              docRef.id
+            );
           })
           .catch(function (error) {
-            //  console.error("Error adding document: ", error);
+            console.error(
+              "Error adding document: ",
+              error
+            );
           });
+      }
+    })
+    .catch(function (error) {
+      // console.error("Error adding document: ", error);
+    });
 
-        if (
-          apuestaNota === true
-        ) {
-          firebase
-            .firestore()
-            .collection("bets")
-            .add({
-              amount: cantidadDineroNota,
-              betContext:
-                "/betContext/" +
-                idBetContext,
-              betContextId: idBetContext,
-              type: "NOTA",
-              uid: uidApostado,
-              value: notaApostada
-            })
-            .then(function (docRef) {
-              console.log(
-                "Document written with ID: ",
-                docRef.id
-              );
-            })
-            .catch(function (error) {
-              console.error(
-                "Error adding document: ",
-                error
-              );
-            });
-        }
-      })
-      .catch(function (error) {
-        // console.error("Error adding document: ", error);
-      });
-
-    // console.log(idBetContext + " Hello");
-  } else {
-    console.log("No son amigos");
-  }
+  // console.log(idBetContext + " Hello");
 }
 
 function sonAmigos(uid_a, uid_b) {
@@ -295,7 +342,6 @@ function sonAmigos(uid_a, uid_b) {
   var query = solicitudes
     .where("uid_a", "==", uid_a)
     .where("uid_b", "==", uid_b);
-
 
   amigos = query
     .get()
@@ -309,7 +355,8 @@ function sonAmigos(uid_a, uid_b) {
           return true;
         } else {
           console.log(
-            "amigos es false");
+            "amigos es false"
+          );
           return false;
         }
       });
@@ -320,6 +367,7 @@ function sonAmigos(uid_a, uid_b) {
         error
       );
     });
+  return amigos;
 }
 
 export function userLogged() {
@@ -566,13 +614,12 @@ export function createSubject() {
     });
 }
 
-
 export function leerArchivo() {
   var PdfReader = require("pdfreader")
     .PdfReader;
   new PdfReader().parseFileItems(
     "sample.pdf",
-   function (err, item) {
+    function (err, item) {
       if (item && item.text)
         console.log(item.text);
     }

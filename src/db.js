@@ -169,6 +169,20 @@ export function crearApuesta() {
     });
 }
 
+export function devolverInfoSubject(){
+  var subjectId = document.getElementById("idAsignatura").value;
+
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then((querySnapshot)  => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data())
+      });
+    })
+}
 function escribirApuesta(
   uidApostante,
   idAsignatura,
@@ -195,7 +209,7 @@ function escribirApuesta(
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
 
-      updateBetContext(idAsignatura, docRef.id);
+   //   updateBetContext(idAsignatura, docRef.id);
 
       firebase
         .firestore()
@@ -231,40 +245,6 @@ function escribirApuesta(
   // console.log(idBetContext + " Hello");
 }
 
-function updateBetContext(subjectId, id) {
-  firebase
-    .firestore()
-    .collection("subjects")
-    .where("code", "==", subjectId)
-    .get()
-    .then((querySnapshot) => {
-      console.log("HEy");
-
-      querySnapshot.forEach((doc) => {
-        firebase
-          .firestore()
-          .collection("betContexts")
-          .doc(id)
-          .update({
-            subjects: {
-              acronym: "acronimo",
-              name: "nomre",
-              year: "9"
-            }
-          })
-          .then(function () {
-            console.log("Document successfully updated!");
-          })
-          .catch(function (error) {
-            // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
-          });
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting documents: ", error);
-    });
-}
 
 function escribirApuestaNota(
   uidApostado,

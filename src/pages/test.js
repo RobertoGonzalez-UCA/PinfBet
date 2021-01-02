@@ -28,7 +28,8 @@ import {
   actualizarNota,
   createSubject,
   prueba,
-  leerArchivo
+  leerArchivo,
+  devolverInfoSubject
 } from "../db.js";
 
 initFirebase();
@@ -81,7 +82,7 @@ export default function Test() {
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
       <Button onClick={createSubject}>Crear asignatura (test)</Button>
-      <Button onClick={prueba}>Pruebas</Button>
+      <Button onClick={devolverInfoSubject}>Pruebas</Button>
       <Button onClick={leerArchivo}>Subir Archivo</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">

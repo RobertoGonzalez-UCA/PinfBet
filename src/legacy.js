@@ -107,3 +107,42 @@ export function sonAmigosPrueba(
       email,
       password
     ); */
+
+    /*
+function updateBetContext(subjectId, id) {
+
+
+  var algo = firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then((querySnapshot) => {
+      console.log("HEy");
+
+      querySnapshot.forEach((doc) => {
+        firebase
+          .firestore()
+          .collection("betContexts")
+          .doc(id)
+          .update({
+            subjects: {
+              acronym: doc.get("acronym"),
+              name: "nomre",
+              year: "9"
+            }
+          })
+          .then(function () {
+            console.log("Document successfully updated!");
+          })
+          .catch(function (error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+*/

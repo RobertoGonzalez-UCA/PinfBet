@@ -130,6 +130,8 @@ export function comprobarCreditos() {
 
   var dineroApuesta = cantidadDinero + cantidadDineroNota;
 
+  console.log(dineroApuesta);
+
   firebase
     .firestore()
     .collection("users")
@@ -138,9 +140,18 @@ export function comprobarCreditos() {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         if (doc.data().coins > dineroApuesta) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(doc.id)
+            .update({
+              coins: firebase.firestore.FieldValue.increment(-dineroApuesta)
+            });
+
           crearApuesta();
         } else {
           console.log("Error. No se dispone del suficiente dinero");
+          console.log(doc.data().coins);
         }
       });
     })

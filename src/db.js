@@ -151,7 +151,7 @@ export function comprobarCreditos() {
           crearApuesta();
         } else {
           console.log("Error. No se dispone del suficiente dinero");
-          console.log(doc.data().coins);
+          console.log("Tienes: " + doc.data().coins);
         }
       });
     })
@@ -424,10 +424,21 @@ function actualizarBets(bet, nota, betContext) {
   var aumento;
   aumento = bet.get("amount"); //sacamos el dinero que ha apostado
 
-  if (bet.get("type") == "APRUEBA_SUSPENDE" && nota > 5) {
+  if (
+    bet.get("type") === "APRUEBA_SUSPENDE" &&
+    nota > 5 &&
+    bet.get("value") === true
+  ) {
     aumento = aumento * 1.5;
   }
-  if (bet.get("type") == "NOTA" && (nota = bet.get("value"))) {
+  if (
+    bet.get("type") === "APRUEBA_SUSPENDE" &&
+    nota < 5 &&
+    bet.get("value") === false
+  ) {
+    aumento = aumento * 1.5;
+  }
+  if (bet.get("type") === "NOTA" && nota === bet.get("value")) {
     aumento = aumento * 3;
   } else {
     aumento = 0;
@@ -440,13 +451,31 @@ function actualizarBets(bet, nota, betContext) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(doc.id)
-          .update({
-            coins: firebase.firestore.FieldValue.increment(aumento)
-          });
+        if (aumento > 0) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(doc.id)
+            .update({
+              coins: firebase.firestore.FieldValue.increment(aumento),
+              stats: {
+                coinsEarned: firebase.firestore.FieldValue.increment(aumento),
+                //  hits: firebase.firestore.FieldValue.increment(1),
+                hitStreak: firebase.firestore.FieldValue.increment(1)
+              }
+            }); //los campos en comentarios están a la espera de ser aprobados por Roberto
+        } else {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(doc.id)
+            .update({
+              stats: {
+                //  fails: firebase.firestore.FieldValue.increment(1),
+                hitStreak: 0
+              }
+            });
+        }
         console.log("Pos vale");
         // console.log(doc.id, " => ", doc.data());
       });

@@ -219,17 +219,14 @@ function escribirApuesta(
 
       console.log("Cantidad dinero nota:" + cantidadDineroNota);
 
-      escribirApuestaNota(
-        uidApostante,
-        idAsignatura,
-        cantidadDinero,
-        uidApostado,
-        betNotaCheck,
-        cantidadDineroNota,
-        idBetContext,
-        notaApostada,
-        docRef
-      );
+      if (betNotaCheck === true) {
+        escribirApuestaNota(
+          uidApostado,
+          cantidadDineroNota,
+          notaApostada,
+          docRef.id
+        );
+      }
     })
     .catch(function (error) {
       // console.error("Error adding document: ", error);
@@ -244,6 +241,8 @@ function escribirApuestaNota(
   notaApostada,
   docRef
 ) {
+  console.log("Cantidad Dinero Nota: " + cantidadDineroNota);
+  console.log("Nota Apostada: " + notaApostada);
   firebase
     .firestore()
     .collection("bets")

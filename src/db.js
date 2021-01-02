@@ -53,6 +53,7 @@ export function aceptarSolicitud() {
   firebase
     .firestore()
     .collection("friendships")
+    .where("uid_a", "==", receptor)
     .where("uid_b", "==", uidReceptor)
     .get()
     .then(function (querySnapshot) {
@@ -72,6 +73,7 @@ export function rechazarSolicitud() {
   firebase
     .firestore()
     .collection("friendships")
+    .where("uid_a", "==", receptor)
     .where("uid_b", "==", uidReceptor)
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
@@ -114,6 +116,32 @@ export function mostrarAsignaturasYear() {
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         console.log(doc.id, " => ", doc.data());
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
+export function comprobarCreditos() {
+  var cantidadDinero = document.getElementById("cantidadDinero").value;
+  var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
+  var uidApostante = firebase.auth().currentUser.uid;
+
+  var dineroApuesta = cantidadDinero + cantidadDineroNota;
+
+  firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", uidApostante)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().coins > dineroApuesta) {
+          crearApuesta();
+        } else {
+          console.log("Error. No se dispone del suficiente dinero");
+        }
       });
     })
     .catch(function (error) {
@@ -169,7 +197,7 @@ export function crearApuesta() {
     });
 }
 
-export function devolverInfoSubject(){
+export function devolverInfoSubject() {
   var subjectId = document.getElementById("idAsignatura").value;
 
   firebase
@@ -177,11 +205,11 @@ export function devolverInfoSubject(){
     .collection("subjects")
     .where("code", "==", subjectId)
     .get()
-    .then((querySnapshot)  => {
+    .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(doc.data())
+        console.log(doc.data());
       });
-    })
+    });
 }
 function escribirApuesta(
   uidApostante,
@@ -208,8 +236,6 @@ function escribirApuesta(
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
-
-   //   updateBetContext(idAsignatura, docRef.id);
 
       firebase
         .firestore()
@@ -245,7 +271,6 @@ function escribirApuesta(
   // console.log(idBetContext + " Hello");
 }
 
-
 function escribirApuestaNota(
   uidApostado,
   cantidadDineroNota,
@@ -269,32 +294,6 @@ function escribirApuestaNota(
     .catch(function (error) {
       console.error("Error adding document: ", error);
     });
-}
-
-function sonAmigos(uid_a, uid_b) {
-  var amigos = false;
-  var solicitudes = firebase.firestore().collection("friendships");
-  var query = solicitudes
-    .where("uid_a", "==", uid_a)
-    .where("uid_b", "==", uid_b);
-
-  amigos = query
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (doc.data().status == "ACCEPTED") {
-          console.log("amigos es true");
-          return true;
-        } else {
-          console.log("amigos es false");
-          return false;
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting documents: ", error);
-    });
-  return amigos;
 }
 
 export function userLogged() {

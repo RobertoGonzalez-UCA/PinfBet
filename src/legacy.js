@@ -146,3 +146,29 @@ function updateBetContext(subjectId, id) {
     });
 }
 */
+
+function sonAmigos(uid_a, uid_b) {
+  var amigos = false;
+  var solicitudes = firebase.firestore().collection("friendships");
+  var query = solicitudes
+    .where("uid_a", "==", uid_a)
+    .where("uid_b", "==", uid_b);
+
+  amigos = query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status == "ACCEPTED") {
+          console.log("amigos es true");
+          return true;
+        } else {
+          console.log("amigos es false");
+          return false;
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+  return amigos;
+}

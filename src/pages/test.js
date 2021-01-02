@@ -29,7 +29,8 @@ import {
   createSubject,
   prueba,
   leerArchivo,
-  devolverInfoSubject
+  devolverInfoSubject,
+  comprobarCreditos
 } from "../db.js";
 
 initFirebase();
@@ -70,7 +71,7 @@ export default function Test() {
       <Button onClick={mostrarAsignaturasYear}>
         Mostrar asignaturas por año
       </Button>
-      <Button onClick={crearApuesta}>Crear Apuesta</Button>
+      <Button onClick={comprobarCreditos}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
       <Button onClick={mostrarSolicitud}>Mostrar Solicitudes</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>

@@ -3,38 +3,24 @@ import Input from "../components/input";
 import Popper from "popper.js";
 
 export default function Chat() {
-  const [
-    friendlistShow,
-    setFriendlistShow
-  ] = React.useState(false);
-  const [
-    chatShow,
-    setChatShow
-  ] = React.useState(false);
+  const [friendlistShow, setFriendlistShow] = React.useState(false);
+  const [chatShow, setChatShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverListDropdownRef = React.createRef();
   const popoverChatDropdownRef = React.createRef();
   const openFriendlist = () => {
-    new Popper(
-      btnDropdownRef.current,
-      popoverListDropdownRef.current,
-      {
-        placement: "top-end"
-      }
-    );
+    new Popper(btnDropdownRef.current, popoverListDropdownRef.current, {
+      placement: "top-end"
+    });
     setFriendlistShow(true);
   };
   const closeFriendlist = () => {
     setFriendlistShow(false);
   };
   const openChat = () => {
-    new Popper(
-      btnDropdownRef.current,
-      popoverChatDropdownRef.current,
-      {
-        placement: "top-end"
-      }
-    );
+    new Popper(btnDropdownRef.current, popoverChatDropdownRef.current, {
+      placement: "top-end"
+    });
     setChatShow(true);
   };
   const closeChat = () => {
@@ -55,32 +41,25 @@ export default function Chat() {
                 className="block focus:outline-none"
                 ref={btnDropdownRef}
                 onClick={() => {
-                  friendlistShow
-                    ? closeFriendlist()
-                    : openFriendlist();
-                  chatShow
-                    ? closeFriendlist()
-                    : closeChat();
-                  chatShow
-                    ? closeChat()
-                    : closeChat();
+                  friendlistShow ? closeFriendlist() : openFriendlist();
+                  chatShow ? closeFriendlist() : closeChat();
+                  chatShow ? closeChat() : closeChat();
                 }}
               ></input>
               <div
-                ref={
-                  popoverListDropdownRef
-                }
+                ref={popoverListDropdownRef}
                 className={
-                  (friendlistShow
-                    ? "block "
-                    : "hidden ") +
+                  (friendlistShow ? "block " : "hidden ") +
                   "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
                 style={{
-                  minWidth: "13rem",
-                  minHeight: "14rem"
+                  minWidth: "17rem",
+                  minHeight: "19rem"
                 }}
               >
+                <div class="min-w-full text-white bg-gray-700 rounded-t p-2">
+                  Lista de amigos
+                </div>
                 <div
                   className="relative flex items-center px-2 hover:bg-gray-200"
                   onClick={() => {
@@ -104,21 +83,17 @@ export default function Chat() {
                 </div>
               </div>
               <div
-                ref={
-                  popoverChatDropdownRef
-                }
+                ref={popoverChatDropdownRef}
                 className={
-                  (chatShow
-                    ? "block "
-                    : "hidden ") +
+                  (chatShow ? "block " : "hidden ") +
                   "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
                 style={{
-                  minWidth: "13rem",
-                  minHeight: "14rem"
+                  minWidth: "17rem",
+                  minHeight: "19rem"
                 }}
               >
-                <div className="relative flex items-center px-2">
+                <div className="relative flex items-center bg-gray-700 rounded-t p-2 mb-1">
                   <input
                     type="image"
                     src="https://cdn.iconscout.com/icon/free/png-512/back-arrow-1767531-1502435.png"
@@ -130,15 +105,16 @@ export default function Chat() {
                     }}
                     className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none"
                   ></input>
-                  <div className="text-sm px-2 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800">
+                  <div className="text-sm px-2 font-normal block w-full whitespace-no-wrap text-white">
                     Nombre del amigo
                   </div>
                 </div>
-                <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
+                <div className="h-0 my-2 border border-solid border-t-0 border-white bg-gray-700 opacity-25" />
                 <div className="block py-16"></div>
                 <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
                 <Input
                   variant="chat"
+                  className=""
                   placeholder="Escribe un mensaje..."
                 />
               </div>

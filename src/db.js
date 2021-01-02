@@ -123,7 +123,6 @@ export function mostrarAsignaturasYear() {
 
 //FUNCION CREAR APUESTA (EN CONSTRUCCION)
 export function crearApuesta() {
-
   var uidApostante = firebase.auth().currentUser.uid;
   var uidApostado = document.getElementById("uidApostado").value;
   var betNotaCheck = document.getElementById("betNotaCheck").checked;
@@ -196,6 +195,8 @@ function escribirApuesta(
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);
 
+      updateBetContext(idAsignatura, docRef.id);
+
       firebase
         .firestore()
         .collection("bets")
@@ -230,13 +231,47 @@ function escribirApuesta(
   // console.log(idBetContext + " Hello");
 }
 
+function updateBetContext(subjectId, id) {
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then((querySnapshot) => {
+      console.log("HEy");
+
+      querySnapshot.forEach((doc) => {
+        firebase
+          .firestore()
+          .collection("betContexts")
+          .doc(id)
+          .update({
+            subjects: {
+              acronym: "acronimo",
+              name: "nomre",
+              year: "9"
+            }
+          })
+          .then(function () {
+            console.log("Document successfully updated!");
+          })
+          .catch(function (error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
 function escribirApuestaNota(
   uidApostado,
   cantidadDineroNota,
   notaApostada,
   docRef
 ) {
-
   firebase
     .firestore()
     .collection("bets")

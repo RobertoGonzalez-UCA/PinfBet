@@ -241,8 +241,7 @@ function escribirApuestaNota(
   notaApostada,
   docRef
 ) {
-  console.log("Cantidad Dinero Nota: " + cantidadDineroNota);
-  console.log("Nota Apostada: " + notaApostada);
+
   firebase
     .firestore()
     .collection("bets")
@@ -255,7 +254,7 @@ function escribirApuestaNota(
       value: notaApostada
     })
     .then(function (docRef) {
-      console.log("Bet Nota written with ID: ", docRef);
+      console.log("Bet Nota written with ID: ", docRef.id);
     })
     .catch(function (error) {
       console.error("Error adding document: ", error);

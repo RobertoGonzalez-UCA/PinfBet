@@ -123,7 +123,6 @@ export function mostrarAsignaturasYear() {
 
 //FUNCION CREAR APUESTA (EN CONSTRUCCION)
 export function crearApuesta() {
-  console.log("Entré");
 
   var uidApostante = firebase.auth().currentUser.uid;
   var uidApostado = document.getElementById("uidApostado").value;
@@ -212,12 +211,8 @@ function escribirApuesta(
           console.log("Bet Normal written with ID: ", docRef.id);
         })
         .catch(function (error) {
-          //  console.error("Error adding document: ", error);
+          console.error("Error adding document: ", error);
         });
-
-      console.log("Nota Apostada: " + notaApostada);
-
-      console.log("Cantidad dinero nota:" + cantidadDineroNota);
 
       if (betNotaCheck === true) {
         escribirApuestaNota(

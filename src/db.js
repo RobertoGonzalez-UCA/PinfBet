@@ -412,8 +412,6 @@ function escribirApuesta(
         .collection("bets")
         .add({
           amount: cantidadDinero,
-          betContext:
-            "/betContext/" + docRef.id,
           betContextId: docRef.id,
           type: "APRUEBA_SUSPENDE",
           uid: uidApostado,
@@ -459,8 +457,6 @@ function escribirApuestaNota(
     .collection("bets")
     .add({
       amount: cantidadDineroNota,
-      betContext:
-        "/betContext/" + docRef,
       betContextId: docRef,
       type: "NOTA",
       uid: uidApostado,

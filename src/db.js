@@ -66,7 +66,7 @@ export function aceptarSolicitud() {
     });
 }
 
-//FUNCION RACHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
+//FUNCION RECHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function rechazarSolicitud() {
   var receptor = firebase.auth().currentUser;
   var uidReceptor = receptor.uid;
@@ -123,10 +123,14 @@ export function mostrarAsignaturasYear() {
     });
 }
 
+//INICIO DE CREAR APUESTA
 export function comprobarCreditos() {
   var cantidadDinero = document.getElementById("cantidadDinero").value;
   var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
   var uidApostante = firebase.auth().currentUser.uid;
+
+  cantidadDinero = parseInt(cantidadDinero, 10);
+  cantidadDineroNota = parseInt(cantidadDineroNota, 10);
 
   var dineroApuesta = cantidadDinero + cantidadDineroNota;
 
@@ -246,7 +250,7 @@ function escribirApuesta(
       }
     })
     .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      console.log("BetContext written with ID: ", docRef.id);
 
       firebase
         .firestore()
@@ -364,7 +368,7 @@ export function cursarAsignatura() {
     });
 }
 
-export function actualizarNota() {
+export async function actualizarNota() {
   var subjectId = document.getElementById("subjectId").value;
   var nota = document.getElementById("nota").value;
   var user = firebase.auth().currentUser;
@@ -384,9 +388,9 @@ export function actualizarNota() {
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
       });
     });
-  //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
 
-  firebase
+  //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
+ await firebase
     .firestore()
     .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -395,20 +399,55 @@ export function actualizarNota() {
       querySnapshot.forEach(function (doc) {
         console.log(doc.id, " => ", doc.data());
         fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
+
+        firebase
+          .firestore()
+          .collection("bets")
+          .doc(doc.id) //Buscar documentacion update data
+          .delete()
+          .then(function() {
+            console.log("Bet successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
       });
     })
     .catch(function (error) {
       console.log("Error getting document:", error);
     });
 
+     firebase //Esto se puede optimizar
+    .firestore()
+    .collection("bets")
+    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
+         firebase
+          .firestore()
+          .collection("bets")
+          .doc(doc.id) //Buscar documentacion update data
+          .delete()
+          .then(function() {
+            console.log("Bet successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
+    });
+  
   //Llamar a funcion actualizar apuestas
 }
 
-function fetchBetcontext(bet, nota) {
-  firebase
+async function fetchBetcontext(bet, nota) {
+ await firebase
     .firestore()
     .collection("betContexts")
-    .doc(document.get("betContextId")) //FUNCIONA
+    .doc(bet.get("betContextId")) //FUNCIONA ¿???
     .get()
     .then(function (doc) {
       //  console.log(doc.id, " => ", doc.data());
@@ -417,32 +456,45 @@ function fetchBetcontext(bet, nota) {
     .catch(function (error) {
       console.log("Error getting document:", error);
     });
+
+
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .doc(bet.get("betContextId"))
+    .delete()
+    .then(function() {
+      console.log("BetContext successfully deleted!");
+  }).catch(function(error) {
+      console.error("Error removing document: ", error);
+  });
 }
 
 function actualizarBets(bet, nota, betContext) {
   var uid = betContext.get("uid");
   var aumento;
-  aumento = bet.get("amount"); //sacamos el dinero que ha apostado
+  aumento = 0; //sacamos el dinero que ha apostado
 
   if (
-    bet.get("type") === "APRUEBA_SUSPENDE" &&
     nota > 5 &&
     bet.get("value") === true
   ) {
-    aumento = aumento * 1.5;
+    aumento = bet.get("amount") * 1.5;
   }
+
   if (
-    bet.get("type") === "APRUEBA_SUSPENDE" &&
     nota < 5 &&
     bet.get("value") === false
   ) {
-    aumento = aumento * 1.5;
+    aumento = bet.get("amount") * 1.5;
   }
+
   if (bet.get("type") === "NOTA" && nota === bet.get("value")) {
-    aumento = aumento * 3;
-  } else {
-    aumento = 0;
-  }
+    aumento = bet.get("amount") * 3;
+  } 
+
+
+  console.log("El aumento es" + aumento);
 
   firebase
     .firestore()
@@ -459,7 +511,7 @@ function actualizarBets(bet, nota, betContext) {
             .update({
               coins: firebase.firestore.FieldValue.increment(aumento),
               stats: {
-                coinsEarned: firebase.firestore.FieldValue.increment(aumento),
+                coinsEarned: firebase.firestore.FieldValue.increment(aumento), //No funciona, ver https://stackoverflow.com/questions/58307204/how-to-increment-a-map-value-in-a-firestore-array
                 //  hits: firebase.firestore.FieldValue.increment(1),
                 hitStreak: firebase.firestore.FieldValue.increment(1)
               }
@@ -480,7 +532,11 @@ function actualizarBets(bet, nota, betContext) {
         // console.log(doc.id, " => ", doc.data());
       });
     });
+
+    console.log("Fin de actualizar Nota")
 }
+
+
 
 export function createSubject() {
   var acronym = document.getElementById("acronym").value;

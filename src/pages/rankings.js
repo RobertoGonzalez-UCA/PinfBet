@@ -11,7 +11,9 @@ export default function Rankings() {
         <Navbar />
         <Chat />
         <div className="mb-auto">
+          <div className="mt-3">
           <Table />
+          </div>
         </div>
         <Footer />
       </div>

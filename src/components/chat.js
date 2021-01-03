@@ -57,11 +57,18 @@ export default function Chat() {
                   minHeight: "19rem"
                 }}
               >
-                <div class="min-w-full text-white bg-gray-700 rounded-t p-2">
-                  Lista de amigos
+                <div className="relative flex items-center bg-gray-700 rounded-t p-2 mb-1">
+                  <img
+                    alt="Icono amigos"
+                    src="https://i.imgur.com/bFwS64U.png"
+                    width="30"
+                  />
+                  <div className="text-sm px-2 font-normal block w-full whitespace-no-wrap text-white">
+                    Lista de amigos
+                  </div>
                 </div>
                 <div
-                  className="relative flex items-center px-2 hover:bg-gray-200"
+                  className="relative flex items-center px-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => {
                     closeFriendlist();
                     openChat();
@@ -80,6 +87,21 @@ export default function Chat() {
                       Ultimo mensaje
                     </div>
                   </div>
+                </div>
+                <div className="text-gray-400 text-sm flex justify-center mt-2">
+                  Solicitudes de amistad
+                </div>
+                <div className="relative flex items-center px-2">
+                  <img
+                    src="https://i.imgur.com/q385Ahc.png"
+                    alt="Amigo"
+                    width="30"
+                  ></img>{" "}
+                  <div className="text-sm px-2 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800">
+                    Usuario
+                  </div>
+                  <div className="mx-4 text-green-500">✓</div>
+                  <div className="mx-5 text-red-500">x</div>
                 </div>
               </div>
               <div
@@ -110,7 +132,7 @@ export default function Chat() {
                   </div>
                 </div>
                 <div className="h-0 my-2 border border-solid border-t-0 border-white bg-gray-700 opacity-25" />
-                <div className="block py-16"></div>
+                <div className="block py-24"></div>
                 <div className="h-0 my-2 border border-solid border-t-0 border-gray-800 opacity-25" />
                 <Input
                   variant="chat"

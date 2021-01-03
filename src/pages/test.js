@@ -129,7 +129,7 @@ export default function Test() {
         ></Input>
         <Input
           id="cantidadDinero"
-          type="text"
+          type="number"
           placeholder="Cantidad dinero"
         ></Input>
         <Input

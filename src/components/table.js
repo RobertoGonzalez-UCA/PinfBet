@@ -12,7 +12,9 @@ export default function Table() {
       const data = await firebase
         .firestore()
         .collection("users")
+        .orderBy("coins", "desc")
         .get();
+
       setSpells(
         data.docs.map((doc) => ({
           ...doc.data()
@@ -22,26 +24,37 @@ export default function Table() {
     fetchData();
   }, []);
 
-  return (
+  /*return (
     <ul>
       {spells.map((spell) => (
         <li
           className="bg-red-100"
           key={spell.uid}
         >
-          {spell.uid}
-          {spell.coins}
+          {spell.uid} {spell.coins}
         </li>
       ))}
     </ul>
-  );
+  );*/
 
-  /*return (
+  return (
     <div class="flex flex-col">
       <div class="-my-2 overflow-x-auto">
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200 bg-gray-700">
+              {spells.map((spell) => (
+                <>
+                  <div
+                    className="bg-green-200 flex"
+                    key={spell.uid}
+                  >
+                    {spell.nickname}{" "}
+                    {spell.coins}{" "}
+                    {spell.coinsEarned}
+                  </div>
+                </>
+              ))}
               <thead>
                 <tr>
                   <th
@@ -72,7 +85,8 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
                   >
-                    Porcentaje de aciertos
+                    Porcentaje de
+                    aciertos
                   </th>
                 </tr>
               </thead>
@@ -95,16 +109,17 @@ export default function Table() {
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">--</div>
+                    <div class="text-sm text-white"></div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">--</div>
+                    <div class="text-sm text-white">
+                      --
+                    </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">--</div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">--</div>
+                    <div class="text-sm text-white">
+                      --
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -113,5 +128,5 @@ export default function Table() {
         </div>
       </div>
     </div>
-  );*/
+  );
 }

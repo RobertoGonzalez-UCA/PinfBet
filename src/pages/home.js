@@ -6,6 +6,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 
 export default function Home() {
   var user = firebase.auth()
@@ -160,9 +161,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <pre>
+      <Footer />
+
+      {/*       <pre>
         {JSON.stringify(user, null, 2)}
-      </pre>
+      </pre> */}
     </>
   );
 }

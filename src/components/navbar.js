@@ -22,17 +22,25 @@ export default function Navbar() {
   var user = firebase.auth()
     .currentUser;
 
-  /* var pinfCoins = firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", user.uid)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.data().coins;
+  const infoCoins = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .where("uid", "==", user.uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          setPinfCoins(
+            doc.data().coins
+          );
+        });
       });
-    });
-  */
+  };
+
+  const [
+    pinfCoins,
+    setPinfCoins
+  ] = React.useState(infoCoins());
 
   return (
     <nav class="bg-gray-600">
@@ -116,7 +124,7 @@ export default function Navbar() {
                 </Button>
               </Link>
               <span class="ml-6 font-semibold text-green-600">
-                0.00 PFC
+                {pinfCoins} PFC
               </span>
               <DropdownProfile />
             </div>

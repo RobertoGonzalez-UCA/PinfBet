@@ -24,7 +24,10 @@ export default function Profile() {
           </h1>
           <div
             className="ml-4 mr-4"
-            style={{ maxWidth: "225px", maxHeight: "100px" }}
+            style={{
+              maxWidth: "225px",
+              maxHeight: "100px"
+            }}
           >
             <div className="text-gray-500 text-md justify-center text-center mb-4">
               Cuéntanos algo sobre ti...
@@ -36,10 +39,12 @@ export default function Profile() {
         </div>
       </div>
       <div className="absolute mt-4 left-60 flex">
-        <Button>Añadir amigo</Button>
-        <Button variant="secondary">Bloquear</Button>
-        <Button className="" variant="tertiary">
-          Reportar
+        <Button>Agregar</Button>
+        <Button
+          className=""
+          variant="tertiary"
+        >
+          Eliminar
         </Button>
       </div>
       <div className="absolute right-36 top-28 ">
@@ -50,25 +55,33 @@ export default function Profile() {
           <div className=" text-lg flex justify-center text-center mr-20">
             Porcentaje de aciertos
           </div>
-          <div className=" text-lg flex justify-center text-center">-%</div>
+          <div className=" text-lg flex justify-center text-center">
+            -%
+          </div>
         </div>
         <div className="flex justify-between justify-center mb-3">
           <div className=" text-lg flex justify-center text-center mr-20">
             PINFCOIN ganados
           </div>
-          <div className=" text-lg flex justify-center text-center">-</div>
+          <div className=" text-lg flex justify-center text-center">
+            -
+          </div>
         </div>
         <div className="flex justify-between justify-center mb-3">
           <div className=" text-lg flex justify-center text-center mr-20">
             Puesto en el ranking
           </div>
-          <div className=" text-lg flex justify-center text-center">-</div>
+          <div className=" text-lg flex justify-center text-center">
+            -
+          </div>
         </div>
         <div className="flex justify-between justify-center mb-3">
           <div className=" text-lg flex justify-center text-center mr-20">
             Tiempo en la plataforma
           </div>
-          <div className=" text-lg flex justify-center text-center">-</div>
+          <div className=" text-lg flex justify-center text-center">
+            -
+          </div>
         </div>
       </div>
       <div className="mt-14 transform scale-90">
@@ -76,14 +89,22 @@ export default function Profile() {
           Asignaturas
         </h2>
         <div className="flex justify-center">
-          <Subject variant="yellow" subjectName="MD" subjectFullname="" />
+          <Subject
+            variant="yellow"
+            subjectName="MD"
+            subjectFullname=""
+          />
           <Subject variant="red" />
           <Subject variant="blue" />
           <Subject variant="green" />
           <Subject variant="purple" />
         </div>
         <div className="flex justify-center">
-          <Subject variant="yellow" subjectName="PCTR" subjectFullname="" />
+          <Subject
+            variant="yellow"
+            subjectName="PCTR"
+            subjectFullname=""
+          />
           <Subject variant="red" />
           <Subject variant="blue" />
           <Subject variant="green" />

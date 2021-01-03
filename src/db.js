@@ -14,6 +14,18 @@ export function getUsers() {
     });
 }
 
+export function getDegrees() {
+  firebase
+    .firestore()
+    .collection("degrees")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, doc.data());
+      });
+    });
+}
+
 //FUNCION SOLICITAR AMISTAD
 export function solicitarAmistad() {
   var emisor = firebase.auth()
@@ -319,7 +331,7 @@ export function crearApuesta() {
       );
     });
 
-    reverseQuery
+  reverseQuery
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {

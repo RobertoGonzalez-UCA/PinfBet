@@ -1,7 +1,42 @@
 import React from "react";
+import firebase from "firebase";
 
 export default function Table() {
+  const [
+    spells,
+    setSpells
+  ] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("users")
+        .get();
+      setSpells(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
   return (
+    <ul>
+      {spells.map((spell) => (
+        <li
+          className="bg-red-100"
+          key={spell.uid}
+        >
+          {spell.uid}
+          {spell.coins}
+        </li>
+      ))}
+    </ul>
+  );
+
+  /*return (
     <div class="flex flex-col">
       <div class="-my-2 overflow-x-auto">
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -78,5 +113,5 @@ export default function Table() {
         </div>
       </div>
     </div>
-  );
+  );*/
 }

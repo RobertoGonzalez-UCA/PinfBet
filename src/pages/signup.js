@@ -35,11 +35,10 @@ const SignUp = ({ history }) => {
             coins: 0,
             uid: firebase.auth()
               .currentUser.uid,
-            stats: {
-              coinsEarned: 0,
-              hitRate: 0,
-              hitStreak: 0
-            }
+            coinsEarned: 0,
+            hits: 0,
+            fails: 0,
+            hitStreak: 0
           });
         history.push("/");
       } catch (error) {

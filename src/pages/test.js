@@ -106,6 +106,11 @@ export default function Test() {
           placeholder="UID (solicitar amistad)"
         ></Input>
         <Input
+          id="betValueCheck"
+          type="checkbox"
+          placeholder="Aprobar?"
+        ></Input>
+        <Input
           id="uidApostado"
           type="text"
           placeholder="UID del apostado"

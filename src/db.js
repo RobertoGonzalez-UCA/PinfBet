@@ -149,7 +149,13 @@ export function comprobarCreditos() {
   cantidadDinero = parseInt(cantidadDinero, 10);
   cantidadDineroNota = parseInt(cantidadDineroNota, 10);
 
+  if (isNaN(cantidadDineroNota)) {
+    cantidadDineroNota = 0;
+  }
+
   var dineroApuesta = cantidadDinero + cantidadDineroNota;
+
+  console.log("cantidadDineroNota es" + cantidadDineroNota);
 
   console.log("La cantidad total de dinero apostado es" + dineroApuesta);
 
@@ -185,15 +191,13 @@ export function comprobarCreditos() {
 export function crearApuesta() {
   var uidApostante = firebase.auth().currentUser.uid;
   var uidApostado = document.getElementById("uidApostado").value;
+  var valorBet = document.getElementById("betValueCheck").checked;
   var betNotaCheck = document.getElementById("betNotaCheck").checked;
   var notaApostada = document.getElementById("notaApostada").value;
   var idAsignatura = document.getElementById("idAsignatura").value;
   var cantidadDinero = document.getElementById("cantidadDinero").value;
   var cantidadDineroNota = document.getElementById("cantidadDineroNota").value;
   var idBetContext;
-  var subject = firebase //No usado por ahora
-    .firestore()
-    .collection("subjects");
 
   //var amigos = false;
 
@@ -219,6 +223,7 @@ export function crearApuesta() {
             cantidadDinero,
             uidApostado,
             betNotaCheck,
+            valorBet,
             cantidadDineroNota,
             idBetContext,
             notaApostada
@@ -244,6 +249,7 @@ export function crearApuesta() {
             cantidadDinero,
             uidApostado,
             betNotaCheck,
+            valorBet,
             cantidadDineroNota,
             idBetContext,
             notaApostada
@@ -278,6 +284,7 @@ function escribirApuesta(
   cantidadDinero,
   uidApostado,
   betNotaCheck,
+  valorBet,
   cantidadDineroNota,
   idBetContext,
   notaApostada
@@ -303,7 +310,7 @@ function escribirApuesta(
           betContextId: docRef.id,
           type: "APRUEBA_SUSPENDE",
           uid: uidApostado,
-          value: true
+          value: valorBet
         })
         .then(function (docRef) {
           console.log("Bet Normal written with ID: ", docRef.id);
@@ -546,7 +553,7 @@ function actualizarBets(bet, nota, betContext) {
             .doc(doc.id)
             .update({
               coins: firebase.firestore.FieldValue.increment(aumento),
-              coinsEarned: firebase.firestore.FieldValue.increment(aumento), //No funciona, ver https://stackoverflow.com/questions/58307204/how-to-increment-a-map-value-in-a-firestore-array
+              coinsEarned: firebase.firestore.FieldValue.increment(aumento),
               hits: firebase.firestore.FieldValue.increment(1),
               hitStreak: firebase.firestore.FieldValue.increment(1)
             });

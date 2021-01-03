@@ -2,10 +2,7 @@ import React from "react";
 import firebase from "firebase";
 
 export default function Table() {
-  const [
-    spells,
-    setSpells
-  ] = React.useState([]);
+  const [spells, setSpells] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -45,13 +42,8 @@ export default function Table() {
             <table class="min-w-full divide-y divide-gray-200 bg-gray-700">
               {spells.map((spell) => (
                 <>
-                  <div
-                    className="bg-green-200 flex"
-                    key={spell.uid}
-                  >
-                    {spell.nickname}{" "}
-                    {spell.coins}{" "}
-                    {spell.coinsEarned}
+                  <div className="bg-green-200 flex" key={spell.uid}>
+                    {spell.nickname} {spell.coins} {spell.coinsEarned}
                   </div>
                 </>
               ))}
@@ -85,44 +77,45 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
                   >
-                    Porcentaje de
-                    aciertos
+                    Porcentaje de aciertos
                   </th>
                 </tr>
               </thead>
-              <tbody class="bg-gray-500 divide-y divide-gray-200">
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10">
-                        <img
-                          class="h-10 w-10 rounded-full"
-                          src="https://i.imgur.com/q385Ahc.png"
-                          alt=""
-                        ></img>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-white">
-                          Usuario
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white"></div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">
-                      --
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-white">
-                      --
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+              {spells.map((spell) => (
+                <>
+                  <div key={spell.uid}>
+                    <tbody class="bg-gray-500 divide-y divide-gray-200">
+                      <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                              <img
+                                class="h-10 w-10 rounded-full"
+                                src="https://i.imgur.com/q385Ahc.png"
+                                alt=""
+                              ></img>
+                            </div>
+                            <div class="ml-4">
+                              <div class="text-sm font-medium text-white">
+                                Usuario
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm text-white"></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm text-white">--</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm text-white">--</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </div>
+                </>
+              ))}
             </table>
           </div>
         </div>

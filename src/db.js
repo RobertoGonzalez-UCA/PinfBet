@@ -27,21 +27,161 @@ export function getDegrees() {
 }
 
 //FUNCION SOLICITAR AMISTAD
-export function solicitarAmistad() {
-  var emisor = firebase.auth().currentUser;
-  var uidEmisor = emisor.uid;
+export async function solicitarAmistad() {
+  var uidEmisor = firebase.auth().currentUser.uid;
   var uidReceptor = document.getElementById("uidReceptor").value;
 
-  firebase.firestore().collection("friendships").add({
+  if(uidReceptor === ""){ console.log("Inserte un UID"); return }
+
+  await firebase.firestore().collection("friendships").add({
     status: "PENDING",
     uid_a: uidEmisor,
     uid_b: uidReceptor
   });
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
+      });
+    })
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
+      });
+    })
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "DENIED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
+      });
+    })
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "DENIED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
+      });
+    })
+  }
+
+function yaHayAmistad(uidEmisor, uidReceptor){
+   firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "PENDING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("friendships")
+          .doc(doc.id)
+          .delete()
+          .then(function () {
+            console.log("Pending friendship successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+      });
+    })
+
+    firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "PENDING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("friendships")
+          .doc(doc.id)
+          .delete()
+          .then(function () {
+            console.log("Pending friendship successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+      });
+    })
+}
+
+
+
+//FUNCION MOSTRAR AMISTADES
+export function mostrarAmistad() {
+  var uidReceptor = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then((querySnapshot) => {
+      console.log(querySnapshot.docs);
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        console.log("Tienes amistad con" + doc.data().uid_a);
+      });
+    });
+
+    firebase
+    .firestore()
+    .collection("friendships")
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then((querySnapshot) => {
+      console.log(querySnapshot.docs);
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        console.log("Tienes amistad con" + doc.data().uid_b);
+      });
+    });
 }
 
 //FUNCION MOSTRAR SOLICITUDES DE AMISTAD
 export function mostrarSolicitud() {
-  var uidReceptor = document.getElementById("uidReceptor").value;
+  var uidReceptor = firebase.auth().currentUser.uid;
 
   firebase
     .firestore()

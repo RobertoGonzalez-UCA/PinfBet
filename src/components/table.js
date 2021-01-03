@@ -9,7 +9,7 @@ export default function Table() {
       const data = await firebase
         .firestore()
         .collection("users")
-        .orderBy("coins", "desc")
+        .orderBy("hits", "desc")
         .get();
 
       setSpells(
@@ -40,13 +40,6 @@ export default function Table() {
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200 bg-gray-700">
-              {spells.map((spell) => (
-                <>
-                  <div className="bg-green-200 flex" key={spell.uid}>
-                    {spell.nickname} {spell.coins} {spell.coinsEarned}
-                  </div>
-                </>
-              ))}
               <thead>
                 <tr>
                   <th
@@ -76,6 +69,10 @@ export default function Table() {
                   <th
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                    ref={spells}
+                    onClick={() => {
+                      spells.orderByChild("hits");
+                    }}
                   >
                     Porcentaje de aciertos
                   </th>
@@ -83,37 +80,43 @@ export default function Table() {
               </thead>
               {spells.map((spell) => (
                 <>
-                  <div key={spell.uid}>
-                    <tbody class="bg-gray-500 divide-y divide-gray-200">
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10">
-                              <img
-                                class="h-10 w-10 rounded-full"
-                                src="https://i.imgur.com/q385Ahc.png"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div class="ml-4">
-                              <div class="text-sm font-medium text-white">
-                                Usuario
-                              </div>
+                  <tbody
+                    class="bg-gray-500 divide-y divide-gray-200"
+                    key={spell.uid}
+                  >
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                          <div class="flex-shrink-0 h-10 w-10">
+                            <img
+                              class="h-10 w-10 rounded-full"
+                              src="https://i.imgur.com/q385Ahc.png"
+                              alt=""
+                            ></img>
+                          </div>
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-white">
+                              {spell.nickname}
                             </div>
                           </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-white"></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-white">--</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-white">--</div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-white">{spell.coins}</div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-white">
+                          {spell.coinsEarned}
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-white">{spell.hitStreak}</div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-white">{spell.hits}</div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </>
               ))}
             </table>

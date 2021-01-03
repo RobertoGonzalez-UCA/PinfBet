@@ -151,9 +151,9 @@ export default function Test() {
         <Input id="name" type="text" placeholder="name"></Input>
         <Input id="year" type="number" placeholder="year"></Input>
         <Input
-          id="docId"
+          id="solicitanteId"
           type="text"
-          placeholder="Id de solicitud de amistad"
+          placeholder="Id de solicitante de amistad"
         ></Input>
       </form>
     </div>

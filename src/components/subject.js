@@ -32,10 +32,6 @@ export default function Subject({
       <div>
         <div className="text-2xl font-semibold">{subjectName}</div>
         <div className="text-xs text-gray-900">({subjectFullname})</div>
-        <br />
-        <br />
-        <div className="text-sm text-gray-900">({friends} amigos en esta</div>
-        <div className="text-sm text-gray-900">asignatura)</div>
       </div>
     </button>
   );

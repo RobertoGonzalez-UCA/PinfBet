@@ -6,7 +6,6 @@ import Footer from "../components/footer";
 
 export default function Rankings() {
   return (
-    <>
       <div className="flex flex-col h-screen">
         <Navbar />
         <Chat />
@@ -15,6 +14,5 @@ export default function Rankings() {
         </div>
         <Footer />
       </div>
-    </>
   );
 }

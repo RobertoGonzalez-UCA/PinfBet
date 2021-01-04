@@ -29,11 +29,73 @@ export default function Bets() {
     gradeShow,
     setGradeShow
   ] = React.useState(true);
+  const [
+    degrees,
+    setDegrees
+  ] = React.useState([]);
+  const [
+    degreeSelected,
+    setDegreeSelected
+  ] = React.useState(null);
+  const [
+    subjects,
+    setSubjects
+  ] = React.useState([]);
+  const [
+    subjectsOrder,
+    setSubjectsOrder
+  ] = React.useState([]);
 
   const courseRef = React.createRef();
   const subjectsRef = React.createRef();
   const gradeRef = React.createRef();
   const userRef = React.createRef();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("degrees")
+        .get();
+
+      setDegrees(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("subjects")
+        .get();
+
+      setSubjects(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
+  function orderSubjects(degree, year) {
+    setSubjectsOrder(
+      subjects
+        .filter(
+          (subject) =>
+            subject.degreeId === degree
+        )
+        .filter(
+          (subject) =>
+            subject.year === year
+        )
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -55,27 +117,26 @@ export default function Bets() {
             </h1>
           </div>
           <div className="flex justify-center">
-            <Grade
-              icon={
-                <svg
-                  viewBox="64 64 896 896"
-                  focusable="false"
-                  data-icon="laptop"
-                  width="2em"
-                  height="2em"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M956.9 845.1L896.4 632V168c0-17.7-14.3-32-32-32h-704c-17.7 0-32 14.3-32 32v464L67.9 845.1C60.4 866 75.8 888 98 888h828.8c22.2 0 37.6-22 30.1-42.9zM200.4 208h624v395h-624V208zm228.3 608l8.1-37h150.3l8.1 37H428.7zm224 0l-19.1-86.7c-.8-3.7-4.1-6.3-7.8-6.3H398.2c-3.8 0-7 2.6-7.8 6.3L371.3 816H151l42.3-149h638.2l42.3 149H652.7z"></path>
-                </svg>
-              }
-              gradeName="GII"
-              gradeFullname="Ingeniería Informática"
-              onClick={() => {
-                setGradeShow(false);
-                setCourseShow(true);
-              }}
-            />
+            {degrees.map((degree) => (
+              <>
+                <Grade
+                  icon={degree.acronym}
+                  gradeName={
+                    degree.acronym
+                  }
+                  gradeFullname={
+                    degree.name
+                  }
+                  onClick={() => {
+                    setGradeShow(false);
+                    setCourseShow(true);
+                    setDegreeSelected(
+                      degree.code
+                    );
+                  }}
+                />
+              </>
+            ))}
           </div>
         </div>
         <div
@@ -99,7 +160,7 @@ export default function Bets() {
               }}
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
-            <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
+            <h1 className="mt-10 sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
               Selecciona sobre que curso
               quieres apostar.
             </h1>
@@ -113,6 +174,10 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
+                orderSubjects(
+                  degreeSelected,
+                  1
+                );
               }}
             >
               {" "}
@@ -128,6 +193,10 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
+                orderSubjects(
+                  degreeSelected,
+                  2
+                );
               }}
             >
               {" "}
@@ -143,6 +212,10 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
+                orderSubjects(
+                  degreeSelected,
+                  3
+                );
               }}
             >
               {" "}
@@ -158,10 +231,13 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
+                orderSubjects(
+                  degreeSelected,
+                  4
+                );
               }}
             >
-              {" "}
-              Asignaturas de cuarto{" "}
+              Asignaturas de cuarto
             </Button>
           </div>
         </div>
@@ -186,95 +262,32 @@ export default function Bets() {
               }}
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
-            <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
+            <h1 className="mt-10 sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
               Selecciona sobre que
               asignatura quieres
               apostar.
             </h1>
           </div>
-          <h2 className="mb-4 block text-2xl font-bold leading-none flex justify-center">
-            Primer semestre
-          </h2>
-          <div className="flex justify-center">
-            <Subject
-              variant="yellow"
-              subjectName="MD"
-              subjectFullname=""
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="red"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="blue"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="green"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="purple"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-          </div>
-          <h2 className="mb-4 block text-2xl font-bold leading-none flex justify-center">
-            Segundo semestre
-          </h2>
-          <div className="flex justify-center">
-            <Subject
-              variant="yellow"
-              subjectName="PCTR"
-              subjectFullname=""
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="red"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="blue"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="green"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
-            <Subject
-              variant="purple"
-              onClick={() => {
-                setUserShow(true);
-                setSubjectsShow(false);
-              }}
-            />
+          <div className="flex flex-wrap justify-center">
+            {subjectsOrder.map(
+              (subject) => (
+                <Subject
+                  variant="green"
+                  subjectName={
+                    subject.acronym
+                  }
+                  subjectFullname={
+                    subject.name
+                  }
+                  onClick={() => {
+                    setUserShow(true);
+                    setSubjectsShow(
+                      false
+                    );
+                  }}
+                />
+              )
+            )}
           </div>
         </div>
         <div

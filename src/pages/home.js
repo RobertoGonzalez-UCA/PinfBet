@@ -187,14 +187,14 @@ export default function Home() {
                       Social
                     </h2>
                     <p class="leading-relaxed text-base">
-                      Conéctate todos
-                      los días a la
-                      plataforma para
-                      poder charlar con
-                      tus amigos y
-                      debatir la
-                      siguiente apuesta
-                      ganadora!
+                      Puedes conectarte
+                      todos los días a
+                      la plataforma para
+                      actualizar las
+                      apuestas sobre tus
+                      amigos y debatir
+                      la siguiente
+                      apuesta ganadora!
                     </p>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ import Footer from "../components/footer";
 export default function Rankings() {
   return (
     <>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col h-screen">
         <Navbar />
         <Chat />
         <div className="mt-12 mb-auto">

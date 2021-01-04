@@ -15,7 +15,7 @@ export default function Legalterms() {
       <section class="text-gray-600 body-font">
         <div class="container px-5 py-6 mx-auto">
           <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
-            <div class="flex-grow mb-16 bg-gray-100 rounded p-4 sm:text-left text-center mt-5 sm:mt-0">
+            <div class="flex-grow mb-16 bg-gray-200 rounded p-4 sm:text-left text-center mt-5 sm:mt-0">
               <p class="leading-relaxed text-base">
                 La presente Política de
                 Privacidad establece los

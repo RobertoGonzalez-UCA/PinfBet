@@ -16,6 +16,7 @@ import Userconfig from "./pages/userconfig";
 import Home from "./pages/home";
 import Legalterms from "./pages/legalterms";
 import Forgotpass from "./pages/forgotpass";
+import AboutUs from "./pages/aboutus";
 
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./privateRoute";
@@ -52,6 +53,11 @@ export default function App() {
           />
           <Route
             exact
+            path="/aboutus"
+            component={AboutUs}
+          />
+          <Route
+            exact
             path="/test"
             component={Test}
           />
@@ -74,7 +80,7 @@ export default function App() {
             exact
             path="/forgotpass"
             component={Forgotpass}
-        />
+          />
         </Switch>
       </Router>
     </AuthProvider>

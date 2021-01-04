@@ -76,7 +76,7 @@ export default function Profile() {
             </Button>
           </div>
           <div className="mt-14 transform scale-90">
-            <h2 className="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900">
+            <h2 className="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900 mb-5">
               Asignaturas
             </h2>
             <div className="flex justify-center">

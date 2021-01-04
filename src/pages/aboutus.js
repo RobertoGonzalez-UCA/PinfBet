@@ -7,7 +7,7 @@ export default function AboutUs() {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <section class="text-gray-600 body-font">
+      <section class="text-gray-600 body-font mb-auto">
         <div class="container px-5 py-24 mx-auto">
           <div class="flex flex-col text-center w-full mb-20">
             <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
@@ -15,14 +15,10 @@ export default function AboutUs() {
             </h1>
             <div class="bg-gray-200 rounded p-3 mt-4 mx-80">
               <p class="lg:w-2/3 mx-auto leading-relaxed text-base italic">
-                «Recuerda que de la
-                conducta de cada uno
-                depende el destino de
+                «Recuerda que de la conducta de cada uno depende el destino de
                 todos»
               </p>
-              <p class="mt-1 italic font-bold">
-                Alejandro Magno
-              </p>
+              <p class="mt-1 italic font-bold">Alejandro Magno</p>
             </div>
           </div>
           <div class="flex flex-wrap -m-2">
@@ -40,12 +36,9 @@ export default function AboutUs() {
                 />
                 <div class="flex-grow">
                   <h2 class="text-gray-900 title-font font-medium">
-                    Roberto González
-                    Álvarez
+                    Roberto González Álvarez
                   </h2>
-                  <p class="text-gray-500">
-                    CTO, DevOps
-                  </p>
+                  <p class="text-gray-500">CTO, DevOps</p>
                 </div>
               </div>
             </div>
@@ -63,13 +56,9 @@ export default function AboutUs() {
                 />
                 <div class="flex-grow">
                   <h2 class="text-gray-900 title-font font-medium">
-                    Juan Carlos Camacho
-                    Carribero
+                    Juan Carlos Camacho Carribero
                   </h2>
-                  <p class="text-gray-500">
-                    Diseñador,
-                    Desarrollador IU
-                  </p>
+                  <p class="text-gray-500">Diseñador, Desarrollador IU</p>
                 </div>
               </div>
             </div>
@@ -82,13 +71,9 @@ export default function AboutUs() {
                 />
                 <div class="flex-grow">
                   <h2 class="text-gray-900 title-font font-medium">
-                    Alfonso Ponce
-                    Navarro
+                    Alfonso Ponce Navarro
                   </h2>
-                  <p class="text-gray-500">
-                    Documentador,
-                    Analista
-                  </p>
+                  <p class="text-gray-500">Documentador, Analista</p>
                 </div>
               </div>
             </div>
@@ -101,13 +86,9 @@ export default function AboutUs() {
                 />
                 <div class="flex-grow">
                   <h2 class="text-gray-900 title-font font-medium">
-                    Ezequiel Jiménez
-                    García
+                    Ezequiel Jiménez García
                   </h2>
-                  <p class="text-gray-500">
-                    Programador de
-                    backend
-                  </p>
+                  <p class="text-gray-500">Programador de backend</p>
                 </div>
               </div>
             </div>

@@ -9,7 +9,30 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 
 export default function Home() {
-  var user = firebase.auth().currentUser;
+  var user = firebase.auth()
+    .currentUser;
+
+  const [
+    spells,
+    setSpells
+  ] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "==", user.uid)
+        .get();
+
+      setSpells(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -20,12 +43,29 @@ export default function Home() {
             <div class="container px-5 py-24 mx-auto">
               <div class="text-center mb-20">
                 <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
-                  Bienvenido {user.email}!
+                  {spells.map(
+                    (spell) => (
+                      <p
+                        key={spell.uid}
+                      >
+                        Bienvenido{" "}
+                        {spell.nickname}
+                        !
+                      </p>
+                    )
+                  )}
                 </h1>
                 <p class="text-base leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto text-gray-500s">
-                  Accede a los mercados académicos en cualquier momento, en
-                  cualquier lugar. Nosotros te facilitamos las herramientas y
-                  las posibilidades para que controles tus créditos académicos.
+                  Accede a los mercados
+                  académicos en
+                  cualquier momento, en
+                  cualquier lugar.
+                  Nosotros te
+                  facilitamos las
+                  herramientas y las
+                  posibilidades para que
+                  controles tus créditos
+                  académicos.
                 </p>
                 <div class="flex mt-6 justify-center">
                   <div class="w-16 h-1 rounded-full bg-green-500 inline-flex"></div>
@@ -51,9 +91,13 @@ export default function Home() {
                       Apuestas
                     </h2>
                     <p class="leading-relaxed text-base">
-                      Creemos que mereces más PinfCoins de los que tienes.{" "}
-                      <br />
-                      No te quedes parado, empieza a apostar!
+                      Creemos que
+                      mereces más
+                      PinfCoins de los
+                      que tienes. <br />
+                      No te quedes
+                      parado, empieza a
+                      apostar!
                     </p>
                     <Link
                       className="mt-9 text-green-500 inline-flex items-center"
@@ -93,10 +137,17 @@ export default function Home() {
                       Seguridad
                     </h2>
                     <p class="leading-relaxed text-base">
-                      No temas por tu seguridad, esto es un lugar seguro. Todos
-                      los movimientos que realices en esta plataforma son
-                      privados. Además puedes revisar cómo son tratados tus
-                      datos.
+                      No temas por tu
+                      seguridad, esto es
+                      un lugar seguro.
+                      Todos los
+                      movimientos que
+                      realices en esta
+                      plataforma son
+                      privados. Además
+                      puedes revisar
+                      cómo son tratados
+                      tus datos.
                     </p>
                     <Link
                       className="mt-3 text-green-500 inline-flex items-center"
@@ -136,8 +187,13 @@ export default function Home() {
                       Social
                     </h2>
                     <p class="leading-relaxed text-base">
-                      Conéctate todos los días a la plataforma para poder
-                      charlar con tus amigos y debatir la siguiente apuesta
+                      Conéctate todos
+                      los días a la
+                      plataforma para
+                      poder charlar con
+                      tus amigos y
+                      debatir la
+                      siguiente apuesta
                       ganadora!
                     </p>
                   </div>

@@ -10,6 +10,7 @@ import Footer from "../components/footer";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 
 export default function Bets() {
   const [
@@ -33,18 +34,6 @@ export default function Bets() {
   const subjectsRef = React.createRef();
   const gradeRef = React.createRef();
   const userRef = React.createRef();
-
-  function getDegrees() {
-    firebase
-      .firestore()
-      .collection("degrees")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-  }
 
   return (
     <div className="flex flex-col h-screen">

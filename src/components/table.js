@@ -2,53 +2,13 @@ import React from "react";
 import firebase from "firebase";
 
 export default function Table() {
-  const [
-    sortType,
-    setSortType
-  ] = React.useState([]);
-  const [
-    spells,
-    setSpells
-  ] = React.useState([]);
-  const [
-    data,
-    setData
-  ] = React.useState([]);
-  /*
-  const spells = [
-    {
-      id: 1,
-      nickname: "Nightwish",
-      coins: 9,
-      coinsEarned: 200,
-      hits: 6,
-      hitStreak: 1996
-    },
-    {
-      id: 2,
-      nickname: "Metallica",
-      coins: 10,
-      coinsEarned: 200,
-      hits: 4,
-      hitStreak: 1981
-    },
-    {
-      id: 3,
-      nickname: "Nirvana",
-      coins: 3,
-      coinsEarned: 200,
-      hits: 3,
-      hitStreak: 1987
-    }
-  ];
-*/
+  const [sortType, setSortType] = React.useState([]);
+  const [spells, setSpells] = React.useState([]);
+  const [data, setData] = React.useState([]);
+
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
-        .firestore()
-        .collection("users")
-        //.orderBy("coins", "desc")
-        .get();
+      const data = await firebase.firestore().collection("users").get();
 
       setSpells(
         data.docs.map((doc) => ({
@@ -69,28 +29,13 @@ export default function Table() {
       };
       const sortProperty = types[type];
       const sorted = [...spells].sort(
-        (a, b) =>
-          b[sortProperty] -
-          a[sortProperty]
+        (a, b) => b[sortProperty] - a[sortProperty]
       );
       setData(sorted);
     };
 
     sortArray(sortType);
   }, [sortType]);
-
-  /*return (
-    <ul>
-      {spells.map((spell) => (
-        <li
-          className="bg-red-100"
-          key={spell.uid}
-        >
-          {spell.uid} {spell.coins}
-        </li>
-      ))}
-    </ul>
-  );*/
 
   return (
     <div class="flex flex-col">
@@ -110,9 +55,7 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType(
-                        "coins"
-                      );
+                      setSortType("coins");
                     }}
                   >
                     PinfCoins Actuales
@@ -121,9 +64,7 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType(
-                        "coinsEarned"
-                      );
+                      setSortType("coinsEarned");
                     }}
                   >
                     PinfCoins Ganados
@@ -132,9 +73,7 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType(
-                        "hitStreak"
-                      );
+                      setSortType("hitStreak");
                     }}
                   >
                     Racha de aciertos
@@ -143,13 +82,10 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType(
-                        "hits"
-                      );
+                      setSortType("hits");
                     }}
                   >
-                    Porcentaje de
-                    aciertos
+                    Porcentaje de aciertos
                   </th>
                 </tr>
               </thead>
@@ -171,44 +107,45 @@ export default function Table() {
                           </div>
                           <div class="ml-4">
                             <div class="text-sm font-medium text-white">
-                              {
-                                spell.nickname
-                              }
+                              {spell.nickname}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                      <td
+                        class={
+                          (sortType === "coins" ? "bg-gray-600 " : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
+                        <div class="text-sm text-white">{spell.coins} PFC</div>
+                      </td>
+                      <td
+                        class={
+                          (sortType === "coinsEarned" ? "bg-gray-600 " : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
                         <div class="text-sm text-white">
-                          {spell.coins}{" "}
-                          PFC
+                          {spell.coinsEarned} PFC
                         </div>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-white">
-                          {
-                            spell.coinsEarned
-                          }{" "}
-                          PFC
-                        </div>
+                      <td
+                        class={
+                          (sortType === "hitStreak" ? "bg-gray-600 " : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
+                        <div class="text-sm text-white">{spell.hitStreak}</div>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
+                      <td
+                        class={
+                          (sortType === "hits" ? "bg-gray-600 " : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
                         <div class="text-sm text-white">
-                          {
-                            spell.hitStreak
-                          }
-                        </div>
-                      </td>
-                      <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-white">
-                          {(
-                            (spell.hits /
-                              spell.fails) *
-                            100
-                          ).toFixed(
-                            2
-                          )}{" "}
-                          %
+                          {((spell.hits / spell.fails) * 100).toFixed(2)} %
                         </div>
                       </td>
                     </tr>

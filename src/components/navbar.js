@@ -6,12 +6,10 @@ import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import algoliasearch from "algoliasearch/lite";
 
 export default function Navbar() {
-  const [
-    showMenu,
-    setShowMenu
-  ] = React.useState(false);
+  const [showMenu, setShowMenu] = React.useState(false);
   const openMenu = () => {
     setShowMenu(true);
   };
@@ -19,8 +17,7 @@ export default function Navbar() {
     setShowMenu(false);
   };
 
-  var user = firebase.auth()
-    .currentUser;
+  var user = firebase.auth().currentUser;
 
   const infoCoins = () => {
     firebase
@@ -30,35 +27,26 @@ export default function Navbar() {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          setPinfCoins(
-            doc.data().coins
-          );
+          setPinfCoins(doc.data().coins);
         });
       });
   };
 
-  const [
-    pinfCoins,
-    setPinfCoins
-  ] = React.useState(infoCoins());
+  const [pinfCoins, setPinfCoins] = React.useState(infoCoins());
 
   return (
     <nav class="bg-gray-600">
-      <div class="relative flex items-center justify-between h-16">
+      <div class="relative flex justify-between h-16">
         <div class="block sm:hidden">
           <button
             id="boton"
             onClick={() => {
-              showMenu
-                ? closeMenu()
-                : openMenu();
+              showMenu ? closeMenu() : openMenu();
             }}
             class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
             aria-expanded="false"
           >
-            <span class="sr-only">
-              Open main menu
-            </span>
+            <span class="sr-only">Open main menu</span>
             <svg
               class="block h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
@@ -91,10 +79,7 @@ export default function Navbar() {
             </svg>
           </button>
         </div>
-        <Link
-          to="/"
-          className="ml-4 mr-4 flex-shrink-0 flex items-center"
-        >
+        <Link to="/" className="ml-4 mr-4 flex-shrink-0 flex items-center">
           <img
             src="https://i.imgur.com/TYNeajA.png"
             alt="Logo PinfBet"
@@ -109,19 +94,19 @@ export default function Navbar() {
           ></img>
         </Link>
 
-        <div class="relative flex items-center">
+        <div class="flex items-center">
           <div class="hidden sm:block">
-            <div class="relative flex items-center ">
-              <Input placeholder="Buscar..." />
+            <div class="flex items-center">
+              <div class="mt-20">
+                <Input className="" placeholder="Buscar..." />
+                <ul className="bg-gray-500 "></ul>
+              </div>
+
               <Link to="/bets">
-                <Button variant="seleccion">
-                  Apuestas
-                </Button>
+                <Button variant="seleccion">Apuestas</Button>
               </Link>
               <Link to="/rankings">
-                <Button variant="seleccion">
-                  Rankings
-                </Button>
+                <Button variant="seleccion">Rankings</Button>
               </Link>
               <span class="ml-6 font-semibold text-green-600">
                 {pinfCoins} PFC
@@ -133,10 +118,7 @@ export default function Navbar() {
       </div>
       {showMenu ? (
         <>
-          <div
-            id="menu"
-            class="sm:hidden"
-          >
+          <div id="menu" class="sm:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
               <Link
                 to="/bets"

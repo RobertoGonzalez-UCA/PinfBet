@@ -1,8 +1,5 @@
 import React from "react";
 import Popper from "popper.js";
-import Input from "../components/input";
-import Label from "../components/label";
-import Select from "../components/select";
 import Button from "../components/button";
 //import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";

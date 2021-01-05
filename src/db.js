@@ -777,6 +777,36 @@ export function cursarAsignatura() {
   var user = firebase.auth()
     .currentUser;
 
+
+    firebase //Esta parte se encarga de actualizar la nota
+    .firestore()
+    .collection("users")
+    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        console.log("Entré");
+        completarCursar(
+          degreeId,
+          subjectId,
+          user.uid,
+          doc.data().nickname
+        );
+      });
+    });
+}
+
+function completarCursar(
+  degreeId,
+  subjectId,
+  user,
+  nickname
+) {
+
+  console.log("Soy " + nickname);
+
   firebase
     .firestore()
     .collection("userSubjects")
@@ -784,7 +814,8 @@ export function cursarAsignatura() {
       degreeId: degreeId,
       grade: -1, //Nota por defecto cuando se crea
       subjectId: subjectId,
-      uid: user.uid
+      uid: user,
+      nickname: nickname
     })
     .then(function (docRef) {
       console.log(

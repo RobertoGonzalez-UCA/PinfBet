@@ -429,7 +429,7 @@ export default function Bets() {
                                   <div class="ml-4">
                                     <div class="text-sm font-medium text-white">
                                       {
-                                        userOrder.uid
+                                        userOrder.nickname
                                       }
                                     </div>
                                   </div>

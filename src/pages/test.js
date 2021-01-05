@@ -11,6 +11,7 @@ import Select from "../components/select";
 import Subject from "../components/subject";
 import Table from "../components/table";
 import Chat from "../components/chat";
+import SearchBar from "../components/searchBar";
 
 // import "firebase/auth";
 

@@ -17,6 +17,7 @@ import Home from "./pages/home";
 import Legalterms from "./pages/legalterms";
 import Forgotpass from "./pages/forgotpass";
 import AboutUs from "./pages/aboutus";
+import Social from "./pages/social";
 
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./privateRoute";
@@ -50,6 +51,11 @@ export default function App() {
             exact
             path="/userconfig"
             component={Userconfig}
+          />
+          <PrivateRoute
+            exact
+            path="/social"
+            component={Social}
           />
           <Route
             exact

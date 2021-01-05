@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 import Button from "../components/button";
 import DropdownProfile from "../components/dropdownProfile";
-import Input from "../components/input";
-import SearchBar from "../components/searchBar";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -120,7 +118,6 @@ export default function Navbar() {
         <div class="flex items-center">
           <div class="hidden sm:block">
             <div class="flex items-center">
-              <SearchBar />
               <Link to="/social">
                 <Button variant="seleccion">
                   Social

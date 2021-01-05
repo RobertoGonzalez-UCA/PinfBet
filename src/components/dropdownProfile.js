@@ -2,7 +2,7 @@ import React from "react";
 import Popper from "popper.js";
 import Button from "../components/button";
 //import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -10,14 +10,24 @@ import "firebase/auth";
 
 export default function DropdownProfile() {
   // dropdown props
-  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
-  const [showModal, setShowModal] = React.useState(false);
+  const [
+    dropdownPopoverShow,
+    setDropdownPopoverShow
+  ] = React.useState(false);
+  const [
+    showModal,
+    setShowModal
+  ] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverDropdownRef = React.createRef();
   const openDropdownPopover = () => {
-    new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
-      placement: "bottom-end"
-    });
+    new Popper(
+      btnDropdownRef.current,
+      popoverDropdownRef.current,
+      {
+        placement: "bottom-end"
+      }
+    );
     setDropdownPopoverShow(true);
   };
   const closeDropdownPopover = () => {
@@ -45,10 +55,14 @@ export default function DropdownProfile() {
             <div
               ref={popoverDropdownRef}
               className={
-                (dropdownPopoverShow ? "block " : "hidden ") +
+                (dropdownPopoverShow
+                  ? "block "
+                  : "hidden ") +
                 "text-base z-50 float-left list-none text-left rounded-lg shadow-lg mt-1 bg-gray-500"
               }
-              style={{ minWidth: "12rem" }}
+              style={{
+                minWidth: "12rem"
+              }}
             >
               <Link
                 to="/profile"
@@ -64,14 +78,20 @@ export default function DropdownProfile() {
               </Link>
               <div
                 className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600 cursor-pointer"
-                onClick={() => setShowModal(true)}
+                onClick={() =>
+                  setShowModal(true)
+                }
               >
                 Subir expediente
               </div>
               <div className="h-0 my-2 border border-solid border-t-0 border-gray-900 opacity-25" />
               <div
                 className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600 cursor-pointer"
-                onClick={() => firebase.auth().signOut()}
+                onClick={() =>
+                  firebase
+                    .auth()
+                    .signOut()
+                }
               >
                 Cerrar sesión
               </div>
@@ -98,22 +118,44 @@ export default function DropdownProfile() {
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-gray-600 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
                   >
                     ×
                   </button>
                 </div>
                 {/*body*/}
                 <div className="p-6">
-                  Para descargar tu expediente, dirigete a --- e inicia sesión
-                  con tus datos de la UCA. Podrás descargarlo haciendo click en
-                  ---. Hasta que no hayas cargado tu expediente, no podrás
-                  realizar apuestas.
+                  Para descargar tu
+                  expediente, dirigete a
+                  --- e inicia sesión
+                  con tus datos de la
+                  UCA. Podrás
+                  descargarlo haciendo
+                  click en ---. Hasta
+                  que no hayas cargado
+                  tu expediente, no
+                  podrás realizar
+                  apuestas.
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-                  <input type="file" className="mr-1 transform scale-90" />
-                  <Button onClick={() => setShowModal(false)}>Cargar</Button>
+                  <input
+                    type="file"
+                    className="mr-1 transform scale-90"
+                  />
+                  <Button
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
+                  >
+                    Cargar
+                  </Button>
                 </div>
               </div>
             </div>

@@ -773,6 +773,7 @@ export function cursarAsignatura() {
   var subjectId = document.getElementById(
     "subjectId"
   ).value;
+
   var user = firebase.auth()
     .currentUser;
 

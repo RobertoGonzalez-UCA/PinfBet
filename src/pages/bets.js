@@ -5,8 +5,8 @@ import Navbar from "../components/navbar";
 import Subject from "../components/subject";
 import Chat from "../components/chat";
 import Grade from "../components/grade";
-import Betstable from "../components/betstable";
 import Footer from "../components/footer";
+import Modal from "../components/modal";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -44,6 +44,28 @@ export default function Bets() {
   const [
     subjectsOrder,
     setSubjectsOrder
+  ] = React.useState([]);
+  const [
+    userSubjects,
+    setUserSubjects
+  ] = React.useState([]);
+  const [
+    userSubjectsOrder,
+    setUserSubjectsOrder
+  ] = React.useState([]);
+  const [
+    users,
+    setUsers
+  ] = React.useState([]);
+
+  const [
+    subjectSelected,
+    setSubjectSelected
+  ] = React.useState([]);
+
+  const [
+    usersOrder,
+    setUsersOrder
   ] = React.useState([]);
 
   const courseRef = React.createRef();
@@ -83,6 +105,38 @@ export default function Bets() {
     fetchData();
   }, []);
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("userSubjects")
+        .get();
+
+      setUserSubjects(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("users")
+        .get();
+
+      setUsers(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
   function orderSubjects(degree, year) {
     setSubjectsOrder(
       subjects
@@ -94,6 +148,28 @@ export default function Bets() {
           (subject) =>
             subject.year === year
         )
+    );
+  }
+
+  function orderUserSubjects(subject) {
+    setUserSubjectsOrder(
+      userSubjects.filter(
+        (user) =>
+          user.subjectId === subject
+      )
+    );
+  }
+
+  function orderUsers() {
+    setUsersOrder(
+      users.filter(
+        (user) =>
+          user.uid ===
+          userSubjectsOrder.map(
+            (userSubject) =>
+              userSubject.uid
+          )
+      )
     );
   }
 
@@ -284,6 +360,10 @@ export default function Bets() {
                     setSubjectsShow(
                       false
                     );
+                    orderUserSubjects(
+                      subject.code
+                    );
+                    orderUsers();
                   }}
                 />
               )
@@ -315,7 +395,60 @@ export default function Bets() {
               Nombre de la asignatura
             </h1>
           </div>
-          <Betstable />
+          <div class="">
+            <div class="flex flex-col">
+              <div class="flex justify-center">
+                <div class="py-2 align-middle inline-block sm:px-6 lg:px-8">
+                  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="w-full divide-y divide-gray-200 bg-gray-700">
+                      <thead>
+                        <tr>
+                          <th
+                            scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                          >
+                            Usuario
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-gray-500 divide-y divide-gray-200">
+                        {userSubjectsOrder.map(
+                          (
+                            userOrder
+                          ) => (
+                            <tr>
+                              <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                  <div class="flex-shrink-0 h-10 w-10">
+                                    <img
+                                      class="h-10 w-10 rounded-full"
+                                      src="https://i.imgur.com/q385Ahc.png"
+                                      alt="Usuario"
+                                    ></img>
+                                  </div>
+                                  <div class="ml-4">
+                                    <div class="text-sm font-medium text-white">
+                                      {
+                                        userOrder.uid
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="px-16 py-4 whitespace-nowrap"></td>
+                              <td class="px-4 py-2 whitespace-nowrap">
+                                <Modal />
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />

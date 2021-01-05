@@ -42,50 +42,6 @@ export default function betstable() {
                       <Modal />
                     </td>
                   </tr>
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                          <img
-                            class="h-10 w-10 rounded-full"
-                            src="https://i.imgur.com/q385Ahc.png"
-                            alt="Usuario"
-                          ></img>
-                        </div>
-                        <div class="ml-4">
-                          <div class="text-sm font-medium text-white">
-                            Usuario
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-16 py-4 whitespace-nowrap"></td>
-                    <td class="px-4 py-2 whitespace-nowrap">
-                      <Modal />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                          <img
-                            class="h-10 w-10 rounded-full"
-                            src="https://i.imgur.com/q385Ahc.png"
-                            alt="Usuario"
-                          ></img>
-                        </div>
-                        <div class="ml-4">
-                          <div class="text-sm font-medium text-white">
-                            Usuario
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-16 py-4 whitespace-nowrap"></td>
-                    <td class="px-4 py-2 whitespace-nowrap">
-                      <Modal />
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>

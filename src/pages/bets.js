@@ -11,6 +11,7 @@ import Modal from "../components/modal";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import { useScrollTrigger } from "@material-ui/core";
 
 export default function Bets() {
   const [
@@ -59,14 +60,14 @@ export default function Bets() {
   ] = React.useState([]);
 
   const [
-    subjectSelected,
-    setSubjectSelected
-  ] = React.useState([]);
-
-  const [
     usersOrder,
     setUsersOrder
   ] = React.useState([]);
+
+  const [
+    subjectSelected,
+    SetSubjectSelected
+  ] = React.useState(null);
 
   const courseRef = React.createRef();
   const subjectsRef = React.createRef();
@@ -360,6 +361,9 @@ export default function Bets() {
                     setSubjectsShow(
                       false
                     );
+                    SetSubjectSelected(
+                      subject.code
+                    );
                     orderUserSubjects(
                       subject.code
                     );
@@ -437,7 +441,17 @@ export default function Bets() {
                               </td>
                               <td class="px-16 py-4 whitespace-nowrap"></td>
                               <td class="px-4 py-2 whitespace-nowrap">
-                                <Modal />
+                                <Modal
+                                  nickname={
+                                    userOrder.nickname
+                                  }
+                                  uidApostado={
+                                    userOrder.uid
+                                  }
+                                  subjectId={
+                                    subjectSelected
+                                  }
+                                />
                               </td>
                             </tr>
                           )

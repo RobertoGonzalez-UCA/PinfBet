@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { Link } from "react-router-dom";
 
 import Input from "./input";
+
 import firebase from "firebase/app";
-/* import ClickAwayListener from "@material-ui/core/ClickAwayListener"; */
 import "firebase/firestore";
 import "firebase/auth";
 
@@ -18,16 +20,17 @@ export default function SearchBar({
     setSearchTerm
   ] = React.useState("");
   const [
-    searchResults,
-    setSearchResults
-  ] = React.useState([]);
-  const [
-    showSearch,
-    setShowSearch
+    open,
+    setOpen
   ] = React.useState(false);
-  const [input, setInput] = useState(
-    ""
-  );
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -49,92 +52,76 @@ export default function SearchBar({
     setSearchTerm(e.target.value);
   };
 
-  /*    React.useEffect(() => {
-    const results = users.filter(person => person.filter({nickname : searchTerm})
-    );
-    setSearchResults(results);
-  }, [searchTerm]);  */
-
-  /* {people.filter(person => person.age < 60).map(filteredPerson => (
-        <li>
-          {filteredPerson.name}
-        </li>
-      ))}
-    </div>
-  );
-} */
-
-  /* {users.filter(person => person.nickname.includes(searchTerm)).map(filteredPerson => (
-        <li>
-          {filteredPerson.name}
-        </li>
-      ))}
-    </div>
-  );
-} */
-
   return (
     <>
-      <form autoComplete="off">
-        <Input
-          type="text"
-          id="search"
-          name="searchBar"
-          placeholder="Busca a una persona..."
-          value={searchTerm}
-          onChange={handleChange}
-          onClick={() => {
-            setShowSearch(true) }}
-          {...rest}
-        />
-        {/* <ClickAwayListener> */}
-        {showSearch ? (
-        <ul className="">
-          {users
-            .filter((person) =>
-              person.nickname.includes(
-                searchTerm
-              )
-            )
-            .map((filteredPerson) => (
-              <div>
-                {
-                  filteredPerson.nickname
-                }
-              </div>
-            ))}
-        </ul>
-        ) : null }
-        {/* </ClickAwayListener> */}
-      </form>
+      <ClickAwayListener
+        onClickAway={handleClickAway}
+      >
+        <form
+          autoComplete="off"
+          className="w-1/2"
+        >
+          <Input
+            type="text"
+            id="search"
+            name="searchBar"
+            placeholder="Busca a una persona..."
+            className="w-4/5 mx-auto"
+            value={searchTerm}
+            onChange={handleChange}
+            onClick={handleClick}
+            {...rest}
+          />
+          {open ? (
+            <div className="mt-10 p-3 bg-gray-50 rounded-md border-color-gray border-2">
+              {searchTerm && (
+                <ul>
+                  {users
+                    .filter((person) =>
+                      person.nickname
+                        .toLowerCase()
+                        .includes(
+                          searchTerm
+                        )
+                    )
+                    .map(
+                      (
+                        filteredPerson
+                      ) => (
+                        <>
+                          <div class="flex justify-center mx-auto w-1/2 p-2">
+                            <div class="h-full w-full flex items-center border-gray-200 border p-4 rounded-lg">
+                              <img
+                                alt="team"
+                                class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                                src="https://i.imgur.com/q385Ahc.png"
+                              />
+                              <div class="flex flex-grow justify-between items-center">
+                                <h2 class="text-gray-900 title-font font-medium">
+                                  {
+                                    filteredPerson.nickname
+                                  }
+                                </h2>
+                                <Link
+                                  to={`/${filteredPerson.nickname}`}
+                                >
+                                  <p className="text-green-500 inline-flex items-center mr-5 hover:underline">
+                                    Ver
+                                    perfil
+                                  </p>
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )
+                    )}
+                </ul>
+              )}
+            </div>
+          ) : null}
+        </form>
+      </ClickAwayListener>
     </>
   );
 }
-
-/*   const fetchData = async () => {
-    const data = await firebase
-      .firestore()
-      .collection("users")
-      .where("nickname", "==", input)
-      .onSnapshot(function (
-        querySnapshot
-      ) {
-        var users = [];
-        querySnapshot.forEach(function (
-          doc
-        ) {
-          users.push(doc.data().uid);
-        });
-        console.log(
-          "Current users: ",
-          users.join(", ")
-        );
-      });
- 
-     setSpells(
-        data.docs.map((doc) => ({
-          ...doc.data()
-        }))
-      ); 
-   }; 
-  fetchData();*/

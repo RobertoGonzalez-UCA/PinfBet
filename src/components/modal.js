@@ -4,11 +4,16 @@ import Label from "../components/label";
 import Select from "../components/select";
 import Button from "../components/button";
 
-export default function Modal() {
+export default function Modal({
+  nickname,
+  uidApostado,
+  subjectId
+}) {
   const [
     showModal,
     setShowModal
   ] = React.useState(false);
+
   return (
     <>
       <button
@@ -58,55 +63,59 @@ export default function Modal() {
                   </div>
                   <div className="pt-3 pb-7 relative flex justify-center">
                     <Label className="text-2xl">
-                      Usuario
+                      {nickname}
                     </Label>
                   </div>
                   <div className="pb-10 relative flex justify-center"></div>
-                  <div className="mb-5 relative flex items-center">
-                    <Label className="text-base mx-2">
-                      Aprueba/Suspende
-                    </Label>
-                    <Select className="mr-7">
-                      <option value="AA">
-                        Aprueba
-                      </option>
-                      <option value="BB">
-                        Suspende
-                      </option>
-                    </Select>
-                    <Label className="text-base mx-2">
-                      Cantidad
-                    </Label>
-                    <Input
-                      type="number"
-                      variant="little"
-                      min="1"
-                    />
-                  </div>
-                  <div className="relative flex items-center justify-between">
-                    <Label className="text-base mx-2">
-                      Nota
-                    </Label>
-                    <div className="relative flex">
-                      <div className="mr-9">
-                        <Input
-                          className="mr-3"
-                          type="number"
-                          variant="little"
-                          min="0"
-                          max="10"
-                        />
-                      </div>
+                  <form>
+                    <div className="mb-5 relative flex items-center">
+                      <Label className="text-base mx-2">
+                        Aprueba/Suspende
+                      </Label>
+                      <Select className="mr-7">
+                        <option value="Aprueba">
+                          Aprueba
+                        </option>
+                        <option value="Suspende">
+                          Suspende
+                        </option>
+                      </Select>
                       <Label className="text-base mx-2">
                         Cantidad
                       </Label>
                       <Input
+                        id="cant-a-s"
                         type="number"
                         variant="little"
                         min="1"
                       />
                     </div>
-                  </div>
+                    <div className="relative flex items-center justify-between">
+                      <Label className="text-base mx-2">
+                        Nota
+                      </Label>
+                      <div className="relative flex">
+                        <div className="mr-9">
+                          <Input
+                            className="mr-3"
+                            type="number"
+                            variant="little"
+                            min="0"
+                            max="10"
+                          />
+                        </div>
+                        <Label className="text-base mx-2">
+                          Cantidad
+                        </Label>
+                        <Input
+                          id="cant-nota"
+                          type="number"
+                          variant="little"
+                          min="1"
+                        />
+                      </div>
+                    </div>
+                  </form>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
@@ -128,7 +137,7 @@ export default function Modal() {
                   </Button>
                   <button
                     className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
-                    type="button"
+                    type="submit"
                     style={{
                       transition:
                         "all .15s ease"

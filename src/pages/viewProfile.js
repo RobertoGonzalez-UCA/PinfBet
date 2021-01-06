@@ -1,21 +1,30 @@
 import React from "react";
-import Navbar from "../components/navbar";
-import Chat from "../components/chat";
-import Button from "../components/button";
-import Subject from "../components/subject";
-import Footer from "../components/footer";
+import { useParams } from "react-router-dom";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-export default function Profile() {
-  var user = firebase.auth()
-    .currentUser;
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import Chat from "../components/chat";
+import Button from "../components/button";
+import Subject from "../components/subject";
+
+export default function ViewProfie() {
+  var nickname = useParams().nickname;
 
   const [
     spells,
     setSpells
+  ] = React.useState([]);
+  const [
+    userSubjects,
+    setUserSubjects
+  ] = React.useState([]);
+  const [
+    users,
+    setUsers
   ] = React.useState([]);
 
   React.useEffect(() => {
@@ -23,10 +32,51 @@ export default function Profile() {
       const data = await firebase
         .firestore()
         .collection("users")
-        .where("uid", "==", user.uid)
+        .where(
+          "nickname",
+          "==",
+          nickname
+        )
         .get();
 
       setSpells(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("userSubjects")
+        .where(
+          "nickname",
+          "==",
+          nickname
+        )
+        .get();
+
+      setUserSubjects(
+        data.docs.map((doc) => ({
+          ...doc.data()
+        }))
+      );
+    };
+    fetchData();
+  }, []);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await firebase
+        .firestore()
+        .collection("subjects")
+        .get();
+
+      setUserSubjects(
         data.docs.map((doc) => ({
           ...doc.data()
         }))
@@ -70,31 +120,32 @@ export default function Profile() {
                 </div>
               </div>
             </div>
+            <div className="absolute mt-4 left-60 flex">
+              <Button>Agregar</Button>
+              <Button
+                className=""
+                variant="tertiary"
+              >
+                Eliminar
+              </Button>
+            </div>
             <div className="mt-14 transform scale-90">
               <h2 className="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900 mb-5">
                 Asignaturas
               </h2>
               <div className="flex justify-center">
-                <Subject
-                  variant="yellow"
-                  subjectName="MD"
-                  subjectFullname=""
-                />
-                <Subject variant="red" />
-                <Subject variant="blue" />
-                <Subject variant="green" />
-                <Subject variant="purple" />
-              </div>
-              <div className="flex justify-center">
-                <Subject
-                  variant="yellow"
-                  subjectName="PCTR"
-                  subjectFullname=""
-                />
-                <Subject variant="red" />
-                <Subject variant="blue" />
-                <Subject variant="green" />
-                <Subject variant="purple" />
+                {userSubjects.map(
+                  (subject) => (
+                    <Subject
+                      subjectName={
+                        subject.acronym
+                      }
+                      subjectFullname={
+                        subject.name
+                      }
+                      
+                  />
+                ))}
               </div>
               <section class="text-gray-600 body-font">
                 <div class="container px-5 py-10 mx-auto">

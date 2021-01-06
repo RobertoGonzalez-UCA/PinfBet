@@ -777,8 +777,7 @@ export function cursarAsignatura() {
   var user = firebase.auth()
     .currentUser;
 
-
-    firebase //Esta parte se encarga de actualizar la nota
+  firebase //Esta parte se encarga de actualizar la nota
     .firestore()
     .collection("users")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -804,7 +803,6 @@ function completarCursar(
   user,
   nickname
 ) {
-
   console.log("Soy " + nickname);
 
   firebase

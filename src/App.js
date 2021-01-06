@@ -18,6 +18,7 @@ import Legalterms from "./pages/legalterms";
 import Forgotpass from "./pages/forgotpass";
 import AboutUs from "./pages/aboutus";
 import Social from "./pages/social";
+import ViewProfile from "./pages/viewProfile";
 
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./privateRoute";
@@ -56,6 +57,11 @@ export default function App() {
             exact
             path="/social"
             component={Social}
+          />
+          <PrivateRoute
+            exact
+            path="/:nickname"
+            component={ViewProfile}
           />
           <Route
             exact

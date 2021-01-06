@@ -14,7 +14,7 @@ const variants = {
 };
 
 export default function Subject({
-  variant = "red",
+  variant = "green",
   subjectName,
   subjectFullname,
   friends,
@@ -22,7 +22,9 @@ export default function Subject({
 }) {
   return (
     <button
-      className={[variants[variant]].join(" ")}
+      className={[
+        variants[variant]
+      ].join(" ")}
       style={{
         minWidth: "150px",
         maxWidth: "150px"
@@ -30,8 +32,12 @@ export default function Subject({
       {...rest}
     >
       <div>
-        <div className="text-2xl font-semibold">{subjectName}</div>
-        <div className="text-xs text-gray-900">({subjectFullname})</div>
+        <div className="text-2xl font-semibold">
+          {subjectName}
+        </div>
+        <div className="text-xs text-gray-900">
+          ({subjectFullname})
+        </div>
       </div>
     </button>
   );

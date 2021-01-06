@@ -1,7 +1,7 @@
 import React from "react";
 import Popper from "popper.js";
 import Button from "../components/button";
-//import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { Link } from "react-router-dom";
 
 import firebase from "firebase/app";
@@ -33,9 +33,19 @@ export default function DropdownProfile() {
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
+/*   const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  }; */
+
+  const handleClickAway = () => {
+    closeDropdownPopover();
+  };
+
   return (
-    <>
-      {" "}
+    <ClickAwayListener onClickAway={handleClickAway}>
+    <div>
       <div className="flex flex-wrap">
         <div className="w-full sm:w-6/12 md:w-4/12 px-4">
           <div className="relative inline-flex align-middle w-full">
@@ -163,6 +173,7 @@ export default function DropdownProfile() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-    </>
+    </div>
+    </ClickAwayListener>
   );
 }

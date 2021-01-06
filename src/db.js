@@ -102,7 +102,7 @@ export async function solicitarAmistad() {
         doc
       ) {
         console.log(
-          "Ya tienes amistad con este amigo"
+          "Esta persona denegó tu amistad"
         );
         yaHayAmistad(
           uidEmisor,
@@ -123,7 +123,7 @@ export async function solicitarAmistad() {
         doc
       ) {
         console.log(
-          "Ya tienes amistad con este amigo"
+          "Esta persona denegó tu amistad"
         );
         yaHayAmistad(
           uidEmisor,
@@ -733,6 +733,7 @@ export async function actualizarNota() {
     .currentUser;
 
   if ((nota < 0) || (nota > 10)) { return }
+
   firebase //Esta parte se encarga de actualizar la nota
     .firestore()
     .collection("userSubjects")
@@ -1000,10 +1001,14 @@ export function createSubject() {
 
 export function leerArchivo() {
   
+  console.log("Tobillos");
+
   document
     .getElementById("expediente")
     .addEventListener("change",(event) => {
        
+      console.log("Entré en addEventListener");
+
         var file = document.getElementById("expediente").files;
         var fileReader = new FileReader();
         fileReader.onload = function (e) {

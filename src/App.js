@@ -58,11 +58,6 @@ export default function App() {
             path="/social"
             component={Social}
           />
-          <PrivateRoute
-            exact
-            path="/:nickname"
-            component={ViewProfile}
-          />
           <Route
             exact
             path="/aboutus"
@@ -92,6 +87,11 @@ export default function App() {
             exact
             path="/forgotpass"
             component={Forgotpass}
+          />
+          <PrivateRoute
+            exact
+            path="/:nickname"
+            component={ViewProfile}
           />
         </Switch>
       </Router>

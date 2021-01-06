@@ -4,6 +4,8 @@ import Label from "../components/label";
 import Select from "../components/select";
 import Button from "../components/button";
 
+import { crearApuesta } from "../db";
+
 export default function Modal({
   nickname,
   uidApostado,
@@ -13,6 +15,26 @@ export default function Modal({
     showModal,
     setShowModal
   ] = React.useState(false);
+
+  const handleSubmit = React.useCallback(
+    async (event) => {
+      event.preventDefault();
+      const {
+        firstBet,
+        secondBet,
+        cantFirstBet,
+        cantSecondBet
+      } = event.target.elements;
+
+      alert(
+        firstBet.value +
+          secondBet.value +
+          cantFirstBet.value +
+          cantSecondBet.value
+      );
+    },
+    []
+  );
 
   return (
     <>
@@ -67,12 +89,20 @@ export default function Modal({
                     </Label>
                   </div>
                   <div className="pb-10 relative flex justify-center"></div>
-                  <form>
+
+                  <form
+                    onSubmit={
+                      handleSubmit
+                    }
+                  >
                     <div className="mb-5 relative flex items-center">
                       <Label className="text-base mx-2">
                         Aprueba/Suspende
                       </Label>
-                      <Select className="mr-7">
+                      <Select
+                        id="firstBet"
+                        className="mr-7"
+                      >
                         <option value="Aprueba">
                           Aprueba
                         </option>
@@ -84,7 +114,7 @@ export default function Modal({
                         Cantidad
                       </Label>
                       <Input
-                        id="cant-a-s"
+                        id="cantFirstBet"
                         type="number"
                         variant="little"
                         min="1"
@@ -97,6 +127,7 @@ export default function Modal({
                       <div className="relative flex">
                         <div className="mr-9">
                           <Input
+                            id="secondBet"
                             className="mr-3"
                             type="number"
                             variant="little"
@@ -108,48 +139,42 @@ export default function Modal({
                           Cantidad
                         </Label>
                         <Input
-                          id="cant-nota"
+                          id="cantSecondBet"
                           type="number"
                           variant="little"
                           min="1"
                         />
                       </div>
                     </div>
+                    <div className="mt-5 flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                      <Button
+                        className="px-6 py-2"
+                        variant="tertiary"
+                        type="button"
+                        style={{
+                          transition:
+                            "all .15s ease"
+                        }}
+                        onClick={() =>
+                          setShowModal(
+                            false
+                          )
+                        }
+                      >
+                        Cancelar
+                      </Button>
+                      <button
+                        className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
+                        type="submit"
+                        style={{
+                          transition:
+                            "all .15s ease"
+                        }}
+                      >
+                        Apostar
+                      </button>
+                    </div>
                   </form>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-                  <Button
-                    className="px-6 py-2"
-                    variant="tertiary"
-                    type="button"
-                    style={{
-                      transition:
-                        "all .15s ease"
-                    }}
-                    onClick={() =>
-                      setShowModal(
-                        false
-                      )
-                    }
-                  >
-                    Cancelar
-                  </Button>
-                  <button
-                    className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
-                    type="submit"
-                    style={{
-                      transition:
-                        "all .15s ease"
-                    }}
-                    onClick={() =>
-                      setShowModal(
-                        false
-                      )
-                    }
-                  >
-                    Apostar
-                  </button>
                 </div>
               </div>
             </div>

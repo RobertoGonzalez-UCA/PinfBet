@@ -719,53 +719,6 @@ function escribirApuestaNota(
     });
 }
 
-export function userLogged() {
-  firebase
-    .auth()
-    .onAuthStateChanged(function (
-      user
-    ) {
-      if (user) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-}
-
-// FUNCION INICIAR SESION "FUNCIONA"
-export function iniciarSesion(
-  email,
-  password
-) {
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(
-      email,
-      password
-    )
-    .then((user) => {
-      console.log("Logged.");
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-}
-
-export function cerrarSesion() {
-  firebase
-    .auth()
-    .signOut()
-    .then(function () {
-      console.log(
-        "Saliste correctamente."
-      );
-    })
-    .catch(function (error) {
-      console.log("Error al salir.");
-    });
-}
-
 export function cursarAsignatura() {
   var degreeId = document.getElementById(
     "degreeId"

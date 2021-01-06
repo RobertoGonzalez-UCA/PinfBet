@@ -8,21 +8,10 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-export default function SearchBar({
-  ...rest
-}) {
-  const [
-    users,
-    setUsers
-  ] = React.useState([]);
-  const [
-    searchTerm,
-    setSearchTerm
-  ] = React.useState("");
-  const [
-    open,
-    setOpen
-  ] = React.useState(false);
+export default function SearchBar({ ...rest }) {
+  const [users, setUsers] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -34,10 +23,7 @@ export default function SearchBar({
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
-        .firestore()
-        .collection("users")
-        .get();
+      const data = await firebase.firestore().collection("users").get();
 
       setUsers(
         data.docs.map((doc) => ({
@@ -54,13 +40,8 @@ export default function SearchBar({
 
   return (
     <>
-      <ClickAwayListener
-        onClickAway={handleClickAway}
-      >
-        <form
-          autoComplete="off"
-          className="w-1/2"
-        >
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <form autoComplete="off" className="w-1/2">
           <Input
             type="text"
             id="search"
@@ -78,44 +59,31 @@ export default function SearchBar({
                 <ul>
                   {users
                     .filter((person) =>
-                      person.nickname
-                        .toLowerCase()
-                        .includes(
-                          searchTerm
-                        )
+                      person.nickname.toLowerCase().includes(searchTerm)
                     )
-                    .map(
-                      (
-                        filteredPerson
-                      ) => (
-                        <>
-                          <div class="flex justify-center mx-auto w-1/2 p-2">
-                            <div class="h-full w-full flex items-center border-gray-200 border p-4 rounded-lg">
-                              <img
-                                alt="team"
-                                class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                                src="https://i.imgur.com/q385Ahc.png"
-                              />
-                              <div class="flex flex-grow justify-between items-center">
-                                <h2 class="text-gray-900 title-font font-medium">
-                                  {
-                                    filteredPerson.nickname
-                                  }
-                                </h2>
-                                <Link
-                                  to={`/${filteredPerson.nickname}`}
-                                >
-                                  <p className="text-green-500 inline-flex items-center mr-5 hover:underline">
-                                    Ver
-                                    perfil
-                                  </p>
-                                </Link>
-                              </div>
+                    .map((filteredPerson) => (
+                      <>
+                        <div class="flex justify-center mx-auto w-1/2 p-2">
+                          <div class="h-full w-full flex items-center border-gray-200 border p-4 rounded-lg">
+                            <img
+                              alt="team"
+                              class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
+                              src="https://i.imgur.com/q385Ahc.png"
+                            />
+                            <div class="flex flex-grow justify-between items-center">
+                              <h2 class="text-gray-900 title-font font-medium">
+                                {filteredPerson.nickname}
+                              </h2>
+                              <Link to={`/${filteredPerson.nickname}`}>
+                                <p className="text-green-500 inline-flex items-center mr-5 hover:underline">
+                                  Ver perfil
+                                </p>
+                              </Link>
                             </div>
                           </div>
-                        </>
-                      )
-                    )}
+                        </div>
+                      </>
+                    ))}
                 </ul>
               )}
             </div>

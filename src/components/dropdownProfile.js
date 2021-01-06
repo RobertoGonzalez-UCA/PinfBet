@@ -33,147 +33,78 @@ export default function DropdownProfile() {
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
-/*   const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen((prev) => !prev);
-  }; */
 
   const handleClickAway = () => {
     closeDropdownPopover();
   };
 
   return (
-    <ClickAwayListener onClickAway={handleClickAway}>
-    <div>
-      <div className="flex flex-wrap">
-        <div className="w-full sm:w-6/12 md:w-4/12 px-4">
-          <div className="relative inline-flex align-middle w-full">
-            <input
-              type="image"
-              src="https://i.imgur.com/q385Ahc.png"
-              alt="Menu Perfil"
-              className="focus:outline-none"
-              width="40"
-              ref={btnDropdownRef}
-              onClick={() => {
-                dropdownPopoverShow
-                  ? closeDropdownPopover()
-                  : openDropdownPopover();
-              }}
-            ></input>
-            <div
-              ref={popoverDropdownRef}
-              className={
-                (dropdownPopoverShow
-                  ? "block "
-                  : "hidden ") +
-                "text-base z-50 float-left list-none text-left rounded-lg shadow-lg mt-1 bg-gray-500"
-              }
-              style={{
-                minWidth: "12rem"
-              }}
-            >
-              <Link
-                to="/profile"
-                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
-              >
-                Perfil
-              </Link>
-              <Link
-                to="/userconfig"
-                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
-              >
-                Configuración
-              </Link>
+    <ClickAwayListener
+      onClickAway={handleClickAway}
+    >
+      <div>
+        <div className="flex flex-wrap">
+          <div className="w-full sm:w-6/12 md:w-4/12 px-4">
+            <div className="relative inline-flex align-middle w-full">
+              <input
+                type="image"
+                src="https://i.imgur.com/q385Ahc.png"
+                alt="Menu Perfil"
+                className="focus:outline-none"
+                width="40"
+                ref={btnDropdownRef}
+                onClick={() => {
+                  dropdownPopoverShow
+                    ? closeDropdownPopover()
+                    : openDropdownPopover();
+                }}
+              ></input>
               <div
-                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600 cursor-pointer"
-                onClick={() =>
-                  setShowModal(true)
+                ref={popoverDropdownRef}
+                className={
+                  (dropdownPopoverShow
+                    ? "block "
+                    : "hidden ") +
+                  "text-base z-50 float-left list-none text-left rounded-lg shadow-lg mt-1 bg-gray-500"
                 }
+                style={{
+                  minWidth: "12rem"
+                }}
               >
-                Subir expediente
-              </div>
-              <div className="h-0 my-2 border border-solid border-t-0 border-gray-900 opacity-25" />
-              <div
-                className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600 cursor-pointer"
-                onClick={() =>
-                  firebase
-                    .auth()
-                    .signOut()
-                }
-              >
-                Cerrar sesión
+                <Link
+                  to="/profile"
+                  className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
+                >
+                  Perfil
+                </Link>
+                <Link
+                  to="/userconfig"
+                  className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
+                >
+                  Configuración
+                </Link>
+                <Link
+                  to="/uploaddata"
+                  className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600"
+                >
+                  Subir datos académicos
+                </Link>
+                <div className="h-0 my-2 border border-solid border-t-0 border-gray-900 opacity-25" />
+                <div
+                  className="transition duration-250 text-sm py-3 px-4 rounded-lg font-normal block w-full whitespace-no-wrap bg-transparent text-white hover:bg-gray-600 cursor-pointer"
+                  onClick={() =>
+                    firebase
+                      .auth()
+                      .signOut()
+                  }
+                >
+                  Cerrar sesión
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {showModal ? (
-        <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div
-              className="relative w-auto my-6 mx-auto max-w-6xl"
-              style={{
-                minWidth: "500px",
-                maxWidth: "500px"
-              }}
-            >
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Carga tu expediente
-                  </h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-gray-600 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() =>
-                      setShowModal(
-                        false
-                      )
-                    }
-                  >
-                    ×
-                  </button>
-                </div>
-                {/*body*/}
-                <div className="p-6">
-                  Para descargar tu
-                  expediente, dirigete a
-                  --- e inicia sesión
-                  con tus datos de la
-                  UCA. Podrás
-                  descargarlo haciendo
-                  click en ---. Hasta
-                  que no hayas cargado
-                  tu expediente, no
-                  podrás realizar
-                  apuestas.
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-                  <input
-                    type="file"
-                    className="mr-1 transform scale-90"
-                  />
-                  <Button
-                    onClick={() =>
-                      setShowModal(
-                        false
-                      )
-                    }
-                  >
-                    Cargar
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      ) : null}
-    </div>
     </ClickAwayListener>
   );
 }

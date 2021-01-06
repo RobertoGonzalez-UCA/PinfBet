@@ -143,9 +143,9 @@ export default function ViewProfie() {
                       subjectFullname={
                         subject.name
                       }
-                      
-                  />
-                ))}
+                    />
+                  )
+                )}
               </div>
               <section class="text-gray-600 body-font">
                 <div class="container px-5 py-10 mx-auto">

@@ -21,7 +21,7 @@ import {
   mostrarSolicitud,
   aceptarSolicitud,
   rechazarSolicitud,
-  crearApuesta,
+  iniciarCrearApuesta,
   iniciarSesion,
   mostrarAsignaturasYear,
   cerrarSesion,
@@ -83,7 +83,7 @@ export default function Test() {
         Mostrar asignaturas por año
       </Button>
       <Button
-        onClick={comprobarCreditos}
+        onClick={iniciarCrearApuesta}
       >
         Crear Apuesta
       </Button>

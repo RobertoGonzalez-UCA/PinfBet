@@ -406,8 +406,9 @@ export function mostrarAsignaturasYear() {
 }
 
 //INICIO DE CREAR APUESTA
-export function comprobarCreditos() {
+export function iniciarCrearApuesta() {
   var cantidadDinero = document.getElementById(
+    //Esta variable y la siguiente es el dinero apostado, la primera es sobre apuesta normal, la segunda sobre la apuesta de nota
     "cantidadDinero"
   ).value;
   var cantidadDineroNota = document.getElementById(
@@ -415,6 +416,24 @@ export function comprobarCreditos() {
   ).value;
   var uidApostante = firebase.auth()
     .currentUser.uid;
+  var uidApostado = document.getElementById(
+    "uidApostado"
+  ).value;
+  var valorBet = document.getElementById(
+    //Esta variable es true o false, y determina si apostamos a que aprueba (true) o suspende (false)
+    "betValueCheck"
+  ).checked;
+  var betNotaCheck = document.getElementById(
+    //Esta variable es true o false, y determina si tambien hay apuesta sobre nota
+    "betNotaCheck"
+  ).checked;
+  var notaApostada = document.getElementById(
+    //Nota a la que apostamos
+    "notaApostada"
+  ).value;
+  var idAsignatura = document.getElementById(
+    "idAsignatura"
+  ).value;
 
   cantidadDinero = parseInt(
     cantidadDinero,
@@ -431,11 +450,6 @@ export function comprobarCreditos() {
 
   var dineroApuesta =
     cantidadDinero + cantidadDineroNota;
-
-  console.log(
-    "cantidadDineroNota es" +
-      cantidadDineroNota
-  );
 
   console.log(
     "La cantidad total de dinero apostado es" +
@@ -463,7 +477,16 @@ export function comprobarCreditos() {
               )
             });
 
-          crearApuesta();
+          crearApuestaSonAmigos(
+            uidApostante,
+            idAsignatura,
+            cantidadDinero,
+            uidApostado,
+            betNotaCheck,
+            valorBet,
+            cantidadDineroNota,
+            notaApostada
+          );
         } else {
           console.log(
             "Error. No se dispone del suficiente dinero"
@@ -484,34 +507,16 @@ export function comprobarCreditos() {
 }
 
 //FUNCION CREAR APUESTA (EN CONSTRUCCION)
-export function crearApuesta() {
-  var uidApostante = firebase.auth()
-    .currentUser.uid;
-  var uidApostado = document.getElementById(
-    "uidApostado"
-  ).value;
-  var valorBet = document.getElementById(
-    "betValueCheck"
-  ).checked;
-  var betNotaCheck = document.getElementById(
-    "betNotaCheck"
-  ).checked;
-  var notaApostada = document.getElementById(
-    "notaApostada"
-  ).value;
-  var idAsignatura = document.getElementById(
-    "idAsignatura"
-  ).value;
-  var cantidadDinero = document.getElementById(
-    "cantidadDinero"
-  ).value;
-  var cantidadDineroNota = document.getElementById(
-    "cantidadDineroNota"
-  ).value;
-  var idBetContext;
-
-  //var amigos = false;
-
+export function crearApuestaSonAmigos(
+  uidApostante,
+  idAsignatura,
+  cantidadDinero,
+  uidApostado,
+  betNotaCheck,
+  valorBet,
+  cantidadDineroNota,
+  notaApostada
+) {
   var solicitudes = firebase
     .firestore()
     .collection("friendships");
@@ -541,7 +546,6 @@ export function crearApuesta() {
             betNotaCheck,
             valorBet,
             cantidadDineroNota,
-            idBetContext,
             notaApostada
           );
         } else {
@@ -575,7 +579,6 @@ export function crearApuesta() {
             betNotaCheck,
             valorBet,
             cantidadDineroNota,
-            idBetContext,
             notaApostada
           );
         } else {
@@ -593,36 +596,6 @@ export function crearApuesta() {
     });
 }
 
-export function devolverInfoSubject() {
-  var subjectId = document.getElementById(
-    "idAsignatura"
-  ).value;
-
-  firebase
-    .firestore()
-    .collection("subjects")
-    .where("code", "==", subjectId)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-      });
-    });
-}
-
-export function infoUser(userId) {
-  firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", userId)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-      });
-    });
-}
-
 function escribirApuesta(
   uidApostante,
   idAsignatura,
@@ -631,7 +604,6 @@ function escribirApuesta(
   betNotaCheck,
   valorBet,
   cantidadDineroNota,
-  idBetContext,
   notaApostada
 ) {
   firebase
@@ -1067,4 +1039,34 @@ export function leerArchivo() {
         console.log(item.text);
     }
   );
+}
+
+export function devolverInfoSubject() {
+  var subjectId = document.getElementById(
+    "idAsignatura"
+  ).value;
+
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+      });
+    });
+}
+
+export function infoUser(userId) {
+  firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", userId)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+      });
+    });
 }

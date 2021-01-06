@@ -405,6 +405,7 @@ export function mostrarAsignaturasYear() {
     });
 }
 
+//INICIO DE UNA APUESTA
 export function iniciarCrearApuesta(
   cantidadDinero,
   cantidadDineroNota,
@@ -479,7 +480,7 @@ export function iniciarCrearApuesta(
     });
 }
 
-//FUNCION CREAR APUESTA (EN CONSTRUCCION)
+//Siguiente paso de crear apuesta
 export function crearApuestaSonAmigos(
   uidApostante,
   idAsignatura,
@@ -564,6 +565,7 @@ export function crearApuestaSonAmigos(
     });
 }
 
+//Siguiente paso de crear apuesta
 function escribirApuesta(
   uidApostante,
   idAsignatura,
@@ -629,6 +631,7 @@ function escribirApuesta(
   // console.log(idBetContext + " Hello");
 }
 
+//Siguiente paso de crear apuesta si tambien hace apuesta de nota
 function escribirApuestaNota(
   uidApostado,
   cantidadDineroNota,
@@ -659,6 +662,7 @@ function escribirApuestaNota(
     });
 }
 
+//Un usuario cursa una asignatura 
 export function cursarAsignatura() {
   var degreeId = document.getElementById(
     "degreeId"
@@ -690,6 +694,7 @@ export function cursarAsignatura() {
     });
 }
 
+//Siguiente paso de cursar asignatura
 function completarCursar(
   degreeId,
   subjectId,
@@ -832,8 +837,6 @@ export async function actualizarNota() {
         error
       );
     });
-
-  //Llamar a funcion actualizar apuestas
 }
 
 async function fetchBetcontext(
@@ -843,10 +846,9 @@ async function fetchBetcontext(
   await firebase
     .firestore()
     .collection("betContexts")
-    .doc(bet.get("betContextId")) //FUNCIONA ¿???
+    .doc(bet.get("betContextId"))
     .get()
     .then(function (doc) {
-      //  console.log(doc.id, " => ", doc.data());
       actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
     })
     .catch(function (error) {
@@ -999,28 +1001,59 @@ export function createSubject() {
     });
 }
 
-export function leerArchivo() {
+//No borrar de momento
+/** export function leerArchivo1() {
   
-  console.log("Tobillos");
+ 
 
   document
     .getElementById("expediente")
     .addEventListener("change",(event) => {
        
-      console.log("Entré en addEventListener");
 
         var file = document.getElementById("expediente").files;
         var fileReader = new FileReader();
         fileReader.onload = function (e) {
           var contents =
-            fileReader.result;
-            
+            fileReader.result.split('\n');
+          //console.log(contents);
+          
         };
 
-        console.log(fileReader.readAsText(file[0]));
+        console.log(fileReader.readAsText(file[0]));//Aqui esta la chicha
+        
+    }, false);
+}**/
 
+
+export function leerArchivo() {
+  var file = document.getElementById("expediente").files;
+  var reader = new FileReader;
+  var l = "";
+  reader.readAsText(file[0]);
+
+  reader.onload = function(e) {
+    var result = reader.result;
+    var lineas = result.split('\n');
+    for(var linea of lineas) {
+      if(linea[0] == "2")
+      {
+        for(var i in linea)
+        {
+          if(i > 19)
+          {
+            if(i != " ")
+              l += linea[i];
+              
+            
+          }
+        }
+        console.log(l);
       }
-  , false);
+      
+    }
+  }
+ 
 }
 
 export function devolverInfoSubject() {

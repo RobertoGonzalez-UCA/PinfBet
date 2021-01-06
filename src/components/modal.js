@@ -4,7 +4,10 @@ import Label from "../components/label";
 import Select from "../components/select";
 import Button from "../components/button";
 
-import { crearApuesta } from "../db";
+import {
+  crearApuestaSonAmigos,
+  iniciarCrearApuesta
+} from "../db";
 
 export default function Modal({
   nickname,
@@ -23,14 +26,18 @@ export default function Modal({
         firstBet,
         secondBet,
         cantFirstBet,
-        cantSecondBet
+        cantSecondBet,
+        betNotaCheck
       } = event.target.elements;
 
-      alert(
-        firstBet.value +
-          secondBet.value +
-          cantFirstBet.value +
-          cantSecondBet.value
+      iniciarCrearApuesta(
+        cantFirstBet.value,
+        cantSecondBet.value,
+        uidApostado,
+        firstBet.value,
+        betNotaCheck.checked,
+        secondBet.value,
+        subjectId
       );
     },
     []
@@ -103,10 +110,10 @@ export default function Modal({
                         id="firstBet"
                         className="mr-7"
                       >
-                        <option value="Aprueba">
+                        <option value="true">
                           Aprueba
                         </option>
-                        <option value="Suspende">
+                        <option value="false">
                           Suspende
                         </option>
                       </Select>
@@ -120,10 +127,17 @@ export default function Modal({
                         min="1"
                       />
                     </div>
+
                     <div className="relative flex items-center justify-between">
-                      <Label className="text-base mx-2">
+                      <Label class="inline-flex items-center ml-2 leading-7 text-gray-600">
+                        <Input
+                          id="betNotaCheck"
+                          type="checkbox"
+                          class="h-4 w-4 text-gray-600 mr-1"
+                        />
                         Nota
                       </Label>
+
                       <div className="relative flex">
                         <div className="mr-9">
                           <Input

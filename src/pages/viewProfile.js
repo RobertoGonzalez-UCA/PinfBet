@@ -170,7 +170,8 @@ export default function ViewProfie() {
                         <h2 class="title-font font-medium text-3xl text-gray-900">
                           {(
                             (spell.hits /
-                              spell.fails) *
+                              (spell.fails +
+                                spell.hits)) *
                             100
                           ).toFixed(2)}
                           %

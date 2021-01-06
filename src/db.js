@@ -405,35 +405,17 @@ export function mostrarAsignaturasYear() {
     });
 }
 
-//INICIO DE CREAR APUESTA
-export function iniciarCrearApuesta() {
-  var cantidadDinero = document.getElementById(
-    //Esta variable y la siguiente es el dinero apostado, la primera es sobre apuesta normal, la segunda sobre la apuesta de nota
-    "cantidadDinero"
-  ).value;
-  var cantidadDineroNota = document.getElementById(
-    "cantidadDineroNota"
-  ).value;
+export function iniciarCrearApuesta(
+  cantidadDinero,
+  cantidadDineroNota,
+  uidApostado,
+  valorBet,
+  betNotaCheck,
+  notaApostada,
+  idAsignatura
+) {
   var uidApostante = firebase.auth()
     .currentUser.uid;
-  var uidApostado = document.getElementById(
-    "uidApostado"
-  ).value;
-  var valorBet = document.getElementById(
-    //Esta variable es true o false, y determina si apostamos a que aprueba (true) o suspende (false)
-    "betValueCheck"
-  ).checked;
-  var betNotaCheck = document.getElementById(
-    //Esta variable es true o false, y determina si tambien hay apuesta sobre nota
-    "betNotaCheck"
-  ).checked;
-  var notaApostada = document.getElementById(
-    //Nota a la que apostamos
-    "notaApostada"
-  ).value;
-  var idAsignatura = document.getElementById(
-    "idAsignatura"
-  ).value;
 
   cantidadDinero = parseInt(
     cantidadDinero,
@@ -450,11 +432,6 @@ export function iniciarCrearApuesta() {
 
   var dineroApuesta =
     cantidadDinero + cantidadDineroNota;
-
-  console.log(
-    "La cantidad total de dinero apostado es" +
-      dineroApuesta
-  );
 
   firebase
     .firestore()
@@ -488,12 +465,8 @@ export function iniciarCrearApuesta() {
             notaApostada
           );
         } else {
-          console.log(
+          alert(
             "Error. No se dispone del suficiente dinero"
-          );
-          console.log(
-            "Tienes: " +
-              doc.data().coins
           );
         }
       });
@@ -537,7 +510,6 @@ export function crearApuestaSonAmigos(
           doc.data().status ===
           "ACCEPTED"
         ) {
-          console.log("amigos es true");
           escribirApuesta(
             uidApostante,
             idAsignatura,
@@ -549,9 +521,7 @@ export function crearApuestaSonAmigos(
             notaApostada
           );
         } else {
-          console.log(
-            "Amigos es false. No se procede"
-          );
+          alert("No sois amigos.");
         }
       });
     })
@@ -582,9 +552,7 @@ export function crearApuestaSonAmigos(
             notaApostada
           );
         } else {
-          console.log(
-            "Amigos es false. No se procede"
-          );
+          alert("No sois amigos.");
         }
       });
     })
@@ -702,7 +670,7 @@ export function cursarAsignatura() {
   var user = firebase.auth()
     .currentUser;
 
-  firebase //Esta parte se encarga de actualizar la nota
+  firebase
     .firestore()
     .collection("users")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -764,6 +732,7 @@ export async function actualizarNota() {
   var user = firebase.auth()
     .currentUser;
 
+  if ((nota < 0) || (nota > 10)) { return }
   firebase //Esta parte se encarga de actualizar la nota
     .firestore()
     .collection("userSubjects")
@@ -1030,15 +999,23 @@ export function createSubject() {
 }
 
 export function leerArchivo() {
-  var PdfReader = require("pdfreader")
-    .PdfReader;
-  new PdfReader().parseFileItems(
-    "sample.pdf",
-    function (err, item) {
-      if (item && item.text)
-        console.log(item.text);
-    }
-  );
+  
+  document
+    .getElementById("expediente")
+    .addEventListener("change",(event) => {
+       
+        var file = document.getElementById("expediente").files;
+        var fileReader = new FileReader();
+        fileReader.onload = function (e) {
+          var contents =
+            fileReader.result;
+            
+        };
+
+        console.log(fileReader.readAsText(file[0]));
+
+      }
+  , false);
 }
 
 export function devolverInfoSubject() {

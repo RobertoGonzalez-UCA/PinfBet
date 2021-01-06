@@ -66,7 +66,7 @@ export default function SearchBar({
             id="search"
             name="searchBar"
             placeholder="Busca a una persona..."
-            className="w-4/5 mx-auto"
+            className="w-4/5 mx-auto focus:border-green-500 focus:ring-2 focus:ring-green-200"
             value={searchTerm}
             onChange={handleChange}
             onClick={handleClick}

@@ -389,7 +389,7 @@ export function crearApuestaSonAmigos(
       querySnapshot.forEach((doc) => {
         if (doc.data().status === "ACCEPTED") {
           console.log("amigos es true");
-          escribirApuesta(
+          encontrarDegree(
             uidApostante,
             idAsignatura,
             cantidadDinero,
@@ -410,7 +410,7 @@ export function crearApuestaSonAmigos(
 }
 
 //Siguiente paso de crear apuesta
-function escribirApuesta(
+function encontrarDegree(
   uidApostante,
   idAsignatura,
   cantidadDinero,
@@ -419,7 +419,47 @@ function escribirApuesta(
   valorBet,
   cantidadDineroNota,
   notaApostada
+){
+
+  firebase
+  .firestore()
+  .collection("subjects")
+  .where("code", "==", idAsignatura) //Buscar documentacion update data
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      escribirApuesta(
+        uidApostante,
+        idAsignatura,
+        cantidadDinero,
+        uidApostado,
+        betNotaCheck,
+        valorBet,
+        cantidadDineroNota,
+        notaApostada,
+        doc.data().degreeId
+      ) 
+    });
+  });
+
+}
+
+//Siguiente paso de crear apuesta
+function escribirApuesta(
+  uidApostante,
+  idAsignatura,
+  cantidadDinero,
+  uidApostado,
+  betNotaCheck,
+  valorBet,
+  cantidadDineroNota,
+  notaApostada,
+  degreeId
 ) {
+
+  if(valorBet === "true"){ valorBet = true}
+  if(valorBet === "false"){ valorBet = false}
+
   firebase
     .firestore()
     .collection("betContexts")
@@ -427,7 +467,7 @@ function escribirApuesta(
       uid: uidApostante,
       subjects: {
         code: idAsignatura,
-        degreeId: "02104342" //Provisionalmente
+        degreeId: degreeId 
       }
     })
     .then(function (docRef) {
@@ -556,6 +596,21 @@ export async function actualizarNota() {
       });
     });
 
+  await firebase
+    .firestore()
+    .collection("transactions")
+    .add({
+      uid_apostado: user.uid,
+      nota: nota,
+      subjectId: subjectId
+    })
+    .then(function (docRef) {
+      console.log("Transaction written with ID: ", docRef.id);
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+
   //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
   await firebase
     .firestore()
@@ -565,33 +620,9 @@ export async function actualizarNota() {
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         console.log(doc.id, " => ", doc.data());
+
         fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
 
-        firebase
-          .firestore()
-          .collection("bets")
-          .doc(doc.id) //Buscar documentacion update data
-          .delete()
-          .then(function () {
-            console.log("Bet successfully deleted!");
-          })
-          .catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting document:", error);
-    });
-
-  firebase //Esto se puede optimizar
-    .firestore()
-    .collection("bets")
-    .where("uid", "==", user.uid) //Buscar documentacion update data
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
         firebase
           .firestore()
           .collection("bets")
@@ -611,6 +642,7 @@ export async function actualizarNota() {
 }
 
 async function fetchBetcontext(bet, nota) {
+
   await firebase
     .firestore()
     .collection("betContexts")
@@ -636,8 +668,9 @@ async function fetchBetcontext(bet, nota) {
     });
 }
 
-function actualizarBets(bet, nota, betContext) {
+async function actualizarBets(bet, nota, betContext) {
   var uid = betContext.get("uid");
+  var uid_apostado = firebase.auth().currentUser.uid;
   var aumento;
   aumento = 0; //sacamos el dinero que ha apostado
 
@@ -654,8 +687,27 @@ function actualizarBets(bet, nota, betContext) {
   }
 
   console.log("El aumento es" + aumento);
+  
+  await   firebase
+  .firestore()
+  .collection("transactions")
+  .where("uid_apostado", "==", uid_apostado)
+  .get()
+  .then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      firebase
+        .firestore()
+        .collection("transactions")
+        .doc(doc.id)
+        .update({coins: aumento,
+        uid_apostante: uid });
+    })
+  })
+  .catch(function (error) {
+    console.error("Error adding document: ", error);
+  });
 
-  firebase
+  await firebase
     .firestore()
     .collection("users")
     .where("uid", "==", uid)
@@ -685,6 +737,29 @@ function actualizarBets(bet, nota, betContext) {
         }
         console.log("Fin de actualizar bets");
         // console.log(doc.id, " => ", doc.data());
+      });
+    });
+
+    await   firebase
+    .firestore()
+    .collection("transactions")
+    .where("uid_apostado", "==", uid_apostado)
+    .where("uid_apostante", "==", uid)
+    .where("coins", "==", aumento)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(doc.id)
+          .delete()
+          .then(function () {
+            console.log("Transaction successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
       });
     });
 

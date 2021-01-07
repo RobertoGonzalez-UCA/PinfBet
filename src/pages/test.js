@@ -29,7 +29,7 @@ import {
   actualizarNota,
   createSubject,
   prueba,
-  leerArchivo,
+  leerExpediente,
   devolverInfoSubject,
   comprobarCreditos,
   debugCambioId
@@ -86,7 +86,7 @@ export default function Test() {
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
       <Button onClick={createSubject}>Crear asignatura (test)</Button>
       <Button onClick={debugCambioId}>Pruebas</Button>
-      <Button onClick={leerArchivo}>Subir Archivo</Button>
+      <Button onClick={leerExpediente}>Subir Archivo</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba

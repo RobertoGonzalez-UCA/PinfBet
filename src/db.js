@@ -1,3 +1,5 @@
+import { ListSubheader } from "@material-ui/core";
+import Search from "antd/lib/input/Search";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -419,29 +421,27 @@ function encontrarDegree(
   valorBet,
   cantidadDineroNota,
   notaApostada
-){
-
+) {
   firebase
-  .firestore()
-  .collection("subjects")
-  .where("code", "==", idAsignatura) //Buscar documentacion update data
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      escribirApuesta(
-        uidApostante,
-        idAsignatura,
-        cantidadDinero,
-        uidApostado,
-        betNotaCheck,
-        valorBet,
-        cantidadDineroNota,
-        notaApostada,
-        doc.data().degreeId
-      ) 
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", idAsignatura) //Buscar documentacion update data
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        escribirApuesta(
+          uidApostante,
+          idAsignatura,
+          cantidadDinero,
+          uidApostado,
+          betNotaCheck,
+          valorBet,
+          cantidadDineroNota,
+          notaApostada,
+          doc.data().degreeId
+        );
+      });
     });
-  });
-
 }
 
 //Siguiente paso de crear apuesta
@@ -456,9 +456,12 @@ function escribirApuesta(
   notaApostada,
   degreeId
 ) {
-
-  if(valorBet === "true"){ valorBet = true}
-  if(valorBet === "false"){ valorBet = false}
+  if (valorBet === "true") {
+    valorBet = true;
+  }
+  if (valorBet === "false") {
+    valorBet = false;
+  }
 
   firebase
     .firestore()
@@ -467,7 +470,7 @@ function escribirApuesta(
       uid: uidApostante,
       subjects: {
         code: idAsignatura,
-        degreeId: degreeId 
+        degreeId: degreeId
       }
     })
     .then(function (docRef) {
@@ -642,7 +645,6 @@ export async function actualizarNota() {
 }
 
 async function fetchBetcontext(bet, nota) {
-
   await firebase
     .firestore()
     .collection("betContexts")
@@ -687,25 +689,24 @@ async function actualizarBets(bet, nota, betContext) {
   }
 
   console.log("El aumento es" + aumento);
-  
-  await   firebase
-  .firestore()
-  .collection("transactions")
-  .where("uid_apostado", "==", uid_apostado)
-  .get()
-  .then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      firebase
-        .firestore()
-        .collection("transactions")
-        .doc(doc.id)
-        .update({coins: aumento,
-        uid_apostante: uid });
+
+  await firebase
+    .firestore()
+    .collection("transactions")
+    .where("uid_apostado", "==", uid_apostado)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(doc.id)
+          .update({ coins: aumento, uid_apostante: uid });
+      });
     })
-  })
-  .catch(function (error) {
-    console.error("Error adding document: ", error);
-  });
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
 
   await firebase
     .firestore()
@@ -740,7 +741,7 @@ async function actualizarBets(bet, nota, betContext) {
       });
     });
 
-    await   firebase
+  await firebase
     .firestore()
     .collection("transactions")
     .where("uid_apostado", "==", uid_apostado)
@@ -814,11 +815,11 @@ export function createSubject() {
         
     }, false);
 }**/
-var subjectId="";
-export function leerArchivo() {
-  var file = document.getElementById("expediente").files;
+var subjectId = "";
+export function leerMatricula() {
+  var file = document.getElementById("matricula").files;
   var reader = new FileReader();
-  
+
   reader.readAsText(file[0]);
 
   reader.onload = function (e) {
@@ -832,15 +833,15 @@ export function leerArchivo() {
             subjectId += linea[i];
           }
         }
-        
+
         firebase
           .firestore()
           .collection("subjects")
           .where("code", "==", subjectId)
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {             
-             cursarAsignatura(doc.data().degreeId, doc.data().code);
+            querySnapshot.forEach((doc) => {
+              cursarAsignatura(doc.data().degreeId, doc.data().code);
             });
           });
       }
@@ -848,7 +849,52 @@ export function leerArchivo() {
   };
 }
 
+//Datos necesarios
+//1. Notas => calcular creditos
+//2. Nota media
+//NO SUMA BIEN TODOS LOS CREDITOS
+//LA MEDIA LA COGE BIEN MANTECONI
+export function leerExpediente() {
+  var file = document.getElementById("expediente").files;
+  var reader = new FileReader();
+  var totalCreditos = 0,
+    media = "",
+    correcto = 0;
+  reader.readAsText(file[0]);
 
+  reader.onload = function (e) {
+    var result = reader.result;
+    var lineas = result.split("\n");
+    for (var linea of lineas) {
+      var nota = "";
+      if (linea[1] == "2") {
+        nota +=
+          linea[linea.length - 4] +
+          linea[linea.length - 3] +
+          linea[linea.length - 2];
+        if (parseFloat(nota) > 5.0) {
+          totalCreditos += 6;
+        }
+      }
+    }
+
+    for (var linea of lineas) {
+      if (linea.search("NOTA MEDIA PONDERADA") != -1) {
+        correcto++;
+
+        if (correcto == 2) {
+          for (var i in linea) {
+            if (i >= 26 && i < 30) {
+              media += linea[i];
+            }
+          }
+        }
+      }
+    }
+    console.log(totalCreditos);
+    console.log(media);
+  };
+}
 
 export function devolverInfoSubject() {
   var subjectId = document.getElementById("idAsignatura").value;

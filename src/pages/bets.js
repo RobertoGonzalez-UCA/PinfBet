@@ -14,60 +14,22 @@ import "firebase/auth";
 import { useScrollTrigger } from "@material-ui/core";
 
 export default function Bets() {
-  const [
-    courseShow,
-    setCourseShow
-  ] = React.useState(false);
-  const [
-    userShow,
-    setUserShow
-  ] = React.useState(false);
-  const [
-    subjectsShow,
-    setSubjectsShow
-  ] = React.useState(false);
-  const [
-    gradeShow,
-    setGradeShow
-  ] = React.useState(true);
-  const [
-    degrees,
-    setDegrees
-  ] = React.useState([]);
-  const [
-    degreeSelected,
-    setDegreeSelected
-  ] = React.useState(null);
-  const [
-    subjects,
-    setSubjects
-  ] = React.useState([]);
-  const [
-    subjectsOrder,
-    setSubjectsOrder
-  ] = React.useState([]);
-  const [
-    userSubjects,
-    setUserSubjects
-  ] = React.useState([]);
-  const [
-    userSubjectsOrder,
-    setUserSubjectsOrder
-  ] = React.useState([]);
-  const [
-    users,
-    setUsers
-  ] = React.useState([]);
+  var user = firebase.auth().currentUser;
+  const [courseShow, setCourseShow] = React.useState(false);
+  const [userShow, setUserShow] = React.useState(false);
+  const [subjectsShow, setSubjectsShow] = React.useState(false);
+  const [gradeShow, setGradeShow] = React.useState(true);
+  const [degrees, setDegrees] = React.useState([]);
+  const [degreeSelected, setDegreeSelected] = React.useState(null);
+  const [subjects, setSubjects] = React.useState([]);
+  const [subjectsOrder, setSubjectsOrder] = React.useState([]);
+  const [userSubjects, setUserSubjects] = React.useState([]);
+  const [userSubjectsOrder, setUserSubjectsOrder] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
 
-  const [
-    usersOrder,
-    setUsersOrder
-  ] = React.useState([]);
+  const [usersOrder, setUsersOrder] = React.useState([]);
 
-  const [
-    subjectSelected,
-    SetSubjectSelected
-  ] = React.useState(null);
+  const [subjectSelected, SetSubjectSelected] = React.useState(null);
 
   const courseRef = React.createRef();
   const subjectsRef = React.createRef();
@@ -76,10 +38,7 @@ export default function Bets() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
-        .firestore()
-        .collection("degrees")
-        .get();
+      const data = await firebase.firestore().collection("degrees").get();
 
       setDegrees(
         data.docs.map((doc) => ({
@@ -92,10 +51,7 @@ export default function Bets() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
-        .firestore()
-        .collection("subjects")
-        .get();
+      const data = await firebase.firestore().collection("subjects").get();
 
       setSubjects(
         data.docs.map((doc) => ({
@@ -108,10 +64,7 @@ export default function Bets() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
-        .firestore()
-        .collection("userSubjects")
-        .get();
+      const data = await firebase.firestore().collection("userSubjects").get();
 
       setUserSubjects(
         data.docs.map((doc) => ({
@@ -127,6 +80,7 @@ export default function Bets() {
       const data = await firebase
         .firestore()
         .collection("users")
+        .where("uid", "!=", user.uid)
         .get();
 
       setUsers(
@@ -141,23 +95,14 @@ export default function Bets() {
   function orderSubjects(degree, year) {
     setSubjectsOrder(
       subjects
-        .filter(
-          (subject) =>
-            subject.degreeId === degree
-        )
-        .filter(
-          (subject) =>
-            subject.year === year
-        )
+        .filter((subject) => subject.degreeId === degree)
+        .filter((subject) => subject.year === year)
     );
   }
 
   function orderUserSubjects(subject) {
     setUserSubjectsOrder(
-      userSubjects.filter(
-        (user) =>
-          user.subjectId === subject
-      )
+      userSubjects.filter((user) => user.subjectId === subject)
     );
   }
 
@@ -165,11 +110,7 @@ export default function Bets() {
     setUsersOrder(
       users.filter(
         (user) =>
-          user.uid ===
-          userSubjectsOrder.map(
-            (userSubject) =>
-              userSubject.uid
-          )
+          user.uid === userSubjectsOrder.map((userSubject) => userSubject.uid)
       )
     );
   }
@@ -179,18 +120,10 @@ export default function Bets() {
       <Navbar />
       <Chat />
       <div className="mb-auto">
-        <div
-          ref={gradeRef}
-          className={
-            gradeShow
-              ? "block "
-              : "hidden "
-          }
-        >
+        <div ref={gradeRef} className={gradeShow ? "block " : "hidden "}>
           <div className="mt-10 text-center">
             <h1 className="sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
-              Selecciona sobre que grado
-              quieres apostar.
+              Selecciona sobre que grado quieres apostar.
             </h1>
           </div>
           <div className="flex justify-center">
@@ -198,32 +131,19 @@ export default function Bets() {
               <>
                 <Grade
                   icon={degree.acronym}
-                  gradeName={
-                    degree.acronym
-                  }
-                  gradeFullname={
-                    degree.name
-                  }
+                  gradeName={degree.acronym}
+                  gradeFullname={degree.name}
                   onClick={() => {
                     setGradeShow(false);
                     setCourseShow(true);
-                    setDegreeSelected(
-                      degree.code
-                    );
+                    setDegreeSelected(degree.code);
                   }}
                 />
               </>
             ))}
           </div>
         </div>
-        <div
-          ref={courseRef}
-          className={
-            courseShow
-              ? "block "
-              : "hidden "
-          }
-        >
+        <div ref={courseRef} className={courseShow ? "block " : "hidden "}>
           <div className="relative flex justify-center items-center">
             <input
               type="image"
@@ -238,8 +158,7 @@ export default function Bets() {
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
             <h1 className="mt-10 sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
-              Selecciona sobre que curso
-              quieres apostar.
+              Selecciona sobre que curso quieres apostar.
             </h1>
           </div>
           <div className="flex justify-center">
@@ -251,10 +170,7 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
-                orderSubjects(
-                  degreeSelected,
-                  1
-                );
+                orderSubjects(degreeSelected, 1);
               }}
             >
               {" "}
@@ -270,10 +186,7 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
-                orderSubjects(
-                  degreeSelected,
-                  2
-                );
+                orderSubjects(degreeSelected, 2);
               }}
             >
               {" "}
@@ -289,10 +202,7 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
-                orderSubjects(
-                  degreeSelected,
-                  3
-                );
+                orderSubjects(degreeSelected, 3);
               }}
             >
               {" "}
@@ -308,24 +218,14 @@ export default function Bets() {
               onClick={() => {
                 setCourseShow(false);
                 setSubjectsShow(true);
-                orderSubjects(
-                  degreeSelected,
-                  4
-                );
+                orderSubjects(degreeSelected, 4);
               }}
             >
               Asignaturas de cuarto
             </Button>
           </div>
         </div>
-        <div
-          ref={subjectsRef}
-          className={
-            subjectsShow
-              ? "block "
-              : "hidden "
-          }
-        >
+        <div ref={subjectsRef} className={subjectsShow ? "block " : "hidden "}>
           <div className="relative flex justify-center items-center">
             <input
               type="image"
@@ -340,48 +240,27 @@ export default function Bets() {
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
             <h1 className="mt-10 sm:text-3xl text-2xl font-medium title-font text-gray-900 mb-4">
-              Selecciona sobre que
-              asignatura quieres
-              apostar.
+              Selecciona sobre que asignatura quieres apostar.
             </h1>
           </div>
           <div className="flex flex-wrap justify-center">
-            {subjectsOrder.map(
-              (subject) => (
-                <Subject
-                  variant="green"
-                  subjectName={
-                    subject.acronym
-                  }
-                  subjectFullname={
-                    subject.name
-                  }
-                  onClick={() => {
-                    setUserShow(true);
-                    setSubjectsShow(
-                      false
-                    );
-                    SetSubjectSelected(
-                      subject.code
-                    );
-                    orderUserSubjects(
-                      subject.code
-                    );
-                    orderUsers();
-                  }}
-                />
-              )
-            )}
+            {subjectsOrder.map((subject) => (
+              <Subject
+                variant="green"
+                subjectName={subject.acronym}
+                subjectFullname={subject.name}
+                onClick={() => {
+                  setUserShow(true);
+                  setSubjectsShow(false);
+                  SetSubjectSelected(subject.code);
+                  orderUserSubjects(subject.code);
+                  orderUsers();
+                }}
+              />
+            ))}
           </div>
         </div>
-        <div
-          ref={userRef}
-          className={
-            userShow
-              ? "block "
-              : "hidden "
-          }
-        >
+        <div ref={userRef} className={userShow ? "block " : "hidden "}>
           <div className="relative flex justify-center items-center">
             <input
               type="image"
@@ -416,46 +295,34 @@ export default function Bets() {
                         </tr>
                       </thead>
                       <tbody class="bg-gray-500 divide-y divide-gray-200">
-                        {userSubjectsOrder.map(
-                          (
-                            userOrder
-                          ) => (
-                            <tr>
-                              <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                  <div class="flex-shrink-0 h-10 w-10">
-                                    <img
-                                      class="h-10 w-10 rounded-full"
-                                      src="https://i.imgur.com/q385Ahc.png"
-                                      alt="Usuario"
-                                    ></img>
-                                  </div>
-                                  <div class="ml-4">
-                                    <div class="text-sm font-medium text-white">
-                                      {
-                                        userOrder.nickname
-                                      }
-                                    </div>
+                        {userSubjectsOrder.map((userOrder) => (
+                          <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                  <img
+                                    class="h-10 w-10 rounded-full"
+                                    src="https://i.imgur.com/q385Ahc.png"
+                                    alt="Usuario"
+                                  ></img>
+                                </div>
+                                <div class="ml-4">
+                                  <div class="text-sm font-medium text-white">
+                                    {userOrder.nickname}
                                   </div>
                                 </div>
-                              </td>
-                              <td class="px-16 py-4 whitespace-nowrap"></td>
-                              <td class="px-4 py-2 whitespace-nowrap">
-                                <Modal
-                                  nickname={
-                                    userOrder.nickname
-                                  }
-                                  uidApostado={
-                                    userOrder.uid
-                                  }
-                                  subjectId={
-                                    subjectSelected
-                                  }
-                                />
-                              </td>
-                            </tr>
-                          )
-                        )}
+                              </div>
+                            </td>
+                            <td class="px-16 py-4 whitespace-nowrap"></td>
+                            <td class="px-4 py-2 whitespace-nowrap">
+                              <Modal
+                                nickname={userOrder.nickname}
+                                uidApostado={userOrder.uid}
+                                subjectId={subjectSelected}
+                              />
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>

@@ -9,6 +9,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 export default function SearchBar({ ...rest }) {
+  var user = firebase.auth().currentUser;
   const [users, setUsers] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -23,7 +24,11 @@ export default function SearchBar({ ...rest }) {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase.firestore().collection("users").get();
+      const data = await firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "!=", user.uid)
+        .get();
 
       setUsers(
         data.docs.map((doc) => ({

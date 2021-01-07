@@ -852,7 +852,8 @@ export function leerMatricula() {
 //Datos necesarios
 //1. Notas => calcular creditos
 //2. Nota media
-//NO SUMA BIEN TODOS LOS CREDITOS
+//NO SUMA BIEN TODOS LOS CREDITOS -> si no puedo hacerlo como lo tengo, los leo de creditos
+//conseguidos, mas royo pero seguro
 //LA MEDIA LA COGE BIEN MANTECONI
 export function leerExpediente() {
   var file = document.getElementById("expediente").files;

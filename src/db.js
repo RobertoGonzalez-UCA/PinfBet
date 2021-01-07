@@ -739,40 +739,41 @@ export function createSubject() {
         
     }, false);
 }**/
-
+var subjectId="";
 export function leerArchivo() {
   var file = document.getElementById("expediente").files;
   var reader = new FileReader();
-
+  
   reader.readAsText(file[0]);
 
   reader.onload = function (e) {
     var result = reader.result;
     var lineas = result.split("\n");
     for (var linea of lineas) {
-      var subjectId = "";
+      subjectId = "";
       if (linea[0] == "2") {
         for (var i in linea) {
           if (i >= 0 && i < 8) {
             subjectId += linea[i];
           }
         }
-
+        
         firebase
           .firestore()
           .collection("subjects")
           .where("code", "==", subjectId)
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              console.log(doc.data().degreeId);
-              cursarAsignatura(doc.data().degreeId, subjectId);
+            querySnapshot.forEach((doc) => {             
+             cursarAsignatura(doc.data().degreeId, doc.data().code);
             });
           });
       }
     }
   };
 }
+
+
 
 export function devolverInfoSubject() {
   var subjectId = document.getElementById("idAsignatura").value;
@@ -811,7 +812,7 @@ export function debugCambioId() {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         firebase.firestore().collection("subjects").doc(doc.id).update({
-          degreeId: 1725
+          degreeId: "1725"
         });
       });
     });

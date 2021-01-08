@@ -9,8 +9,9 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import Chat from "../components/chat";
 import Button from "../components/button";
-import Subject from "../components/subject";
 import SubjectModal from "../components/subjectModal";
+
+import { solicitarAmistad } from "../db.js";
 
 export default function ViewProfie() {
   var nickname = useParams().nickname;
@@ -163,11 +164,17 @@ export default function ViewProfie() {
               </div>
             </div>
             <div className="absolute mt-4 left-60 flex">
-              <Button>Agregar</Button>
               <Button
-                className=""
-                variant="tertiary"
+                onClick={() =>
+                  solicitarAmistad(
+                    user.uid,
+                    spell.uid
+                  )
+                }
               >
+                Agregar
+              </Button>
+              <Button variant="tertiary">
                 Eliminar
               </Button>
             </div>
@@ -176,33 +183,37 @@ export default function ViewProfie() {
                 Asignaturas
               </h2>
               <div className="flex justify-center">
-                {subjectsOrder.map(
-                  (subject) => (
-                    <div>
-                      {subject.map(
-                        (subject1) => (
-                          <SubjectModal
-                            subjectName={
-                              subject1.acronym
-                            }
-                            subjectFullname={
-                              subject1.name
-                            }
-                            nickname={
-                              spell.nickname
-                            }
-                            uidApostado={
-                              spell.uid
-                            }
-                            subjectId={
-                              subject1.code
-                            }
-                          />
-                        )
-                      )}
-                    </div>
-                  )
-                )}
+                <div className="flex flex-wrap w-1/2 justify-center">
+                  {subjectsOrder.map(
+                    (subject) => (
+                      <div>
+                        {subject.map(
+                          (
+                            subject1
+                          ) => (
+                            <SubjectModal
+                              subjectName={
+                                subject1.acronym
+                              }
+                              subjectFullname={
+                                subject1.name
+                              }
+                              nickname={
+                                spell.nickname
+                              }
+                              uidApostado={
+                                spell.uid
+                              }
+                              subjectId={
+                                subject1.code
+                              }
+                            />
+                          )
+                        )}
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
               <section class="text-gray-600 body-font">
                 <div class="container px-5 py-10 mx-auto">

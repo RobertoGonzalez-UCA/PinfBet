@@ -64,7 +64,11 @@ export default function Bets() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase.firestore().collection("userSubjects").get();
+      const data = await firebase
+        .firestore()
+        .collection("userSubjects")
+        .where("uid", "!=", user.uid)
+        .get();
 
       setUserSubjects(
         data.docs.map((doc) => ({
@@ -127,6 +131,7 @@ export default function Bets() {
             </h1>
           </div>
           <div className="flex justify-center">
+            <div className="flex flex-wrap w-1/2 justify-center">
             {degrees.map((degree) => (
               <>
                 <Grade
@@ -141,6 +146,7 @@ export default function Bets() {
                 />
               </>
             ))}
+          </div>
           </div>
         </div>
         <div ref={courseRef} className={courseShow ? "block " : "hidden "}>
@@ -243,21 +249,23 @@ export default function Bets() {
               Selecciona sobre que asignatura quieres apostar.
             </h1>
           </div>
-          <div className="flex flex-wrap justify-center">
-            {subjectsOrder.map((subject) => (
-              <Subject
-                variant="green"
-                subjectName={subject.acronym}
-                subjectFullname={subject.name}
-                onClick={() => {
-                  setUserShow(true);
-                  setSubjectsShow(false);
-                  SetSubjectSelected(subject.code);
-                  orderUserSubjects(subject.code);
-                  orderUsers();
-                }}
-              />
-            ))}
+          <div className="flex justify-center">
+            <div className="flex flex-wrap w-1/2 justify-center">
+              {subjectsOrder.map((subject) => (
+                <Subject
+                  variant="green"
+                  subjectName={subject.acronym}
+                  subjectFullname={subject.name}
+                  onClick={() => {
+                    setUserShow(true);
+                    setSubjectsShow(false);
+                    SetSubjectSelected(subject.code);
+                    orderUserSubjects(subject.code);
+                    orderUsers();
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <div ref={userRef} className={userShow ? "block " : "hidden "}>

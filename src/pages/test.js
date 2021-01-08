@@ -11,9 +11,7 @@ import Select from "../components/select";
 import Subject from "../components/subject";
 import Table from "../components/table";
 import Chat from "../components/chat";
-import SearchBar from "../components/searchBar";
-
-// import "firebase/auth";
+import NotificationList from "../components/notificationList";
 
 import {
   getUsers,
@@ -48,6 +46,7 @@ export default function Test() {
       </h1>
       <div className="relative flex items-center justify-between h-15">
         <div className="relative flex items-center justify-between h-15">
+          <NotificationList />
           <Modal />
           <Dropdown />
           <DropdownProfile />

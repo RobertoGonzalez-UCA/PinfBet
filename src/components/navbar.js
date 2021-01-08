@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import Button from "../components/button";
 import DropdownProfile from "../components/dropdownProfile";
+import DropdownNotification from "../components/dropdownNotification";
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -133,6 +134,7 @@ export default function Navbar() {
                 {pinfCoins} PFC
               </span>
               <DropdownProfile />
+              <DropdownNotification />
             </div>
           </div>
         </div>

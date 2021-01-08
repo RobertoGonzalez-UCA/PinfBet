@@ -1,5 +1,3 @@
-import { ListSubheader } from "@material-ui/core";
-import Search from "antd/lib/input/Search";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -29,18 +27,10 @@ export function getDegrees() {
 }
 
 //FUNCION SOLICITAR AMISTAD
-export async function solicitarAmistad() {
-  var uidEmisor = firebase.auth()
-    .currentUser.uid;
-  var uidReceptor = document.getElementById(
-    "uidReceptor"
-  ).value;
-
-  if (uidReceptor === "") {
-    console.log("Inserte un UID");
-    return;
-  }
-
+export async function solicitarAmistad(
+  uidEmisor,
+  uidReceptor
+) {
   await firebase
     .firestore()
     .collection("friendships")
@@ -61,7 +51,7 @@ export async function solicitarAmistad() {
       querySnapshot.forEach(function (
         doc
       ) {
-        console.log(
+        alert(
           "Ya tienes amistad con este amigo"
         );
         yaHayAmistad(
@@ -82,7 +72,7 @@ export async function solicitarAmistad() {
       querySnapshot.forEach(function (
         doc
       ) {
-        console.log(
+        alert(
           "Ya tienes amistad con este amigo"
         );
         yaHayAmistad(
@@ -103,8 +93,8 @@ export async function solicitarAmistad() {
       querySnapshot.forEach(function (
         doc
       ) {
-        console.log(
-          "Esta persona denegó tu amistad"
+        alert(
+          "Esta persona denegó tu petición."
         );
         yaHayAmistad(
           uidEmisor,
@@ -276,13 +266,10 @@ export function mostrarSolicitud() {
 }
 
 //FUNCION ACEPTAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
-export function aceptarSolicitud() {
-  var uidReceptor = firebase.auth()
-    .currentUser.uid;
-  var uidSolicitante = document.getElementById(
-    "solicitanteId"
-  ).value;
-
+export function aceptarSolicitud(
+  uidReceptor,
+  uidSolicitante
+) {
   firebase
     .firestore()
     .collection("friendships")
@@ -313,13 +300,10 @@ export function aceptarSolicitud() {
 }
 
 //FUNCION RECHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
-export function rechazarSolicitud() {
-  var uidReceptor = firebase.auth()
-    .currentUser.uid;
-  var uidSolicitante = document.getElementById(
-    "solicitanteId"
-  ).value;
-
+export function rechazarSolicitud(
+  uidReceptor,
+  uidSolicitante
+) {
   firebase
     .firestore()
     .collection("friendships")
@@ -338,7 +322,7 @@ export function rechazarSolicitud() {
           .collection("friendships")
           .doc(doc.id)
           .update({
-            status: "REFUSED"
+            status: "DENIED"
           });
         console.log(
           doc.id,

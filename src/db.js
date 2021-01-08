@@ -27,10 +27,7 @@ export function getDegrees() {
 }
 
 //FUNCION SOLICITAR AMISTAD
-export async function solicitarAmistad(
-  uidEmisor,
-  uidReceptor
-) {
+export async function solicitarAmistad(uidEmisor, uidReceptor) {
   await firebase
     .firestore()
     .collection("friendships")
@@ -39,36 +36,24 @@ export async function solicitarAmistad(
     .where("status", "==", "PENDING")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("friendships")
           .doc(doc.id)
           .delete()
-          .then(function () {
-            console.log(
-              "Pending friendship successfully deleted!"
-            );
-          })
+          .then(function () {})
           .catch(function (error) {
-            console.error(
-              "Error removing document: ",
-              error
-            );
+            console.error("Error removing document: ", error);
           });
       });
     });
 
-  await firebase
-    .firestore()
-    .collection("friendships")
-    .add({
-      status: "PENDING",
-      uid_a: uidEmisor,
-      uid_b: uidReceptor
-    });
+  await firebase.firestore().collection("friendships").add({
+    status: "PENDING",
+    uid_a: uidEmisor,
+    uid_b: uidReceptor
+  });
 
   firebase
     .firestore()
@@ -78,16 +63,9 @@ export async function solicitarAmistad(
     .where("status", "==", "ACCEPTED")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        alert(
-          "Ya tienes amistad con este amigo"
-        );
-        yaHayAmistad(
-          uidEmisor,
-          uidReceptor
-        );
+      querySnapshot.forEach(function (doc) {
+        alert("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
       });
     });
 
@@ -99,16 +77,9 @@ export async function solicitarAmistad(
     .where("status", "==", "ACCEPTED")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        alert(
-          "Ya tienes amistad con este amigo"
-        );
-        yaHayAmistad(
-          uidEmisor,
-          uidReceptor
-        );
+      querySnapshot.forEach(function (doc) {
+        alert("Ya tienes amistad con este amigo");
+        yaHayAmistad(uidEmisor, uidReceptor);
       });
     });
 
@@ -120,16 +91,9 @@ export async function solicitarAmistad(
     .where("status", "==", "DENIED")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        alert(
-          "Esta persona denegó tu petición."
-        );
-        yaHayAmistad(
-          uidEmisor,
-          uidReceptor
-        );
+      querySnapshot.forEach(function (doc) {
+        alert("Esta persona denegó tu petición.");
+        yaHayAmistad(uidEmisor, uidReceptor);
       });
     });
 
@@ -141,24 +105,14 @@ export async function solicitarAmistad(
     .where("status", "==", "DENIED")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        console.log(
-          "Esta persona denegó tu amistad"
-        );
-        yaHayAmistad(
-          uidEmisor,
-          uidReceptor
-        );
+      querySnapshot.forEach(function (doc) {
+        console.log("Esta persona denegó tu amistad");
+        yaHayAmistad(uidEmisor, uidReceptor);
       });
     });
 }
 
-function yaHayAmistad(
-  uidEmisor,
-  uidReceptor
-) {
+function yaHayAmistad(uidEmisor, uidReceptor) {
   firebase
     .firestore()
     .collection("friendships")
@@ -167,24 +121,15 @@ function yaHayAmistad(
     .where("status", "==", "PENDING")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("friendships")
           .doc(doc.id)
           .delete()
-          .then(function () {
-            console.log(
-              "Pending friendship successfully deleted!"
-            );
-          })
+          .then(function () {})
           .catch(function (error) {
-            console.error(
-              "Error removing document: ",
-              error
-            );
+            console.error("Error removing document: ", error);
           });
       });
     });
@@ -197,24 +142,15 @@ function yaHayAmistad(
     .where("status", "==", "PENDING")
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("friendships")
           .doc(doc.id)
           .delete()
-          .then(function () {
-            console.log(
-              "Pending friendship successfully deleted!"
-            );
-          })
+          .then(function () {})
           .catch(function (error) {
-            console.error(
-              "Error removing document: ",
-              error
-            );
+            console.error("Error removing document: ", error);
           });
       });
     });
@@ -222,8 +158,7 @@ function yaHayAmistad(
 
 //FUNCION MOSTRAR AMISTADES
 export function mostrarAmistad() {
-  var uidReceptor = firebase.auth()
-    .currentUser.uid;
+  var uidReceptor = firebase.auth().currentUser.uid;
 
   firebase
     .firestore()
@@ -234,15 +169,8 @@ export function mostrarAmistad() {
     .then((querySnapshot) => {
       console.log(querySnapshot.docs);
       querySnapshot.forEach((doc) => {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
-        console.log(
-          "Tienes amistad con" +
-            doc.data().uid_a
-        );
+        console.log(doc.id, " => ", doc.data());
+        console.log("Tienes amistad con" + doc.data().uid_a);
       });
     });
 
@@ -255,146 +183,53 @@ export function mostrarAmistad() {
     .then((querySnapshot) => {
       console.log(querySnapshot.docs);
       querySnapshot.forEach((doc) => {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
-        console.log(
-          "Tienes amistad con" +
-            doc.data().uid_b
-        );
-      });
-    });
-}
-
-//FUNCION MOSTRAR SOLICITUDES DE AMISTAD
-export function mostrarSolicitud() {
-  var uidReceptor = firebase.auth()
-    .currentUser.uid;
-
-  firebase
-    .firestore()
-    .collection("friendships")
-    .where("uid_b", "==", uidReceptor)
-    .where("status", "==", "PENDING")
-    .get()
-    .then((querySnapshot) => {
-      console.log(querySnapshot.docs);
-      querySnapshot.forEach((doc) => {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
-        console.log(
-          "El solicitante es " +
-            doc.data().uid_a
-        );
+        console.log(doc.id, " => ", doc.data());
+        console.log("Tienes amistad con" + doc.data().uid_b);
       });
     });
 }
 
 //FUNCION ACEPTAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
-export function aceptarSolicitud(
-  uidReceptor,
-  uidSolicitante
-) {
+export function aceptarSolicitud(uidReceptor, uidSolicitante) {
   firebase
     .firestore()
     .collection("friendships")
-    .where(
-      "uid_a",
-      "==",
-      uidSolicitante
-    )
+    .where("uid_a", "==", uidSolicitante)
     .where("status", "==", "PENDING")
     .where("uid_b", "==", uidReceptor)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach((doc) => {
-        firebase
-          .firestore()
-          .collection("friendships")
-          .doc(doc.id)
-          .update({
-            status: "ACCEPTED"
-          });
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
+        firebase.firestore().collection("friendships").doc(doc.id).update({
+          status: "ACCEPTED"
+        });
+        console.log(doc.id, " => ", doc.data());
       });
     });
 }
 
 //FUNCION RECHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
-export function rechazarSolicitud(
-  uidReceptor,
-  uidSolicitante
-) {
+export function rechazarSolicitud(uidReceptor, uidSolicitante) {
   firebase
     .firestore()
     .collection("friendships")
-    .where(
-      "uid_a",
-      "==",
-      uidSolicitante
-    )
+    .where("uid_a", "==", uidSolicitante)
     .where("status", "==", "PENDING")
     .where("uid_b", "==", uidReceptor)
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach((doc) => {
-        firebase
-          .firestore()
-          .collection("friendships")
-          .doc(doc.id)
-          .update({
-            status: "DENIED"
-          });
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
+        firebase.firestore().collection("friendships").doc(doc.id).update({
+          status: "DENIED"
+        });
+        console.log(doc.id, " => ", doc.data());
       });
-    });
-}
-
-//FUNCION MOSTRAR ASIGNATURAS (TODAS) (NO USADA ACTUALMENTE)
-export function mostrarAsignaturas() {
-  firebase
-    .firestore()
-    .collection("subjects")
-    .doc()
-    .where("degreeId", "==")
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
-      });
-    })
-    .catch(function (error) {
-      console.log(
-        "Error getting documents: ",
-        error
-      );
     });
 }
 
 //FUNCION MOSTRAR ASIGNATURAS POR AÑO
 export function mostrarAsignaturasYear() {
-  var string = document.getElementById(
-    "year"
-  ).value; //Obtenemos un string que posteriormente convertimos en int
+  var string = document.getElementById("year").value; //Obtenemos un string que posteriormente convertimos en int
   var year = parseInt(string, 10); //No tocar el 10, es necesario para base decimal
 
   firebase
@@ -403,21 +238,12 @@ export function mostrarAsignaturasYear() {
     .where("year", "==", year)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
-        );
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
       });
     })
     .catch(function (error) {
-      console.log(
-        "Error getting documents: ",
-        error
-      );
+      console.log("Error getting documents: ", error);
     });
 }
 
@@ -431,24 +257,16 @@ export function iniciarCrearApuesta(
   notaApostada,
   idAsignatura
 ) {
-  var uidApostante = firebase.auth()
-    .currentUser.uid;
+  var uidApostante = firebase.auth().currentUser.uid;
 
-  cantidadDinero = parseInt(
-    cantidadDinero,
-    10
-  );
-  cantidadDineroNota = parseInt(
-    cantidadDineroNota,
-    10
-  );
+  cantidadDinero = parseInt(cantidadDinero, 10);
+  cantidadDineroNota = parseInt(cantidadDineroNota, 10);
 
   if (isNaN(cantidadDineroNota)) {
     cantidadDineroNota = 0;
   }
 
-  var dineroApuesta =
-    cantidadDinero + cantidadDineroNota;
+  var dineroApuesta = cantidadDinero + cantidadDineroNota;
 
   firebase
     .firestore()
@@ -457,19 +275,16 @@ export function iniciarCrearApuesta(
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        if (
-          doc.data().coins >
-          dineroApuesta
-        ) {
+        if (doc.data().coins >= dineroApuesta) {
           firebase
             .firestore()
             .collection("users")
             .doc(doc.id)
             .update({
-              coins: firebase.firestore.FieldValue.increment(
-                -dineroApuesta
-              )
+              coins: firebase.firestore.FieldValue.increment(-dineroApuesta)
             });
+
+          console.log("Hold up");
 
           crearApuestaSonAmigos(
             uidApostante,
@@ -482,17 +297,12 @@ export function iniciarCrearApuesta(
             notaApostada
           );
         } else {
-          alert(
-            "Error. No se dispone del suficiente dinero"
-          );
+          alert("Error. No se dispone del suficiente dinero");
         }
       });
     })
     .catch(function (error) {
-      console.log(
-        "Error getting /users/ documents: ",
-        error
-      );
+      console.log("Error getting /users/ documents: ", error);
     });
 }
 
@@ -507,9 +317,7 @@ export function crearApuestaSonAmigos(
   cantidadDineroNota,
   notaApostada
 ) {
-  var solicitudes = firebase
-    .firestore()
-    .collection("friendships");
+  var solicitudes = firebase.firestore().collection("friendships");
 
   var query = solicitudes
     .where("uid_a", "==", uidApostante)
@@ -523,41 +331,7 @@ export function crearApuestaSonAmigos(
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        if (
-          doc.data().status ===
-          "ACCEPTED"
-        ) {
-          escribirApuesta(
-            uidApostante,
-            idAsignatura,
-            cantidadDinero,
-            uidApostado,
-            betNotaCheck,
-            valorBet,
-            cantidadDineroNota,
-            notaApostada
-          );
-        } else {
-          alert("No sois amigos.");
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log(
-        "Error getting documents: ",
-        error
-      );
-    });
-
-  reverseQuery
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (
-          doc.data().status ===
-          "ACCEPTED"
-        ) {
-          console.log("amigos es true");
+        if (doc.data().status === "ACCEPTED") {
           encontrarDegree(
             uidApostante,
             idAsignatura,
@@ -574,10 +348,31 @@ export function crearApuestaSonAmigos(
       });
     })
     .catch(function (error) {
-      console.log(
-        "Error getting documents: ",
-        error
-      );
+      console.log("Error getting documents: ", error);
+    });
+
+  reverseQuery
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status === "ACCEPTED") {
+          encontrarDegree(
+            uidApostante,
+            idAsignatura,
+            cantidadDinero,
+            uidApostado,
+            betNotaCheck,
+            valorBet,
+            cantidadDineroNota,
+            notaApostada
+          );
+        } else {
+          alert("No sois amigos.");
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
     });
 }
 
@@ -598,9 +393,7 @@ function encontrarDegree(
     .where("code", "==", idAsignatura) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         escribirApuesta(
           uidApostante,
           idAsignatura,
@@ -646,10 +439,7 @@ function escribirApuesta(
       }
     })
     .then(function (docRef) {
-      console.log(
-        "BetContext written with ID: ",
-        docRef.id
-      );
+      console.log("BetContext written with ID: ", docRef.id);
 
       firebase
         .firestore()
@@ -663,10 +453,7 @@ function escribirApuesta(
         })
         .then(function (docRef) {})
         .catch(function (error) {
-          console.error(
-            "Error adding document: ",
-            error
-          );
+          console.error("Error adding document: ", error);
         });
 
       if (betNotaCheck === true) {
@@ -703,29 +490,19 @@ function escribirApuestaNota(
       value: notaApostada
     })
     .then(function (docRef) {
-      console.log(
-        "Bet Nota written with ID: ",
-        docRef.id
-      );
+      console.log("Bet Nota written with ID: ", docRef.id);
     })
     .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
+      console.error("Error adding document: ", error);
     });
 }
 
 //Un usuario cursa una asignatura
-export function cursarAsignatura(
-  degreeId,
-  subjectId
-) {
+export function cursarAsignatura(degreeId, subjectId) {
   //var degreeId = document.getElementById("degreeId").value;
   //var subjectId = document.getElementById("subjectId").value;
 
-  var user = firebase.auth()
-    .currentUser;
+  var user = firebase.auth().currentUser;
 
   firebase
     .firestore()
@@ -733,27 +510,15 @@ export function cursarAsignatura(
     .where("uid", "==", user.uid) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         console.log("Entré");
-        completarCursar(
-          degreeId,
-          subjectId,
-          user.uid,
-          doc.data().nickname
-        );
+        completarCursar(degreeId, subjectId, user.uid, doc.data().nickname);
       });
     });
 }
 
 //Siguiente paso de cursar asignatura
-function completarCursar(
-  degreeId,
-  subjectId,
-  user,
-  nickname
-) {
+function completarCursar(degreeId, subjectId, user, nickname) {
   console.log("Soy " + nickname);
 
   firebase
@@ -767,30 +532,21 @@ function completarCursar(
       nickname: nickname
     })
     .then(function (docRef) {
-      console.log(
-        "Document written with ID: ",
-        docRef.id
-      );
+      console.log("Document written with ID: ", docRef.id);
     })
     .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
+      console.error("Error adding document: ", error);
     });
 }
 
 export async function actualizarNota() {
-  var subjectId = document.getElementById(
-    "subjectId"
-  ).value;
-  var nota = document.getElementById(
-    "nota"
-  ).value;
-  var user = firebase.auth()
-    .currentUser;
+  //Obtenemos la asignatura, la nota y el usuario actual. Solo necesitamos eso.
+  var subjectId = document.getElementById("subjectId").value;
+  var nota = document.getElementById("nota").value;
+  var user = firebase.auth().currentUser;
 
   if (nota < 0 || nota > 10) {
+    //La nota es válida
     return;
   }
 
@@ -801,9 +557,7 @@ export async function actualizarNota() {
     .where("subjectId", "==", subjectId)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("userSubjects")
@@ -812,7 +566,7 @@ export async function actualizarNota() {
       });
     });
 
-  await firebase
+  /* await firebase
     .firestore()
     .collection("transactions")
     .add({
@@ -821,136 +575,130 @@ export async function actualizarNota() {
       subjectId: subjectId
     })
     .then(function (docRef) {
-      console.log(
-        "Transaction written with ID: ",
-        docRef.id
-      );
+      //    console.log("Transaction written with ID: ", docRef.id);
     })
     .catch(function (error) {
       console.error(
         "Error adding document: ",
         error
       );
-    });
+    });*/
 
-  //Esta parte se encarga de encontrar los bets donde aparcece la persona original, y llama a al funcion de buscar betContext relacionados
+  //Esta parte se encarga de encontrar los bets donde aparcece la persona original
   await firebase
     .firestore()
     .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        console.log(
-          doc.id,
-          " => ",
-          doc.data()
+      querySnapshot.forEach(function (doc) {
+        var bet = doc;
+
+        fetchBetcontext(
+          //Llamamos a funcion de buscar betContext relacionados
+          doc,
+          nota,
+          subjectId
         );
-
-        fetchBetcontext(doc, nota); //Vamos a buscar los betContext relacionados con este bet
-
-        firebase
-          .firestore()
-          .collection("bets")
-          .doc(doc.id) //Buscar documentacion update data
-          .delete()
-          .then(function () {
-            console.log(
-              "Bet successfully deleted!"
-            );
-          })
-          .catch(function (error) {
-            console.error(
-              "Error removing document: ",
-              error
-            );
-          });
+        deleteBetcontext(
+          //Llamamos a funcion de borrar los betContext
+          bet,
+          nota,
+          subjectId
+        ); //Vamos a buscar los betContext relacionados con este bet
       });
     })
     .catch(function (error) {
-      console.log(
-        "Error getting document:",
-        error
-      );
+      console.log("Error getting document:", error);
     });
+
+  /*  firebase //Borrar notas despues de actualizar
+    .firestore()
+    .collection("userSubjects")
+    .where("uid", "==", user.uid) //Buscar documentacion update data
+    .where("subjectId", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        firebase
+        .firestore()
+        .collection("userSubjects")
+        .doc(doc.id)
+        .delete()
+      });
+    });*/
 }
 
-async function fetchBetcontext(
-  bet,
-  nota
-) {
+async function fetchBetcontext(bet, nota, subjectId) {
   await firebase
     .firestore()
     .collection("betContexts")
     .doc(bet.get("betContextId"))
     .get()
     .then(function (doc) {
-      actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
+      if (
+        doc.data().subjects.code === subjectId //Nos aseguramos de que el betContext se corresponda con la asignatura
+      ) {
+        console.log("He encontado el betContext");
+        actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
+      }
     })
     .catch(function (error) {
-      console.log(
-        "Error getting document:",
-        error
-      );
-    });
-
-  firebase
-    .firestore()
-    .collection("betContexts")
-    .doc(bet.get("betContextId"))
-    .delete()
-    .then(function () {
-      console.log(
-        "BetContext successfully deleted!"
-      );
-    })
-    .catch(function (error) {
-      console.error(
-        "Error removing document: ",
-        error
-      );
+      console.log("Error getting document:", error);
     });
 }
 
-async function actualizarBets(
-  bet,
-  nota,
-  betContext
-) {
+async function deleteBetcontext(bet, nota, subjectId) { //Misma funcion que arriba pero se encarga de borrar los ebtContezts despues de la actualizacion de nota
+  console.log("HE entrado");
+
+  await firebase
+    .firestore()
+    .collection("betContexts")
+    .doc(bet.get("betContextId"))
+    .get()
+    .then(function (doc) {
+      if (doc.data().subjects.code === subjectId) {
+        firebase
+          .firestore()
+          .collection("betContexts")
+          .doc(bet.get("betContextId"))
+          .delete()
+          .then(function () {
+            console.log("BetContext successfully deleted!");
+          })
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+      }
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
+    });
+}
+
+async function actualizarBets(bet, nota, betContext) { //Actualizamos el dinero del usuario y borramos los bets
   var uid = betContext.get("uid");
-  var uid_apostado = firebase.auth()
-    .currentUser.uid;
+  var uid_apostado = firebase.auth().currentUser.uid;
   var aumento;
   aumento = 0; //sacamos el dinero que ha apostado
 
-  if (
-    nota > 5 &&
-    bet.get("value") === true
-  ) {
+  if (nota >= 5 && bet.get("value") === true) {
     aumento = bet.get("amount") * 1.5;
   }
 
-  if (
-    nota < 5 &&
-    bet.get("value") === false
-  ) {
+  if (nota < 5 && bet.get("value") === false) {
     aumento = bet.get("amount") * 1.5;
   }
 
-  if (
-    bet.get("type") === "NOTA" &&
-    nota === bet.get("value")
-  ) {
+  if (bet.get("type") === "NOTA" && nota === bet.get("value")) {
     aumento = bet.get("amount") * 3;
   }
 
-  console.log(
-    "El aumento es" + aumento
-  );
+  console.log("El aumento es" + aumento);
 
-  await firebase
+  /*await firebase
     .firestore()
     .collection("transactions")
     .where(
@@ -978,7 +726,7 @@ async function actualizarBets(
         "Error adding document: ",
         error
       );
-    });
+    });*/
 
   await firebase
     .firestore()
@@ -986,27 +734,17 @@ async function actualizarBets(
     .where("uid", "==", uid)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         if (aumento > 0) {
           firebase
             .firestore()
             .collection("users")
             .doc(doc.id)
             .update({
-              coins: firebase.firestore.FieldValue.increment(
-                aumento
-              ),
-              coinsEarned: firebase.firestore.FieldValue.increment(
-                aumento
-              ),
-              hits: firebase.firestore.FieldValue.increment(
-                1
-              ),
-              hitStreak: firebase.firestore.FieldValue.increment(
-                1
-              )
+              coins: firebase.firestore.FieldValue.increment(aumento),
+              coinsEarned: firebase.firestore.FieldValue.increment(aumento),
+              hits: firebase.firestore.FieldValue.increment(1),
+              hitStreak: firebase.firestore.FieldValue.increment(1)
             });
         } else {
           firebase
@@ -1014,20 +752,28 @@ async function actualizarBets(
             .collection("users")
             .doc(doc.id)
             .update({
-              fails: firebase.firestore.FieldValue.increment(
-                1
-              ),
+              fails: firebase.firestore.FieldValue.increment(1),
               hitStreak: 0
             });
         }
-        console.log(
-          "Fin de actualizar bets"
-        );
+        console.log("Fin de actualizar bets");
         // console.log(doc.id, " => ", doc.data());
       });
     });
 
-  await firebase
+  firebase
+    .firestore()
+    .collection("bets")
+    .doc(bet.id)
+    .delete()
+    .then(function () {
+      console.log("Bet successfully deleted!");
+    })
+    .catch(function (error) {
+      console.error("Error removing document: ", error);
+    });
+
+  /* await firebase
     .firestore()
     .collection("transactions")
     .where(
@@ -1060,26 +806,17 @@ async function actualizarBets(
           });
       });
     });
+*/
 
   console.log("Fin de actualizar Nota");
 }
 
 export function createSubject() {
-  var acronym = document.getElementById(
-    "acronym"
-  ).value;
-  var code = document.getElementById(
-    "code"
-  ).value;
-  var degreeId = document.getElementById(
-    "degreeId"
-  ).value;
-  var name = document.getElementById(
-    "name"
-  ).value;
-  var year = document.getElementById(
-    "year"
-  ).value;
+  var acronym = document.getElementById("acronym").value;
+  var code = document.getElementById("code").value;
+  var degreeId = document.getElementById("degreeId").value;
+  var name = document.getElementById("name").value;
+  var year = document.getElementById("year").value;
 
   firebase
     .firestore()
@@ -1092,16 +829,10 @@ export function createSubject() {
       year: year
     })
     .then(function (docRef) {
-      console.log(
-        "Document written with ID: ",
-        docRef.id
-      );
+      console.log("Document written with ID: ", docRef.id);
     })
     .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
+      console.error("Error adding document: ", error);
     });
 }
 
@@ -1131,9 +862,7 @@ export function createSubject() {
 
 var subjectId = "";
 export function leerMatricula() {
-  var file = document.getElementById(
-    "matricula"
-  ).files;
+  var file = document.getElementById("matricula").files;
   var reader = new FileReader();
 
   reader.readAsText(file[0]);
@@ -1153,21 +882,12 @@ export function leerMatricula() {
         firebase
           .firestore()
           .collection("subjects")
-          .where(
-            "code",
-            "==",
-            subjectId
-          )
+          .where("code", "==", subjectId)
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach(
-              (doc) => {
-                cursarAsignatura(
-                  doc.data().degreeId,
-                  doc.data().code
-                );
-              }
-            );
+            querySnapshot.forEach((doc) => {
+              cursarAsignatura(doc.data().degreeId, doc.data().code);
+            });
           });
       }
     }
@@ -1181,42 +901,65 @@ export function leerMatricula() {
 //conseguidos, mas royo pero seguro
 //LA MEDIA LA COGE BIEN MANTECONI
 export function leerExpediente() {
-  var file = document.getElementById(
-    "expediente"
-  ).files;
+  var file = document.getElementById("expediente").files;
   var reader = new FileReader();
   var totalCreditos = 0,
     media = "",
-    credtios,
+    parcial = "",
     correcto = 0;
+  var usuario = firebase.auth().currentUser;
   reader.readAsText(file[0]);
 
   reader.onload = function (e) {
     var result = reader.result;
     var lineas = result.split("\n");
     for (var linea of lineas) {
-      cont = 0;
-      if (
-        linea.search(
-          "FORMACIÓN BÁSICA"
-        ) != -1
-      ) {
-        console.log(
+      if (linea.search("FORMACIÓN BÁSICA") != -1) {
+        parcial +=
           linea[linea.length - 6] +
-            linea[linea.length - 5] +
-            linea[linea.length - 4] +
-            linea[linea.length - 3] +
-            linea[linea.length - 2]
-        );
+          linea[linea.length - 5] +
+          linea[linea.length - 4] +
+          linea[linea.length - 3] +
+          linea[linea.length - 2];
+        totalCreditos += parseInt(parcial);
+      }
+
+      if (linea.search("OBLIGATORIA") != -1) {
+        parcial = "";
+        parcial +=
+          linea[linea.length - 6] +
+          linea[linea.length - 5] +
+          linea[linea.length - 4] +
+          linea[linea.length - 3] +
+          linea[linea.length - 2];
+        totalCreditos += parseInt(parcial);
+      }
+
+      if (linea.search("OPTATIVA") != -1) {
+        parcial = "";
+        parcial +=
+          linea[linea.length - 6] +
+          linea[linea.length - 5] +
+          linea[linea.length - 4] +
+          linea[linea.length - 3] +
+          linea[linea.length - 2];
+        totalCreditos += parseInt(parcial);
+      }
+
+      if (linea.search("TRABAJO FIN DE GRADO") != -1) {
+        parcial = "";
+        parcial +=
+          linea[linea.length - 6] +
+          linea[linea.length - 5] +
+          linea[linea.length - 4] +
+          linea[linea.length - 3] +
+          linea[linea.length - 2];
+        totalCreditos += parseInt(parcial);
       }
     }
 
     for (var linea of lineas) {
-      if (
-        linea.search(
-          "NOTA MEDIA PONDERADA"
-        ) != -1
-      ) {
+      if (linea.search("NOTA MEDIA PONDERADA") != -1) {
         correcto++;
 
         if (correcto == 2) {
@@ -1228,33 +971,36 @@ export function leerExpediente() {
         }
       }
     }
-    console.log(totalCreditos);
-    console.log(media);
+    firebase
+      .firestore()
+      .collection("users")
+      .where("uid", "==", usuario.uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(doc.id)
+            .update({
+              coins: calcularPinfCoins(parseFloat(media), totalCreditos)
+            });
+        });
+      });
   };
 }
 
+function calcularPinfCoins(media, creditos) {
+  return media * creditos;
+}
+
 export function devolverInfoSubject() {
-  var subjectId = document.getElementById(
-    "idAsignatura"
-  ).value;
+  var subjectId = document.getElementById("idAsignatura").value;
 
   firebase
     .firestore()
     .collection("subjects")
     .where("code", "==", subjectId)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-      });
-    });
-}
-
-export function infoUser(userId) {
-  firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", userId)
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -1271,13 +1017,9 @@ export function debugCambioId() {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        firebase
-          .firestore()
-          .collection("subjects")
-          .doc(doc.id)
-          .update({
-            degreeId: "1725"
-          });
+        firebase.firestore().collection("subjects").doc(doc.id).update({
+          degreeId: "1725"
+        });
       });
     });
 }
@@ -1290,13 +1032,26 @@ export async function comprobarNickname() {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         var existe = 0;
-        if (
-          doc.data().nickname ===
-          "Enimetx"
-        ) {
+        if (doc.data().nickname === "Enimetrox") {
           console.log("Está cogido");
           existe = existe + 1;
         }
       });
+    });
+}
+
+export function pruebas() {
+  firebase
+    .firestore()
+    .collection("betContexts")
+    .doc("j5lMgm0CVaPcY0N8eF2g")
+    .get()
+    .then(function (doc) {
+      if (doc.data().subjects.code === "21714008") {
+        console.log("RONALDINHO SOCCER");
+      }
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
     });
 }

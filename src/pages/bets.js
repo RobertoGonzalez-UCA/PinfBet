@@ -119,6 +119,7 @@ export default function Bets() {
     );
   }
 
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -283,7 +284,7 @@ export default function Bets() {
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
             <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
-              Nombre de la asignatura
+              {subjectSelected}
             </h1>
           </div>
           <div class="">
@@ -328,6 +329,7 @@ export default function Bets() {
                                 uidApostado={userOrder.uid}
                                 subjectId={subjectSelected}
                               />
+                              
                             </td>
                           </tr>
                         ))}

@@ -36,8 +36,8 @@ const SignUp = ({ history }) => {
             uid: firebase.auth()
               .currentUser.uid,
             coinsEarned: 0,
-            hits: 1,
-            fails: 1,
+            hits: 0,
+            fails: 0,
             hitStreak: 0
           });
         history.push("/");

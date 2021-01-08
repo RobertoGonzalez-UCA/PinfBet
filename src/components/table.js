@@ -2,13 +2,25 @@ import React from "react";
 import firebase from "firebase";
 
 export default function Table() {
-  const [sortType, setSortType] = React.useState([]);
-  const [spells, setSpells] = React.useState([]);
-  const [data, setData] = React.useState([]);
+  const [
+    sortType,
+    setSortType
+  ] = React.useState([]);
+  const [
+    spells,
+    setSpells
+  ] = React.useState([]);
+  const [
+    data,
+    setData
+  ] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase.firestore().collection("users").get();
+      const data = await firebase
+        .firestore()
+        .collection("users")
+        .get();
 
       setSpells(
         data.docs.map((doc) => ({
@@ -29,7 +41,9 @@ export default function Table() {
       };
       const sortProperty = types[type];
       const sorted = [...spells].sort(
-        (a, b) => b[sortProperty] - a[sortProperty]
+        (a, b) =>
+          b[sortProperty] -
+          a[sortProperty]
       );
       setData(sorted);
     };
@@ -55,7 +69,9 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType("coins");
+                      setSortType(
+                        "coins"
+                      );
                     }}
                   >
                     PinfCoins Actuales
@@ -64,7 +80,9 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType("coinsEarned");
+                      setSortType(
+                        "coinsEarned"
+                      );
                     }}
                   >
                     PinfCoins Ganados
@@ -73,7 +91,9 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType("hitStreak");
+                      setSortType(
+                        "hitStreak"
+                      );
                     }}
                   >
                     Racha de aciertos
@@ -82,7 +102,9 @@ export default function Table() {
                     scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider cursor-pointer hover:bg-gray-800"
                     onClick={() => {
-                      setSortType("hits");
+                      setSortType(
+                        "hits"
+                      );
                     }}
                   >
                     Ratio de victoria
@@ -107,49 +129,98 @@ export default function Table() {
                           </div>
                           <div class="ml-4">
                             <div class="text-sm font-medium text-white">
-                              {spell.nickname}
+                              {
+                                spell.nickname
+                              }
                             </div>
                           </div>
                         </div>
                       </td>
                       <td
                         class={
-                          (sortType === "coins" ? "bg-gray-600 " : "") +
-                          "px-6 py-4 whitespace-nowrap"
-                        }
-                      >
-                        <div class="text-sm text-white">{spell.coins} PFC</div>
-                      </td>
-                      <td
-                        class={
-                          (sortType === "coinsEarned" ? "bg-gray-600 " : "") +
+                          (sortType ===
+                          "coins"
+                            ? "bg-gray-600 "
+                            : "") +
                           "px-6 py-4 whitespace-nowrap"
                         }
                       >
                         <div class="text-sm text-white">
-                          {spell.coinsEarned} PFC
+                          {spell.coins}{" "}
+                          PFC
                         </div>
                       </td>
                       <td
                         class={
-                          (sortType === "hitStreak" ? "bg-gray-600 " : "") +
-                          "px-6 py-4 whitespace-nowrap"
-                        }
-                      >
-                        <div class="text-sm text-white">{spell.hitStreak}</div>
-                      </td>
-                      <td
-                        class={
-                          (sortType === "hits" ? "bg-gray-600 " : "") +
+                          (sortType ===
+                          "coinsEarned"
+                            ? "bg-gray-600 "
+                            : "") +
                           "px-6 py-4 whitespace-nowrap"
                         }
                       >
                         <div class="text-sm text-white">
-                          {(
-                            (spell.hits / (spell.fails + spell.hits)) *
-                            100
-                          ).toFixed(2)}{" "}
-                          %
+                          {
+                            spell.coinsEarned
+                          }{" "}
+                          PFC
+                        </div>
+                      </td>
+                      <td
+                        class={
+                          (sortType ===
+                          "hitStreak"
+                            ? "bg-gray-600 "
+                            : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
+                        <div class="text-sm text-white">
+                          {
+                            spell.hitStreak
+                          }
+                        </div>
+                      </td>
+                      <td
+                        class={
+                          (sortType ===
+                          "hits"
+                            ? "bg-gray-600 "
+                            : "") +
+                          "px-6 py-4 whitespace-nowrap"
+                        }
+                      >
+                        <div class="text-sm text-white">
+                          {isNaN(
+                            (
+                              (spell.hits /
+                                (spell.fails +
+                                  spell.hits)) *
+                              100
+                            ).toFixed(2)
+                          ) && (
+                            <p>0%</p>
+                          )}
+                          {!isNaN(
+                            (
+                              (spell.hits /
+                                (spell.fails +
+                                  spell.hits)) *
+                              100
+                            ).toFixed(2)
+                          ) && (
+                            <p>
+                              {(
+                                (spell.hits /
+                                  (spell.fails +
+                                    spell.hits)) *
+                                100
+                              ).toFixed(
+                                2
+                              )}
+                              %
+                            </p>
+                          )}
                         </div>
                       </td>
                     </tr>

@@ -4,10 +4,7 @@ import Label from "../components/label";
 import Select from "../components/select";
 import Button from "../components/button";
 
-import {
-  crearApuestaSonAmigos,
-  iniciarCrearApuesta
-} from "../db";
+import { iniciarCrearApuesta } from "../db";
 
 export default function Modal({
   nickname,
@@ -39,6 +36,9 @@ export default function Modal({
         secondBet.value,
         subjectId
       );
+
+      alert("Apuesta realizada.");
+      setShowModal(false);
     },
     []
   );

@@ -74,6 +74,7 @@ const SignUp = ({ history }) => {
                 id="nick"
                 name="nick"
                 type="nick"
+                required="true"
               />
             </div>
             <div className="relative mb-1">
@@ -85,6 +86,7 @@ const SignUp = ({ history }) => {
                 id="email"
                 name="email"
                 type="email"
+                required="true"
               />
             </div>
             <div className="relative mb-3">
@@ -96,6 +98,7 @@ const SignUp = ({ history }) => {
                 id="password"
                 name="password"
                 type="password"
+                required="true"
               />
             </div>
             <Link

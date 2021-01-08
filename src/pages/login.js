@@ -72,6 +72,7 @@ const Login = ({ history }) => {
                 id="email"
                 name="email"
                 type="email"
+                required="true"
               />
             </div>
 
@@ -84,6 +85,7 @@ const Login = ({ history }) => {
                 id="password"
                 name="password"
                 type="password"
+                required="true"
               />
             </div>
             <Link

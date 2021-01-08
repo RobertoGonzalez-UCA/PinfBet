@@ -28,8 +28,9 @@ export default function Navbar() {
       .firestore()
       .collection("users")
       .where("uid", "==", user.uid)
-      .get()
-      .then((querySnapshot) => {
+      .onSnapshot(function (
+        querySnapshot
+      ) {
         querySnapshot.forEach((doc) => {
           setPinfCoins(
             doc.data().coins

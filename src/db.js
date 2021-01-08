@@ -34,6 +34,36 @@ export async function solicitarAmistad(
   await firebase
     .firestore()
     .collection("friendships")
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "PENDING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (
+        doc
+      ) {
+        firebase
+          .firestore()
+          .collection("friendships")
+          .doc(doc.id)
+          .delete()
+          .then(function () {
+            console.log(
+              "Pending friendship successfully deleted!"
+            );
+          })
+          .catch(function (error) {
+            console.error(
+              "Error removing document: ",
+              error
+            );
+          });
+      });
+    });
+
+  await firebase
+    .firestore()
+    .collection("friendships")
     .add({
       status: "PENDING",
       uid_a: uidEmisor,
@@ -1157,6 +1187,7 @@ export function leerExpediente() {
   var reader = new FileReader();
   var totalCreditos = 0,
     media = "",
+    credtios,
     correcto = 0;
   reader.readAsText(file[0]);
 
@@ -1164,15 +1195,19 @@ export function leerExpediente() {
     var result = reader.result;
     var lineas = result.split("\n");
     for (var linea of lineas) {
-      var nota = "";
-      if (linea[1] == "2") {
-        nota +=
-          linea[linea.length - 4] +
-          linea[linea.length - 3] +
-          linea[linea.length - 2];
-        if (parseFloat(nota) > 5.0) {
-          totalCreditos += 6;
-        }
+      cont = 0;
+      if (
+        linea.search(
+          "FORMACIÓN BÁSICA"
+        ) != -1
+      ) {
+        console.log(
+          linea[linea.length - 6] +
+            linea[linea.length - 5] +
+            linea[linea.length - 4] +
+            linea[linea.length - 3] +
+            linea[linea.length - 2]
+        );
       }
     }
 

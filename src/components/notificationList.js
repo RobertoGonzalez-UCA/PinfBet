@@ -20,7 +20,7 @@ export default function NotificationList() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
+      await firebase
         .firestore()
         .collection("friendships")
         .where("uid_b", "==", user.uid)
@@ -29,17 +29,15 @@ export default function NotificationList() {
           "==",
           "PENDING"
         )
-        .get();
-
-
-        setFriendships(
-          data.docs.map((doc) => ({
-            ...doc.data()
-          }))
-        );
-      };
-      fetchData();
-    }, []);
+        .onSnapshot((snap) => {
+          const data = snap.docs.map(
+            (doc) => doc.data()
+          );
+          setFriendships(data);
+        });
+    };
+    fetchData();
+  }, []);
 
   return (
     <>

@@ -20,8 +20,8 @@ import {
   aceptarSolicitud,
   rechazarSolicitud,
   iniciarCrearApuesta,
-  iniciarSesion,
-  mostrarAsignaturasYear,
+  crearChat,
+  chatear,
   cerrarSesion,
   cursarAsignatura,
   actualizarNota,
@@ -33,7 +33,11 @@ import {
   debugCambioId,
   checkNickname,
   pruebas,
-  comprobarNickname
+  comprobarNickname,
+  crearChatGrupo,
+  devolverChatsGrupo,
+  chatearGrupo,
+  añadirUsuario
 } from "../db.js";
 
 initFirebase();
@@ -71,25 +75,23 @@ export default function Test() {
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Botones de prueba
       </h1>
-      <Button onClick={getUsers}>Mostrar Usuarios</Button>
-      <Button onClick={mostrarAsignaturasYear}>
-        Mostrar asignaturas por año
-      </Button>
       <Button onClick={iniciarCrearApuesta}>Crear Apuesta</Button>
       <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
       <Button onClick={mostrarSolicitud}>Mostrar Solicitudes</Button>
       <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
       <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
-      <Button onClick={iniciarSesion}>
-        Iniciar Sesión (NO FUNCINA EN TEST, USAR LOGIN)
-      </Button>
       <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
       <Button onClick={createSubject}>Crear asignatura (test)</Button>
       <Button onClick={date}>Pruebas</Button>
       <Button onClick={leerExpediente}>Subir Archivo</Button>
-      <Button onClick={pruebas}>pruebas</Button>
+      <Button onClick={crearChat}>Crear Chat</Button>
+      <Button onClick={chatear}>Mandar Mensaje Chat Amigo</Button>
+      <Button onClick={crearChatGrupo}>Crear Chat de grupo</Button>
+      <Button onClick={devolverChatsGrupo}>Mis Grupos</Button>
+      <Button onClick={chatearGrupo}>Chatear por grupo</Button>
+      <Button onClick={añadirUsuario}>Añadir usuario a un grupo</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba
@@ -165,6 +167,13 @@ export default function Test() {
           type="text"
           placeholder="Id de solicitante de amistad"
         ></Input>
+        <Input
+          id="colega"
+          type="text"
+          placeholder="Colega con quien comenzar el chat"
+        ></Input>
+        <Input id="mensaje" type="text" placeholder="Mensaje"></Input>
+        <Input id="grupo" type="text" placeholder="Grupo"></Input>
       </form>
     </div>
   );

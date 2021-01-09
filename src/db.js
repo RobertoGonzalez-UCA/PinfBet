@@ -650,7 +650,8 @@ async function fetchBetcontext(bet, nota, subjectId) {
     });
 }
 
-async function deleteBetcontext(bet, nota, subjectId) { //Misma funcion que arriba pero se encarga de borrar los ebtContezts despues de la actualizacion de nota
+async function deleteBetcontext(bet, nota, subjectId) {
+  //Misma funcion que arriba pero se encarga de borrar los ebtContezts despues de la actualizacion de nota
   console.log("HE entrado");
 
   await firebase
@@ -678,7 +679,8 @@ async function deleteBetcontext(bet, nota, subjectId) { //Misma funcion que arri
     });
 }
 
-async function actualizarBets(bet, nota, betContext) { //Actualizamos el dinero del usuario y borramos los bets
+async function actualizarBets(bet, nota, betContext) {
+  //Actualizamos el dinero del usuario y borramos los bets
   var uid = betContext.get("uid");
   var uid_apostado = firebase.auth().currentUser.uid;
   var aumento;
@@ -1053,5 +1055,305 @@ export function pruebas() {
     })
     .catch(function (error) {
       console.log("Error getting document:", error);
+    });
+}
+
+export function crearChat() {
+  //Creacion de un chat entre dos personas
+  var yo = firebase.auth().currentUser.uid;
+  var colega = document.getElementById("colega").value;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .add({
+      isGroup: false,
+      name: null
+    })
+    .then(function (docRef) {
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(docRef.id)
+        .collection("members")
+        .add({
+          uid: yo,
+          isAdmin: false
+        });
+
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(docRef.id)
+        .collection("members")
+        .add({
+          uid: colega,
+          isAdmin: false
+        });
+
+      firebase //Mensaje de inicio, puede ser ignorado
+        .firestore()
+        .collection("chats")
+        .doc(docRef.id)
+        .collection("messages")
+        .add({
+          sender: yo,
+          text: "Primer mensaje",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    });
+}
+
+export function chatear() {
+  var yo = firebase.auth().currentUser.uid;
+  var colega = document.getElementById("colega").value;
+  var mensaje = document.getElementById("mensaje").value;
+
+  var solicitudes = firebase.firestore().collection("friendships");
+
+  var query = solicitudes.where("uid_a", "==", yo).where("uid_b", "==", colega);
+
+  var reverseQuery = solicitudes
+    .where("uid_a", "==", colega)
+    .where("uid_b", "==", yo);
+
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status === "ACCEPTED") {
+          noEsGrupo(colega, mensaje);
+        } else {
+          alert("No sois amigos.");
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+
+  reverseQuery
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status === "ACCEPTED") {
+          noEsGrupo(colega, mensaje);
+        } else {
+          alert("No sois amigos.");
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
+function noEsGrupo(colega, mensaje) {
+  firebase
+    .firestore()
+    .collection("chats")
+    .where("isGroup", "==", false)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        buscarAmigo(doc, colega, mensaje);
+      });
+    });
+}
+function buscarAmigo(chat, colega, mensaje) {
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .doc(chat.id)
+    .collection("members")
+    .where("uid", "==", yo)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        añadirMensaje(chat, colega, mensaje);
+      });
+    });
+}
+
+function añadirMensaje(chat, colega, mensaje) {
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .doc(chat.id)
+    .collection("members")
+    .where("uid", "==", colega)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("chats")
+          .doc(chat.id)
+          .collection("messages")
+          .add({
+            sender: yo,
+            text: mensaje,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+      });
+    });
+}
+
+export function crearChatGrupo() {
+  //Creacion de un chat entre dos personas
+  var yo = firebase.auth().currentUser.uid;
+  var nombre = document.getElementById("mensaje").value;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .add({
+      isGroup: true,
+      name: nombre
+    })
+    .then(function (docRef) {
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(docRef.id)
+        .collection("members")
+        .add({
+          uid: yo,
+          isAdmin: true
+        });
+    });
+}
+
+export function devolverChatsGrupo() {
+  firebase
+    .firestore()
+    .collection("chats")
+    .where("isGroup", "==", true)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        miGrupo(doc);
+      });
+    });
+}
+
+function miGrupo(chat) {
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .doc(chat.id)
+    .collection("members")
+    .where("uid", "==", yo)
+    //.where("isAdmin", "==", true)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(chat.id);
+      });
+    });
+}
+
+export function chatearGrupo() {
+  var yo = firebase.auth().currentUser.uid;
+  var grupo = document.getElementById("grupo").value;
+  var mensaje = document.getElementById("mensaje").value;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .doc(grupo)
+    .collection("members")
+    .where("uid", "==", yo)
+    //.where("isAdmin", "==", true)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("chats")
+          .doc(grupo)
+          .collection("messages")
+          .add({
+            sender: yo,
+            text: mensaje,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+      });
+    });
+}
+
+export function añadirUsuario() {
+  var yo = firebase.auth().currentUser.uid;
+  var colega = document.getElementById("colega").value;
+  var grupo = document.getElementById("grupo").value;
+
+  var solicitudes = firebase.firestore().collection("friendships");
+
+  var query = solicitudes.where("uid_a", "==", yo).where("uid_b", "==", colega);
+
+  var reverseQuery = solicitudes
+    .where("uid_a", "==", colega)
+    .where("uid_b", "==", yo);
+
+  query
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status === "ACCEPTED") {
+          confirmarUsuario(colega, grupo);
+        } else {
+          alert("No sois amigos.");
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+
+  reverseQuery
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().status === "ACCEPTED") {
+          confirmarUsuario(colega, grupo);
+        } else {
+          alert("No sois amigos.");
+        }
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
+export function confirmarUsuario(colega, grupo) {
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("chats")
+    .doc(grupo)
+    .collection("members")
+    .where("uid", "==", yo)
+    .where("isAdmin", "==", true)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("chats")
+          .doc(grupo)
+          .collection("members")
+          .add({
+            isAdmin: false,
+            uid: colega
+          });
+      });
     });
 }

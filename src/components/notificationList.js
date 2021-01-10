@@ -35,7 +35,7 @@ export default function NotificationList() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      await firebase
+      const data = await firebase
         .firestore()
         .collection("transactions")
         .where("uid_apostante", "==", user.uid)
@@ -52,14 +52,14 @@ export default function NotificationList() {
       return transactions.filter((transaction) => transaction.coins > 0);
     }
     setAciertos(orderAciertos);
-  }, [aciertos, setAciertos]);
+  }, [transactions]);
 
   React.useEffect(() => {
     function orderFallos() {
       return transactions.filter((transaction) => transaction.coins === 0);
     }
     setFallos(orderFallos);
-  }, [fallos, setFallos]);
+  }, [transactions]);
 
   return (
     <>

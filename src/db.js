@@ -690,7 +690,7 @@ async function deleteBetcontext(bet, nota, subjectId) {
       }
     })
     .catch(function (error) {
-      console.log("Error getting document:", error);
+      console.log("Error getting documents:", error);
     });
 }
 

@@ -28,18 +28,15 @@ export function getDegrees() {
 
 //FUNCION SOLICITAR AMISTAD
 export async function solicitarAmistad(uidEmisor, uidReceptor) {
-  await firebase
-    .firestore()
-    .collection("friendships")
+  var friend = firebase.firestore().collection("friendships");
+  await friend
     .where("uid_a", "==", uidEmisor)
     .where("uid_b", "==", uidReceptor)
     .where("status", "==", "PENDING")
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("friendships")
+        friend
           .doc(doc.id)
           .delete()
           .then(function () {})
@@ -49,15 +46,13 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  await firebase.firestore().collection("friendships").add({
+  await friend.add({
     status: "PENDING",
     uid_a: uidEmisor,
     uid_b: uidReceptor
   });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_a", "==", uidEmisor)
     .where("uid_b", "==", uidReceptor)
     .where("status", "==", "ACCEPTED")
@@ -69,9 +64,7 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_b", "==", uidEmisor)
     .where("uid_a", "==", uidReceptor)
     .where("status", "==", "ACCEPTED")
@@ -83,9 +76,7 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_a", "==", uidEmisor)
     .where("uid_b", "==", uidReceptor)
     .where("status", "==", "DENIED")
@@ -97,9 +88,7 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_b", "==", uidEmisor)
     .where("uid_a", "==", uidReceptor)
     .where("status", "==", "DENIED")
@@ -113,9 +102,9 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
 }
 
 function yaHayAmistad(uidEmisor, uidReceptor) {
-  firebase
-    .firestore()
-    .collection("friendships")
+  var friend = firebase.firestore().collection("friendships");
+
+  friend
     .where("uid_b", "==", uidEmisor)
     .where("uid_a", "==", uidReceptor)
     .where("status", "==", "PENDING")
@@ -134,18 +123,14 @@ function yaHayAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_a", "==", uidEmisor)
     .where("uid_b", "==", uidReceptor)
     .where("status", "==", "PENDING")
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("friendships")
+        friend
           .doc(doc.id)
           .delete()
           .then(function () {})
@@ -159,10 +144,9 @@ function yaHayAmistad(uidEmisor, uidReceptor) {
 //FUNCION MOSTRAR AMISTADES
 export function mostrarAmistad() {
   var uidReceptor = firebase.auth().currentUser.uid;
+  var friend = firebase.firestore().collection("friendships");
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_b", "==", uidReceptor)
     .where("status", "==", "ACCEPTED")
     .get()
@@ -174,9 +158,7 @@ export function mostrarAmistad() {
       });
     });
 
-  firebase
-    .firestore()
-    .collection("friendships")
+  friend
     .where("uid_a", "==", uidReceptor)
     .where("status", "==", "ACCEPTED")
     .get()
@@ -191,9 +173,8 @@ export function mostrarAmistad() {
 
 //FUNCION ACEPTAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function aceptarSolicitud(uidReceptor, uidSolicitante) {
-  firebase
-    .firestore()
-    .collection("friendships")
+  var friend = firebase.firestore().collection("friendships");
+  friend
     .where("uid_a", "==", uidSolicitante)
     .where("status", "==", "PENDING")
     .where("uid_b", "==", uidReceptor)
@@ -210,9 +191,9 @@ export function aceptarSolicitud(uidReceptor, uidSolicitante) {
 
 //FUNCION RECHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function rechazarSolicitud(uidReceptor, uidSolicitante) {
-  firebase
-    .firestore()
-    .collection("friendships")
+  var friend = firebase.firestore().collection("friendships");
+
+  friend
     .where("uid_a", "==", uidSolicitante)
     .where("status", "==", "PENDING")
     .where("uid_b", "==", uidReceptor)
@@ -264,6 +245,11 @@ export function iniciarCrearApuesta(
 
   if (isNaN(cantidadDineroNota)) {
     cantidadDineroNota = 0;
+  }
+
+  if (cantidadDinero <= 0) {
+    console.log("Apuesta dinero cohone");
+    return;
   }
 
   var dineroApuesta = cantidadDinero + cantidadDineroNota;
@@ -511,7 +497,6 @@ export function cursarAsignatura(degreeId, subjectId) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        console.log("Entré");
         completarCursar(degreeId, subjectId, user.uid, doc.data().nickname);
       });
     });
@@ -519,8 +504,6 @@ export function cursarAsignatura(degreeId, subjectId) {
 
 //Siguiente paso de cursar asignatura
 function completarCursar(degreeId, subjectId, user, nickname) {
-  console.log("Soy " + nickname);
-
   firebase
     .firestore()
     .collection("userSubjects")
@@ -564,25 +547,24 @@ export async function actualizarNota() {
           .doc(doc.id)
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
       });
-    });z
+    });
 
-  /* await firebase
+  await firebase
     .firestore()
     .collection("transactions")
     .add({
       uid_apostado: user.uid,
       nota: nota,
-      subjectId: subjectId
+      subjectId: subjectId,
+      value: false
     })
     .then(function (docRef) {
-      //    console.log("Transaction written with ID: ", docRef.id);
+      añadirName(docRef, subjectId);
+      console.log("Transaction written with ID: ", docRef.id);
     })
     .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
-    });*/
+      console.error("Error adding document: ", error);
+    });
 
   //Esta parte se encarga de encontrar los bets donde aparcece la persona original
   await firebase
@@ -631,6 +613,27 @@ export async function actualizarNota() {
     });*/
 }
 
+function añadirName(transaction, subjectId) {
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(transaction.id)
+          .update({
+            subject: doc.data().name
+          });
+      });
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+}
 async function fetchBetcontext(bet, nota, subjectId) {
   await firebase
     .firestore()
@@ -700,35 +703,28 @@ async function actualizarBets(bet, nota, betContext) {
 
   console.log("El aumento es" + aumento);
 
-  /*await firebase
+  await firebase
     .firestore()
     .collection("transactions")
-    .where(
-      "uid_apostado",
-      "==",
-      uid_apostado
-    )
+    .where("uid_apostado", "==", uid_apostado)
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
+      querySnapshot.forEach(function (doc) {
         firebase
           .firestore()
           .collection("transactions")
           .doc(doc.id)
           .update({
-            coins: aumento,
-            uid_apostante: uid
+            coins: firebase.firestore.FieldValue.increment(aumento),
+            uid_apostante: uid,
+            value: true
           });
+        añadirNick(doc, uid);
       });
     })
     .catch(function (error) {
-      console.error(
-        "Error adding document: ",
-        error
-      );
-    });*/
+      console.error("Error adding document: ", error);
+    });
 
   await firebase
     .firestore()
@@ -812,7 +808,27 @@ async function actualizarBets(bet, nota, betContext) {
 
   console.log("Fin de actualizar Nota");
 }
-
+function añadirNick(transaction, uid) {
+  firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", uid)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(transaction.id)
+          .update({
+            nickname: doc.data().nickname
+          });
+      });
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+}
 export function createSubject() {
   var acronym = document.getElementById("acronym").value;
   var code = document.getElementById("code").value;
@@ -1027,6 +1043,7 @@ export function debugCambioId() {
 }
 
 export async function comprobarNickname() {
+  //Esto no funciona, no deberia ser usado
   await firebase
     .firestore()
     .collection("users")
@@ -1043,6 +1060,7 @@ export async function comprobarNickname() {
 }
 
 export function pruebas() {
+  //RONALDINHO SOCCER
   firebase
     .firestore()
     .collection("betContexts")
@@ -1056,6 +1074,27 @@ export function pruebas() {
     .catch(function (error) {
       console.log("Error getting document:", error);
     });
+}
+
+export function findTransactions() {
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("transactions")
+    .where("uid_apostante", "==", yo)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, doc.data());
+      });
+    });
+}
+
+export function deleteTransactions() {
+  var transaction = document.getElementById("transaction").value;
+
+  firebase.firestore().collection("transactions").doc(transaction).delete();
 }
 
 export function crearChat() {
@@ -1356,29 +1395,4 @@ export function confirmarUsuario(colega, grupo) {
           });
       });
     });
-}
-
-export function findTransactions(){
-  var yo = firebase.auth().currentUser.uid;
-
-  firebase
-    .firestore()
-    .collection("transactions")
-    .where("uid_apostante", "==", yo)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, doc.data());
-      });
-    });
-}
-
-export function deleteTransactions(){
-  var transaction = document.getElementById("transaction").value;
-
-  firebase
-    .firestore()
-    .collection("transactions")
-    .doc(transaction)
-    .delete();
 }

@@ -86,7 +86,7 @@ export default function Test() {
       <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
       <Button onClick={actualizarNota}>Actualizar Nota</Button>
       <Button onClick={createSubject}>Crear asignatura (test)</Button>
-      <Button onClick={date}>Pruebas</Button>
+      <Button onClick={pruebas}>Pruebas</Button>
       <Button onClick={leerExpediente}>Subir Archivo</Button>
       <Button onClick={crearChat}>Crear Chat</Button>
       <Button onClick={chatear}>Mandar Mensaje Chat Amigo</Button>

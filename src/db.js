@@ -533,6 +533,8 @@ export async function actualizarNota() {
     return;
   }
 
+  //createTransactions(subjectId, nota, user);
+
   firebase //Esta parte se encarga de actualizar la nota
     .firestore()
     .collection("userSubjects")
@@ -547,23 +549,6 @@ export async function actualizarNota() {
           .doc(doc.id)
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
       });
-    });
-
-  await firebase
-    .firestore()
-    .collection("transactions")
-    .add({
-      uid_apostado: user.uid,
-      nota: nota,
-      subjectId: subjectId,
-      value: false
-    })
-    .then(function (docRef) {
-      añadirName(docRef, subjectId);
-      console.log("Transaction written with ID: ", docRef.id);
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
     });
 
   //Esta parte se encarga de encontrar los bets donde aparcece la persona original
@@ -613,6 +598,25 @@ export async function actualizarNota() {
     });*/
 }
 
+function createTransactions(subjectId, nota, user) {
+  firebase
+    .firestore()
+    .collection("transactions")
+    .add({
+      uid_apostado: user.uid,
+      nota: nota,
+      subjectId: subjectId,
+      value: false
+    })
+    .then(function (docRef) {
+      añadirName(docRef, subjectId);
+      console.log("Transaction written with ID: ", docRef.id);
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+}
+
 function añadirName(transaction, subjectId) {
   firebase
     .firestore()
@@ -645,7 +649,25 @@ async function fetchBetcontext(bet, nota, subjectId) {
         doc.data().subjects.code === subjectId //Nos aseguramos de que el betContext se corresponda con la asignatura
       ) {
         console.log("He encontado el betContext");
-        actualizarBets(bet, nota, doc); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
+
+        firebase
+          .firestore()
+          .collection("transactions")
+          .add({
+            uid_apostado: bet.data().uid,
+            nota: nota,
+            subjectId: subjectId,
+            typo: bet.data().type,
+            value: false
+          })
+          .then(function (docRef) {
+            añadirName(docRef, subjectId);
+            actualizarCoins(bet, nota, doc, docRef); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
+            console.log("Transaction written with ID: ", docRef.id);
+          })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+          });
       }
     })
     .catch(function (error) {
@@ -682,7 +704,7 @@ async function deleteBetcontext(bet, nota, subjectId) {
     });
 }
 
-async function actualizarBets(bet, nota, betContext) {
+async function actualizarCoins(bet, nota, betContext, transaction) {
   //Actualizamos el dinero del usuario y borramos los bets
   var uid = betContext.get("uid");
   var uid_apostado = firebase.auth().currentUser.uid;
@@ -706,19 +728,14 @@ async function actualizarBets(bet, nota, betContext) {
   await firebase
     .firestore()
     .collection("transactions")
-    .where("uid_apostado", "==", uid_apostado)
-    .get()
+    .doc(transaction.id)
+    .update({
+      coins: firebase.firestore.FieldValue.increment(aumento),
+      uid_apostante: uid,
+      value: true
+    })
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("transactions")
-          .doc(doc.id)
-          .update({
-            coins: firebase.firestore.FieldValue.increment(aumento),
-            uid_apostante: uid,
-            value: true
-          });
         añadirNick(doc, uid);
       });
     })
@@ -1061,19 +1078,10 @@ export async function comprobarNickname() {
 
 export function pruebas() {
   //RONALDINHO SOCCER
-  firebase
-    .firestore()
-    .collection("betContexts")
-    .doc("j5lMgm0CVaPcY0N8eF2g")
-    .get()
-    .then(function (doc) {
-      if (doc.data().subjects.code === "21714008") {
-        console.log("RONALDINHO SOCCER");
-      }
-    })
-    .catch(function (error) {
-      console.log("Error getting document:", error);
-    });
+  console.log("EH");
+  firebase.firestore().collection("prueba").where("objeto", "==", "NO").set({
+    objeto: "Soy la hostia"
+  });
 }
 
 export function findTransactions() {

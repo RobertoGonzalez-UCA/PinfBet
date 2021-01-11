@@ -10,6 +10,7 @@ export default function NotificationList() {
   var user = firebase.auth().currentUser;
 
   const [friendships, setFriendships] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +25,23 @@ export default function NotificationList() {
         });
     };
     fetchData();
+    console.log(friendships);
   }, []);
 
+  /* React.useEffect(() => {
+    const fetchData = async () => {
+      await firebase
+        .firestore()
+        .collection("users")
+        .where("uid", "in", friendships)
+        .onSnapshot((snap) => {
+          const data = snap.docs.map((doc) => doc.data());
+          setUsers(data);
+        });
+    };
+    fetchData();
+  }, []); 
+ */
   // ----------------------------------------------------
   const [transactions, setTransactions] = React.useState([]);
 
@@ -159,8 +175,9 @@ export default function NotificationList() {
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       class="h-6 w-6"
-                      onClick={() => {deleteTransactions(acierto);
-                    }}
+                      onClick={() => {
+                        deleteTransactions(acierto);
+                      }}
                     >
                       <path
                         fill-rule="evenodd"

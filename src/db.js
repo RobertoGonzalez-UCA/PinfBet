@@ -189,6 +189,34 @@ export function aceptarSolicitud(uidReceptor, uidSolicitante) {
     });
 }
 
+//FUNCION BORRAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
+export function cancelarAmistad(uidReceptor, uidSolicitante) {
+  var friend = firebase.firestore().collection("friendships");
+  friend
+    .where("uid_a", "==", uidSolicitante)
+    .where("status", "==", "ACCEPTED")
+    .where("uid_b", "==", uidReceptor)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        firebase.firestore().collection("friendships").doc(doc.id).delete();
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+
+  friend
+    .where("uid_b", "==", uidSolicitante)
+    .where("status", "==", "ACCEPTED")
+    .where("uid_a", "==", uidReceptor)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        firebase.firestore().collection("friendships").doc(doc.id).delete();
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+}
+
 //FUNCION RECHAZAR SOLICITUD (MEDIANTE ID DE LA SOLICITUD)
 export function rechazarSolicitud(uidReceptor, uidSolicitante) {
   var friend = firebase.firestore().collection("friendships");

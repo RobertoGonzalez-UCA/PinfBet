@@ -721,6 +721,7 @@ function añadirName(transaction, subjectId) {
 async function actualizarCoins(bet, nota, betContext, transaction) {
   //Actualizamos el dinero del usuario y borramos los bets
   var uid = betContext.get("uid");
+  var uid_b = bet.get("uid");
   var aumento;
   aumento = 0; //sacamos el dinero que ha apostado
 
@@ -749,7 +750,27 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
     })
     .then(function (docRef) {})
     .catch(function (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error adding document: ", error)
+    });
+
+    await firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", uid_b)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+
+        firebase
+        .firestore()
+        .collection("transactions")
+        .doc(transaction.id)
+        .update({
+          nickname: doc.data().nickname
+        });
+        console.log("Fin de actualizar bets");
+        // console.log(doc.id, " => ", doc.data());
+      });
     });
 
   await firebase
@@ -759,13 +780,6 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("transactions")
-          .doc(transaction.id)
-          .update({
-            nickname: doc.data().nickname
-          });
 
         if (aumento > 0) {
           firebase

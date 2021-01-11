@@ -598,25 +598,6 @@ export async function actualizarNota() {
     });*/
 }
 
-function createTransactions(subjectId, nota, user) {
-  firebase
-    .firestore()
-    .collection("transactions")
-    .add({
-      uid_apostado: user.uid,
-      nota: nota,
-      subjectId: subjectId,
-      value: false
-    })
-    .then(function (docRef) {
-      añadirName(docRef, subjectId);
-      console.log("Transaction written with ID: ", docRef.id);
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
-}
-
 function añadirName(transaction, subjectId) {
   firebase
     .firestore()
@@ -657,7 +638,7 @@ async function fetchBetcontext(bet, nota, subjectId) {
             uid_apostado: bet.data().uid,
             nota: nota,
             subjectId: subjectId,
-            typo: bet.data().type,
+            type: bet.data().type,
             value: false
           })
           .then(function (docRef) {
@@ -759,7 +740,8 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
               coins: firebase.firestore.FieldValue.increment(aumento),
               coinsEarned: firebase.firestore.FieldValue.increment(aumento),
               hits: firebase.firestore.FieldValue.increment(1),
-              hitStreak: firebase.firestore.FieldValue.increment(1)
+              hitStreak: firebase.firestore.FieldValue.increment(1),
+              transaction: transaction.id
             });
         } else {
           firebase
@@ -1079,9 +1061,11 @@ export async function comprobarNickname() {
 export function pruebas() {
   //RONALDINHO SOCCER
   console.log("EH");
-  firebase.firestore().collection("prueba").where("objeto", "==", "NO").set({
-    objeto: "Soy la hostia"
-  });
+  firebase
+    .firestore()
+    .collection("users")
+    .doc("NOtwp77FdFL60YiLlpU7")
+    .update({ coins: firebase.firestore.FieldValue.increment(11) });
 }
 
 export function findTransactions() {

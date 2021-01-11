@@ -37,7 +37,9 @@ import {
   crearChatGrupo,
   devolverChatsGrupo,
   chatearGrupo,
-  añadirUsuario
+  añadirUsuario,
+  deleteTransaction,
+  findTransactions
 } from "../db.js";
 
 initFirebase();
@@ -92,6 +94,8 @@ export default function Test() {
       <Button onClick={devolverChatsGrupo}>Mis Grupos</Button>
       <Button onClick={chatearGrupo}>Chatear por grupo</Button>
       <Button onClick={añadirUsuario}>Añadir usuario a un grupo</Button>
+      <Button onClick={findTransactions}>Find transactions</Button>
+      <Button onClick={deleteTransaction}>Delete transaction</Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba
@@ -174,6 +178,7 @@ export default function Test() {
         ></Input>
         <Input id="mensaje" type="text" placeholder="Mensaje"></Input>
         <Input id="grupo" type="text" placeholder="Grupo"></Input>
+        <Input id="transaction" type="text" placeholder="Transaccion"></Input>
       </form>
     </div>
   );

@@ -564,7 +564,7 @@ export async function actualizarNota() {
           .doc(doc.id)
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
       });
-    });
+    });z
 
   /* await firebase
     .firestore()
@@ -1356,4 +1356,29 @@ export function confirmarUsuario(colega, grupo) {
           });
       });
     });
+}
+
+export function findTransactions(){
+  var yo = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("transactions")
+    .where("uid_apostante", "==", yo)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, doc.data());
+      });
+    });
+}
+
+export function deleteTransactions(){
+  var transaction = document.getElementById("transaction").value;
+
+  firebase
+    .firestore()
+    .collection("transactions")
+    .doc(transaction)
+    .delete();
 }

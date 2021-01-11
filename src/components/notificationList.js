@@ -25,23 +25,23 @@ export default function NotificationList() {
         });
     };
     fetchData();
-    console.log(friendships);
   }, []);
 
-  /* React.useEffect(() => {
+  /*   React.useEffect(() => {
     const fetchData = async () => {
       await firebase
         .firestore()
         .collection("users")
-        .where("uid", "in", friendships)
+        .where("uid", "in", ["a"])
         .onSnapshot((snap) => {
           const data = snap.docs.map((doc) => doc.data());
           setUsers(data);
         });
     };
     fetchData();
+    console.log(users);
   }, []); 
- */
+  */
   // ----------------------------------------------------
   const [transactions, setTransactions] = React.useState([]);
 

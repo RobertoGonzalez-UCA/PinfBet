@@ -2,10 +2,18 @@ import React from "react";
 
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import Input from "../components/input";
-import Label from "../components/label";
+import Button from "../components/button";
+import { leerExpediente, leerMatricula } from "../db";
 
 export default function UploadData() {
+  const [selectedExp, setSelectedExp] = React.useState(null);
+  const [selectedEnroll, setSelectedEnroll] = React.useState(null);
+
+  const upData = () => {
+    leerExpediente(selectedExp);
+    leerMatricula(selectedEnroll);
+  };
+
   return (
     <>
       <Navbar />
@@ -43,17 +51,13 @@ export default function UploadData() {
                     className="text-green-500 inline-flex items-center hover:underline"
                     target="_blank"
                   >
-                    Portal de servicios
-                    UCA
+                    Portal de servicios UCA
                   </a>{" "}
                   e identificarte.
                 </p>
                 <p class="mt-2 leading-relaxed italic">
-                  Datos académicos >
-                  Expedientes >
-                  Selecciona el grado
-                  cursando > Obtener
-                  informe > Descargar
+                  Datos académicos > Expedientes > Selecciona el grado cursando
+                  > Obtener informe > Descargar
                 </p>
               </div>
             </div>
@@ -90,19 +94,14 @@ export default function UploadData() {
                     className="text-green-500 inline-flex items-center hover:underline"
                     target="_blank"
                   >
-                    Portal de servicios
-                    UCA
+                    Portal de servicios UCA
                   </a>{" "}
                   e identificarte.
                 </p>
                 <p class="mt-2 leading-relaxed italic">
-                  Matrícula > Resumen de
-                  matrícula > Selecciona
-                  el grado cursando >
-                  Selecciona el curso
-                  académico actual >
-                  Recibo de matrícula >
-                  Descargar
+                  Matrícula > Resumen de matrícula > Selecciona el grado
+                  cursando > Selecciona el curso académico actual > Recibo de
+                  matrícula > Descargar
                 </p>
               </div>
             </div>
@@ -130,13 +129,10 @@ export default function UploadData() {
               </div>
               <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
                 <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">
-                  Convierte los archivos
-                  a texto
+                  Convierte los archivos a texto
                 </h2>
                 <p class="leading-relaxed">
-                  Para poder validar tus
-                  archivos necesitamos
-                  que nos los des en
+                  Para poder validar tus archivos necesitamos que nos los des en
                   texto. Ingresa a{" "}
                   <a
                     href="https://www.zamzar.com/es/convert/pdf-to-txt/"
@@ -175,31 +171,64 @@ export default function UploadData() {
                 <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">
                   Sube tus archivos
                 </h2>
-                <form>
-                  <div className="flex">
-                    <div>
-                      <Label className="font-medium text-base">
-                        Expediente
-                      </Label>
-                      <Input
-                        className="bg-gray-100 rounded-lg mr-4"
+
+                <div className="flex justify-between mt-4 mx-28">
+                  <div className="mr-12">
+                    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-green-500 rounded-lg shadow-lg tracking-wide uppercase border border-green-400 cursor-pointer hover:bg-green-500 hover:text-white">
+                      <svg
+                        class="w-8 h-8"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                      </svg>
+                      <span class="mt-2 text-base leading-normal">
+                        Selecciona el expediente
+                      </span>
+                      <input
                         id="expediente"
+                        accept=".txt"
                         type="file"
-                      ></Input>
-                    </div>
-                    <div>
-                      <Label className="font-medium text-base">
-                        Matrícula
-                      </Label>
-                      <Input
-                        className="bg-gray-100 rounded-lg"
-                        id="matricula"
-                        type="file"
-                      ></Input>
-                    </div>
+                        class="hidden"
+                        onChange={(e) => setSelectedExp(e.target.files[0])}
+                      />
+                    </label>
                   </div>
-                  <div className="flex"></div>
-                </form>
+                  <div>
+                    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-green-500 rounded-lg shadow-lg tracking-wide uppercase border border-green-400 cursor-pointer hover:bg-green-500 hover:text-white">
+                      <svg
+                        class="w-8 h-8"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                      </svg>
+                      <span class="mt-2 text-base leading-normal">
+                        Selecciona la matrícula
+                      </span>
+                      <input
+                        id="matricula"
+                        accept=".txt"
+                        type="file"
+                        class="hidden"
+                        onChange={(e) => setSelectedEnroll(e.target.files[0])}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <Button
+                    variant="default"
+                    className="w-1/2 mt-4"
+                    onClick={() => {
+                      upData();
+                    }}
+                  >
+                    Subir archivos
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

@@ -102,7 +102,7 @@ export default function Chat() {
                   </div>
                   <div className="mx-4 text-green-500">✓</div>
                   <div className="mx-5 text-red-500">x</div>
-                </div>
+                </div> 
               </div>
               <div
                 ref={popoverChatDropdownRef}

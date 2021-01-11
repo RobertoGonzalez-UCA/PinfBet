@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-import { aceptarSolicitud, rechazarSolicitud } from "../db";
+import { aceptarSolicitud, rechazarSolicitud, deleteTransactions } from "../db";
 
 export default function NotificationList() {
   var user = firebase.auth().currentUser;
@@ -35,7 +35,7 @@ export default function NotificationList() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const data = await firebase
+      await firebase
         .firestore()
         .collection("transactions")
         .where("uid_apostante", "==", user.uid)
@@ -159,7 +159,8 @@ export default function NotificationList() {
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       class="h-6 w-6"
-                      onClick={"hidden"}
+                      onClick={() => {deleteTransactions(acierto);
+                    }}
                     >
                       <path
                         fill-rule="evenodd"

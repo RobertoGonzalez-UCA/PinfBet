@@ -598,27 +598,6 @@ export async function actualizarNota() {
     });*/
 }
 
-function añadirName(transaction, subjectId) {
-  firebase
-    .firestore()
-    .collection("subjects")
-    .where("code", "==", subjectId)
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("transactions")
-          .doc(transaction.id)
-          .update({
-            subject: doc.data().name
-          });
-      });
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
-}
 async function fetchBetcontext(bet, nota, subjectId) {
   await firebase
     .firestore()
@@ -642,7 +621,9 @@ async function fetchBetcontext(bet, nota, subjectId) {
             value: false
           })
           .then(function (docRef) {
+            firebase.firestore().collection("transactions").doc(docRef.id);
             añadirName(docRef, subjectId);
+
             actualizarCoins(bet, nota, doc, docRef); //Una vez encontrados los betCOntexts, llamamos a otra funcion para actualizar todo
             console.log("Transaction written with ID: ", docRef.id);
           })
@@ -685,10 +666,33 @@ async function deleteBetcontext(bet, nota, subjectId) {
     });
 }
 
+function añadirName(transaction, subjectId) {
+  console.log("Ehmos añadido el name");
+
+  firebase
+    .firestore()
+    .collection("subjects")
+    .where("code", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(transaction.id)
+          .update({
+            subject: doc.data().name
+          });
+      });
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+}
+
 async function actualizarCoins(bet, nota, betContext, transaction) {
   //Actualizamos el dinero del usuario y borramos los bets
   var uid = betContext.get("uid");
-  var uid_apostado = firebase.auth().currentUser.uid;
   var aumento;
   aumento = 0; //sacamos el dinero que ha apostado
 
@@ -715,11 +719,7 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
       uid_apostante: uid,
       value: true
     })
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        añadirNick(doc, uid);
-      });
-    })
+    .then(function (docRef) {})
     .catch(function (error) {
       console.error("Error adding document: ", error);
     });
@@ -731,6 +731,14 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
+        firebase
+          .firestore()
+          .collection("transactions")
+          .doc(transaction.id)
+          .update({
+            nickname: doc.data().nickname
+          });
+
         if (aumento > 0) {
           firebase
             .firestore()
@@ -807,27 +815,7 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
 
   console.log("Fin de actualizar Nota");
 }
-function añadirNick(transaction, uid) {
-  firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", uid)
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        firebase
-          .firestore()
-          .collection("transactions")
-          .doc(transaction.id)
-          .update({
-            nickname: doc.data().nickname
-          });
-      });
-    })
-    .catch(function (error) {
-      console.error("Error adding document: ", error);
-    });
-}
+
 export function createSubject() {
   var acronym = document.getElementById("acronym").value;
   var code = document.getElementById("code").value;
@@ -852,30 +840,6 @@ export function createSubject() {
       console.error("Error adding document: ", error);
     });
 }
-
-//No borrar de momento
-/** export function leerArchivo1() {
-  
- 
-
-  document
-    .getElementById("expediente")
-    .addEventListener("change",(event) => {
-       
-
-        var file = document.getElementById("expediente").files;
-        var fileReader = new FileReader();
-        fileReader.onload = function (e) {
-          var contents =
-            fileReader.result.split('\n');
-          //console.log(contents);
-          
-        };
-
-        console.log(fileReader.readAsText(file[0]));//Aqui esta la chicha
-        
-    }, false);
-}**/
 
 var subjectId = "";
 export function leerMatricula() {
@@ -1061,11 +1025,33 @@ export async function comprobarNickname() {
 export function pruebas() {
   //RONALDINHO SOCCER
   console.log("EH");
+  firebase.firestore().collection("bets").add({
+    amount: 5,
+    betContextId: "twSrQBtGuBGiNeryKIYM",
+    type: "APRUEBA_SUSPENDE",
+    uid: "CzzhhlAokLW4mMTWz2DmDnxpi1U2",
+    value: true
+  });
+
+  firebase.firestore().collection("bets").add({
+    amount: 10,
+    betContextId: "twSrQBtGuBGiNeryKIYM",
+    type: "NOTA",
+    uid: "CzzhhlAokLW4mMTWz2DmDnxpi1U2",
+    value: 8
+  });
+
   firebase
     .firestore()
-    .collection("users")
-    .doc("NOtwp77FdFL60YiLlpU7")
-    .update({ coins: firebase.firestore.FieldValue.increment(11) });
+    .collection("betContexts")
+    .doc("twSrQBtGuBGiNeryKIYM")
+    .set({
+      uid: "1HAabYbLxQZH12E1SOVJQC9QWIz1",
+      subjects: {
+        code: "21714008",
+        degreeId: "1725"
+      }
+    });
 }
 
 export function findTransactions() {
@@ -1083,8 +1069,10 @@ export function findTransactions() {
     });
 }
 
-export function deleteTransactions() {
-  var transaction = document.getElementById("transaction").value;
+export function deleteTransactions(transaction) {
+  //// var transaction = document.getElementById("transaction").value;
+
+  console.log(transaction.id + " ===> " + transaction.data());
 
   firebase.firestore().collection("transactions").doc(transaction).delete();
 }

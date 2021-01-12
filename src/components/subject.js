@@ -35,7 +35,7 @@ export default function Subject({
         <div className="text-2xl font-semibold">
           {subjectName}
         </div>
-        <div className="text-xs text-gray-900">
+        <div className="text-xs text-gray-900 mt-2">
           ({subjectFullname})
         </div>
       </div>

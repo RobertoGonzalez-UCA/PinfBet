@@ -115,7 +115,7 @@ export default function Profile() {
           <Chat />
           <div className="mb-auto">
             <div className="relative">
-              <div className="ml-10 my-6 absolute left-0">
+              <div className="ml-24 my-8 absolute left-0 bg-gray-100 px-10 py-4 border rounded-lg">
                 <img
                   src="https://i.imgur.com/q385Ahc.png"
                   width="140"
@@ -138,8 +138,8 @@ export default function Profile() {
               <h2 className="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900 mb-5">
                 Asignaturas
               </h2>
-              <div className="flex justify-center">
-                <div className="flex flex-wrap w-1/2 justify-center">
+              <div className="flex justify-center ">
+                <div className="flex flex-wrap w-1/2 justify-center rounded-lg border-2 border-gray-200">
                   {subjectsOrder.map(
                     (subject) => (
                       <div>

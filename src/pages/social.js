@@ -10,7 +10,10 @@ export default function Social() {
       <div className="flex flex-col h-screen">
         <div className="mb-auto">
           <Navbar />
-          <div className="flex justify-center mt-10">
+          <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900 text-center mt-10">
+            Busca un perfil
+          </h1>
+          <div className="flex justify-center mt-8">
             <SearchBar />
           </div>
         </div>

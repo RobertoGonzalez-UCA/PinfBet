@@ -198,7 +198,7 @@ export default function Home() {
                     </p>
                     <Link
                       className="mt-10 text-green-500 inline-flex items-center"
-                      to="/legalterms"
+                      to="/social"
                     >
                       Social
                       <svg

@@ -1,7 +1,6 @@
 import React from "react";
 
 import Navbar from "../components/navbar";
-import Chat from "../components/chat";
 import Blocktextleft from "../components/blocktextleft";
 import Blocktextright from "../components/blocktextright";
 
@@ -17,7 +16,7 @@ export default function Legalterms() {
       {user && (
         <div>
           <Navbar />
-          <Chat />
+
           <h2 class="text-gray-900 text-2xl title-font font-medium mt-16 text-center">
             Términos legales
           </h2>

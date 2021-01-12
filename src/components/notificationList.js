@@ -210,7 +210,7 @@ export default function NotificationList() {
                     <svg
                       fill="currentColor"
                       viewBox="0 0 20 20"
-                      class="h-6 w-6"
+                      class="h-6 w-6 cursor-pointer"
                       onClick={() => {
                         deleteTransactions(
                           acierto
@@ -262,7 +262,11 @@ export default function NotificationList() {
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       class="h-6 w-6"
-                      onClick={"hidden"}
+                      onClick={() => {
+                        deleteTransactions(
+                          fallo
+                        );
+                      }}
                     >
                       <path
                         fill-rule="evenodd"

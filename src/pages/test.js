@@ -10,7 +10,6 @@ import Input from "../components/input";
 import Select from "../components/select";
 import Subject from "../components/subject";
 import Table from "../components/table";
-import Chat from "../components/chat";
 import NotificationList from "../components/notificationList";
 
 import {
@@ -39,7 +38,8 @@ import {
   chatearGrupo,
   añadirUsuario,
   deleteTransaction,
-  findTransactions
+  findTransactions,
+  deleteTransactions2
 } from "../db.js";
 
 initFirebase();
@@ -58,9 +58,15 @@ export default function Test() {
           <Dropdown />
           <DropdownProfile />
           <Select>
-            <option value="AA">AA</option>
-            <option value="BB">BB</option>
-            <option value="CC">CC</option>
+            <option value="AA">
+              AA
+            </option>
+            <option value="BB">
+              BB
+            </option>
+            <option value="CC">
+              CC
+            </option>
           </Select>
           <Subject
             variant="yellow"
@@ -68,7 +74,6 @@ export default function Test() {
             subjectFullname="Matemática discreta"
             friends="2"
           />
-          <Chat />
         </div>
       </div>
       <br />
@@ -77,33 +82,97 @@ export default function Test() {
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Botones de prueba
       </h1>
-      <Button onClick={iniciarCrearApuesta}>Crear Apuesta</Button>
-      <Button onClick={solicitarAmistad}>Solicitar Amistad</Button>
-      <Button onClick={mostrarSolicitud}>Mostrar Solicitudes</Button>
-      <Button onClick={aceptarSolicitud}>Aceptar Solicitud</Button>
-      <Button onClick={rechazarSolicitud}>Rechazar Solicitud</Button>
-      <Button onClick={cerrarSesion}>Cerrar Sesión</Button>
-      <Button onClick={cursarAsignatura}>Cursar Asignatura</Button>
-      <Button onClick={actualizarNota}>Actualizar Nota</Button>
-      <Button onClick={createSubject}>Crear asignatura (test)</Button>
-      <Button onClick={pruebas}>Pruebas</Button>
-      <Button onClick={leerExpediente}>Subir Archivo</Button>
-      <Button onClick={crearChat}>Crear Chat</Button>
-      <Button onClick={chatear}>Mandar Mensaje Chat Amigo</Button>
-      <Button onClick={crearChatGrupo}>Crear Chat de grupo</Button>
-      <Button onClick={devolverChatsGrupo}>Mis Grupos</Button>
-      <Button onClick={chatearGrupo}>Chatear por grupo</Button>
-      <Button onClick={añadirUsuario}>Añadir usuario a un grupo</Button>
-      <Button onClick={findTransactions}>Find transactions</Button>
-      <Button onClick={deleteTransaction}>Delete transaction</Button>
+      <Button
+        onClick={iniciarCrearApuesta}
+      >
+        Crear Apuesta
+      </Button>
+      <Button
+        onClick={solicitarAmistad}
+      >
+        Solicitar Amistad
+      </Button>
+      <Button
+        onClick={mostrarSolicitud}
+      >
+        Mostrar Solicitudes
+      </Button>
+      <Button
+        onClick={aceptarSolicitud}
+      >
+        Aceptar Solicitud
+      </Button>
+      <Button
+        onClick={rechazarSolicitud}
+      >
+        Rechazar Solicitud
+      </Button>
+      <Button onClick={cerrarSesion}>
+        Cerrar Sesión
+      </Button>
+      <Button
+        onClick={cursarAsignatura}
+      >
+        Cursar Asignatura
+      </Button>
+      <Button onClick={actualizarNota}>
+        Actualizar Nota
+      </Button>
+      <Button onClick={createSubject}>
+        Crear asignatura (test)
+      </Button>
+      <Button onClick={pruebas}>
+        Pruebas
+      </Button>
+      <Button onClick={leerExpediente}>
+        Subir Archivo
+      </Button>
+      <Button onClick={crearChat}>
+        Crear Chat
+      </Button>
+      <Button onClick={chatear}>
+        Mandar Mensaje Chat Amigo
+      </Button>
+      <Button onClick={crearChatGrupo}>
+        Crear Chat de grupo
+      </Button>
+      <Button
+        onClick={devolverChatsGrupo}
+      >
+        Mis Grupos
+      </Button>
+      <Button onClick={chatearGrupo}>
+        Chatear por grupo
+      </Button>
+      <Button onClick={añadirUsuario}>
+        Añadir usuario a un grupo
+      </Button>
+      <Button
+        onClick={findTransactions}
+      >
+        Find transactions
+      </Button>
+      <Button
+        onClick={deleteTransactions2}
+      >
+        Delete transaction
+      </Button>
 
       <h1 className="mt-10 ml-6 mb-4 block text-3xl font-bold leading-none">
         Inputs de prueba
       </h1>
 
       <form>
-        <Input id="email" type="email" placeholder="Email"></Input>
-        <Input id="password" type="password" placeholder="Contraseña"></Input>
+        <Input
+          id="email"
+          type="email"
+          placeholder="Email"
+        ></Input>
+        <Input
+          id="password"
+          type="password"
+          placeholder="Contraseña"
+        ></Input>
         <Input
           id="year"
           type="number"
@@ -153,19 +222,50 @@ export default function Test() {
           type="number"
           placeholder="Cantidad dinero para Bet Nota"
         ></Input>
-        <Input id="degreeId" type="text" placeholder="Id del degree"></Input>
-        <Input id="subjectId" type="text" placeholder="Id del subject"></Input>
+        <Input
+          id="degreeId"
+          type="text"
+          placeholder="Id del degree"
+        ></Input>
+        <Input
+          id="subjectId"
+          type="text"
+          placeholder="Id del subject"
+        ></Input>
         <Input
           id="nota"
           type="number"
           placeholder="Nota de la asignatura"
         ></Input>
-        <Input id="acronym" type="text" placeholder="acronym"></Input>
-        <Input id="code" type="text" placeholder="code"></Input>
-        <Input id="degreeId" type="text" placeholder="degreeId"></Input>
-        <Input id="expediente" type="file"></Input>
-        <Input id="name" type="text" placeholder="name"></Input>
-        <Input id="year" type="number" placeholder="year"></Input>
+        <Input
+          id="acronym"
+          type="text"
+          placeholder="acronym"
+        ></Input>
+        <Input
+          id="code"
+          type="text"
+          placeholder="code"
+        ></Input>
+        <Input
+          id="degreeId"
+          type="text"
+          placeholder="degreeId"
+        ></Input>
+        <Input
+          id="expediente"
+          type="file"
+        ></Input>
+        <Input
+          id="name"
+          type="text"
+          placeholder="name"
+        ></Input>
+        <Input
+          id="year"
+          type="number"
+          placeholder="year"
+        ></Input>
         <Input
           id="solicitanteId"
           type="text"
@@ -176,9 +276,21 @@ export default function Test() {
           type="text"
           placeholder="Colega con quien comenzar el chat"
         ></Input>
-        <Input id="mensaje" type="text" placeholder="Mensaje"></Input>
-        <Input id="grupo" type="text" placeholder="Grupo"></Input>
-        <Input id="transaction" type="text" placeholder="Transaccion"></Input>
+        <Input
+          id="mensaje"
+          type="text"
+          placeholder="Mensaje"
+        ></Input>
+        <Input
+          id="grupo"
+          type="text"
+          placeholder="Grupo"
+        ></Input>
+        <Input
+          id="transaction"
+          type="text"
+          placeholder="Transaccion"
+        ></Input>
       </form>
     </div>
   );

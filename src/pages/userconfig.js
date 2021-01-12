@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/navbar";
-import Chat from "../components/chat";
+
 import Button from "../components/button";
 import Input from "../components/input";
 import Footer from "../components/footer";
@@ -80,7 +80,6 @@ export default function Userconfig() {
   return (
     <div>
       <Navbar />
-      <Chat />
 
       {spells.map((spell) => (
         <section class="pt-32 pb-36 bg-gray-100 bg-opacity-50">

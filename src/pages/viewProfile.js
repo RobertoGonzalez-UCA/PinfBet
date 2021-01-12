@@ -7,7 +7,7 @@ import "firebase/auth";
 
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import Chat from "../components/chat";
+
 import Button from "../components/button";
 import SubjectModal from "../components/subjectModal";
 import Subject from "../components/subject";
@@ -174,7 +174,6 @@ export default function ViewProfie() {
           key={spell.uid}
         >
           <Navbar />
-          <Chat />
           <div className="mb-auto">
             <div className="relative">
               <div className="ml-24 my-8 absolute left-0 bg-gray-100 px-10 py-4 border rounded-lg">
@@ -291,7 +290,9 @@ export default function ViewProfie() {
                   </div>
                 </div>
               )}
-              <section class="text-gray-600 body-font">
+             
+            </div>
+          </div> <section class="text-gray-600 body-font">
                 <div class="container px-5 py-10 mx-auto">
                   <div class="flex flex-col text-center w-full mb-6">
                     <h1 class="sm:text-3xl text-2xl font-medium title-font text-gray-900">
@@ -424,8 +425,6 @@ export default function ViewProfie() {
                   </div>
                 </div>
               </section>
-            </div>
-          </div>
           <Footer />
         </div>
       ))}

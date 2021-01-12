@@ -115,14 +115,14 @@ export default function Navbar() {
         <div class="flex items-center">
           <div class="hidden sm:block">
             <div class="flex items-center">
-              <Link to="/social">
-                <Button variant="seleccion">
-                  Social
-                </Button>
-              </Link>
               <Link to="/bets">
                 <Button variant="seleccion">
                   Apuestas
+                </Button>
+              </Link>
+              <Link to="/social">
+                <Button variant="seleccion">
+                  Social
                 </Button>
               </Link>
               <Link to="/rankings">

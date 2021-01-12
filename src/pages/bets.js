@@ -29,7 +29,8 @@ export default function Bets() {
 
   const [usersOrder, setUsersOrder] = React.useState([]);
 
-  const [subjectSelected, SetSubjectSelected] = React.useState(null);
+  const [subjectSelected, setSubjectSelected] = React.useState(null);
+  const [nameSubjectSelected, setNameSubjectSelected] = React.useState(null);
 
   const courseRef = React.createRef();
   const subjectsRef = React.createRef();
@@ -119,7 +120,6 @@ export default function Bets() {
     );
   }
 
-
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -133,21 +133,21 @@ export default function Bets() {
           </div>
           <div className="flex justify-center">
             <div className="flex flex-wrap w-1/2 justify-center">
-            {degrees.map((degree) => (
-              <>
-                <Grade
-                  icon={degree.acronym}
-                  gradeName={degree.acronym}
-                  gradeFullname={degree.name}
-                  onClick={() => {
-                    setGradeShow(false);
-                    setCourseShow(true);
-                    setDegreeSelected(degree.code);
-                  }}
-                />
-              </>
-            ))}
-          </div>
+              {degrees.map((degree) => (
+                <>
+                  <Grade
+                    icon={degree.acronym}
+                    gradeName={degree.acronym}
+                    gradeFullname={degree.name}
+                    onClick={() => {
+                      setGradeShow(false);
+                      setCourseShow(true);
+                      setDegreeSelected(degree.code);
+                    }}
+                  />
+                </>
+              ))}
+            </div>
           </div>
         </div>
         <div ref={courseRef} className={courseShow ? "block " : "hidden "}>
@@ -260,8 +260,9 @@ export default function Bets() {
                   onClick={() => {
                     setUserShow(true);
                     setSubjectsShow(false);
-                    SetSubjectSelected(subject.code);
+                    setSubjectSelected(subject.code);
                     orderUserSubjects(subject.code);
+                    setNameSubjectSelected(subject.name);
                     orderUsers();
                   }}
                 />
@@ -284,7 +285,7 @@ export default function Bets() {
               className="transition duration-500 rounded-2xl hover:bg-gray-200 focus:outline-none absolute top-7 left-20"
             />
             <h1 className="mt-7 mb-4 block text-3xl font-bold leading-none flex justify-center">
-              {subjectSelected}
+              {nameSubjectSelected}
             </h1>
           </div>
           <div class="">
@@ -329,7 +330,6 @@ export default function Bets() {
                                 uidApostado={userOrder.uid}
                                 subjectId={subjectSelected}
                               />
-                              
                             </td>
                           </tr>
                         ))}

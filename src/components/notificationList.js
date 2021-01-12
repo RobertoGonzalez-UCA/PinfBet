@@ -40,21 +40,6 @@ export default function NotificationList() {
     fetchData();
   }, []);
 
-  /*   React.useEffect(() => {
-    const fetchData = async () => {
-      await firebase
-        .firestore()
-        .collection("users")
-        .where("uid", "in", ["a"])
-        .onSnapshot((snap) => {
-          const data = snap.docs.map((doc) => doc.data());
-          setUsers(data);
-        });
-    };
-    fetchData();
-    console.log(users);
-  }, []); 
-  */
   // ----------------------------------------------------
   const [
     transactions,
@@ -70,11 +55,6 @@ export default function NotificationList() {
     aciertos,
     setAciertos
   ] = React.useState([]);
-
-  const [
-    nicknameSearched,
-    setNicknameSearched
-  ] = React.useState("Desconodido");
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -116,27 +96,6 @@ export default function NotificationList() {
     setFallos(orderFallos);
   }, [transactions]);
 
-  function getNicknameByUid(uid) {
-    firebase
-      .firestore()
-      .collection("users")
-      .where("uid", "==", uid)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          setNicknameSearched(
-            doc.data().nickname
-          );
-        });
-      });
-  }
-
-  {
-    friendships.map((friendship) =>
-      getNicknameByUid(friendship.uid_a)
-    );
-  }
-
   return (
     <>
       <div className="fixed top-16 right-0">
@@ -169,7 +128,7 @@ export default function NotificationList() {
                       </div>
                       <div class="text-gray-600 text-sm">
                         {
-                          nicknameSearched
+                          friendship.nickname
                         }{" "}
                         quiere ser tu
                         amigo.

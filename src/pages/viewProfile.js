@@ -10,6 +10,7 @@ import Footer from "../components/footer";
 import Chat from "../components/chat";
 import Button from "../components/button";
 import SubjectModal from "../components/subjectModal";
+import Subject from "../components/subject";
 
 import {
   solicitarAmistad,
@@ -47,6 +48,12 @@ export default function ViewProfie() {
     subjectsOrder,
     setSubjectsOrder
   ] = React.useState([]);
+
+  function refresh() {
+    window.setTimeout(function () {
+      window.location.reload();
+    }, 300);
+  }
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -120,16 +127,44 @@ export default function ViewProfie() {
     setSubjectsOrder(orderSubjects());
   }, [subjects, setSubjects]);
 
-  /*   function orderSubjects() {
-    return (userSubjects.map((userSubject) =>
-      setSubjectsOrder(subjects.filter((subject) => subject.code === userSubject.subjectId))
-    )
-    );
-  } */
+  const [
+    amistad,
+    setAmistad
+  ] = React.useState(false);
 
-  /* this.setState({ 
-  arrayvar: this.state.arrayvar.concat([subjects.filter((subject) => subject.code === userSubject.subjectId)])
-}) */
+  function sonAmigos(
+    uidEmisor,
+    uidReceptor
+  ) {
+    var friend = firebase
+      .firestore()
+      .collection("friendships");
+    friend
+      .where("uid_a", "==", uidEmisor)
+      .where("uid_b", "==", uidReceptor)
+      .where("status", "==", "ACCEPTED")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (
+          doc
+        ) {
+          setAmistad(true);
+        });
+      });
+
+    friend
+      .where("uid_b", "==", uidEmisor)
+      .where("uid_a", "==", uidReceptor)
+      .where("status", "==", "ACCEPTED")
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (
+          doc
+        ) {
+          setAmistad(true);
+        });
+      });
+  }
 
   return (
     <>
@@ -162,65 +197,100 @@ export default function ViewProfie() {
               </div>
             </div>
             <div className="absolute mt-8 ml-3 left-80 flex">
-              <Button
-                onClick={() =>
-                  solicitarAmistad(
-                    user.uid,
-                    spell.uid
-                  )
-                }
-              >
-                Agregar
-              </Button>
-              <Button
-                variant="tertiary"
-                onClick={() =>
-                  cancelarAmistad(
-                    user.uid,
-                    spell.uid
-                  )
-                }
-              >
-                Eliminar
-              </Button>
+              {sonAmigos(
+                user.uid,
+                spell.uid
+              )}
+              {amistad ? (
+                <Button
+                  variant="tertiary"
+                  onClick={() => (
+                    cancelarAmistad(
+                      user.uid,
+                      spell.uid
+                    ),
+                    refresh()
+                  )}
+                >
+                  Eliminar
+                </Button>
+              ) : (
+                <Button
+                  onClick={() =>
+                    solicitarAmistad(
+                      user.uid,
+                      spell.uid
+                    )
+                  }
+                >
+                  Agregar
+                </Button>
+              )}
             </div>
             <div className="mt-14">
               <h2 className="sm:text-3xl text-2xl font-medium title-font text-center text-gray-900 mb-5">
                 Asignaturas
               </h2>
-              <div className="flex justify-center">
-                <div className="flex flex-wrap w-1/2 justify-center rounded-lg border-2 border-gray-200">
-                  {subjectsOrder.map(
-                    (subject) => (
-                      <div>
-                        {subject.map(
-                          (
-                            subject1
-                          ) => (
-                            <SubjectModal
-                              subjectName={
-                                subject1.acronym
-                              }
-                              subjectFullname={
-                                subject1.name
-                              }
-                              nickname={
-                                spell.nickname
-                              }
-                              uidApostado={
-                                spell.uid
-                              }
-                              subjectId={
-                                subject1.code
-                              }
-                            />
-                          )
-                        )}
-                      </div>
-                    )
-                  )}
+              {amistad ? (
+                <div className="flex justify-center">
+                  <div className="flex flex-wrap w-1/2 justify-center rounded-lg border-2 border-gray-200">
+                    {subjectsOrder.map(
+                      (subject) => (
+                        <div>
+                          {subject.map(
+                            (
+                              subject1
+                            ) => (
+                              <SubjectModal
+                                subjectName={
+                                  subject1.acronym
+                                }
+                                subjectFullname={
+                                  subject1.name
+                                }
+                                nickname={
+                                  spell.nickname
+                                }
+                                uidApostado={
+                                  spell.uid
+                                }
+                                subjectId={
+                                  subject1.code
+                                }
+                              />
+                            )
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-center">
+                  <div className="flex flex-wrap w-1/2 justify-center rounded-lg border-2 border-gray-200">
+                    {subjectsOrder.map(
+                      (subject) => (
+                        <div>
+                          {subject.map(
+                            (
+                              subject1
+                            ) => (
+                              <Subject
+                                subjectName={
+                                  subject1.acronym
+                                }
+                                subjectFullname={
+                                  subject1.name
+                                }
+                              />
+                            )
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
               <section class="text-gray-600 body-font">
                 <div class="container px-5 py-10 mx-auto">
                   <div class="flex flex-col text-center w-full mb-6">

@@ -26,8 +26,77 @@ export function getDegrees() {
     });
 }
 
+export function sonAmigos(uidEmisor, uidReceptor){
+  var friend = firebase.firestore().collection("friendships");
+  friend
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "son amigos.")
+      });
+    });
+
+    friend
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "son amigos.")
+      });
+    });
+
+    friend
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "DENIED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "tienen una peticion de amistad denegada.")
+      });
+    });
+
+    friend
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "DENIED")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "tienen una peticion de amistad denegada.")
+      });
+    });
+
+    friend
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "PEDNING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "tienen una peticion de amistad pendiente.")
+      });
+    });
+
+    friend
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "PENDING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        console.log(uidEmisor + " y " + uidReceptor + "tienen una peticion de amistad pendiente.")
+      });
+    });
+}
+
 //FUNCION SOLICITAR AMISTAD
-export async function solicitarAmistad(uidEmisor, uidReceptor) {
+export async function solicitarAmistad(uidEmisor, uidReceptor){
   var friend = firebase.firestore().collection("friendships");
   await friend
     .where("uid_a", "==", uidEmisor)
@@ -46,11 +115,39 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
       });
     });
 
-  await friend.add({
-    status: "PENDING",
-    uid_a: uidEmisor,
-    uid_b: uidReceptor
-  });
+    await friend
+    .where("uid_b", "==", uidEmisor)
+    .where("uid_a", "==", uidReceptor)
+    .where("status", "==", "PENDING")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        friend
+          .doc(doc.id)
+          .delete()
+          .then(function () {})
+          .catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+      });
+    });
+
+  await firebase
+    .firestore()
+    .collection("users")
+    .where("uid", "==", uidEmisor)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        friend
+          .add({
+              status: "PENDING",
+              uid_a: uidEmisor,
+              uid_b: uidReceptor,
+              nickname: doc.data().nickname
+            });
+      });
+    });
 
   friend
     .where("uid_a", "==", uidEmisor)
@@ -1064,7 +1161,23 @@ export async function comprobarNickname() {
     });
 }
 
-export function pruebas() {
+export async function pruebas() {
+
+  var uidEmisor = firebase.auth().currentUser.uid;
+  var uidReceptor = document.getElementById("uidReceptor").value;
+
+  var friend = firebase.firestore().collection("friendships");
+
+  var gotcha = await friend
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get();
+
+    gotcha.on('value', snapshot => {
+      console.log(snapshot.val());
+    });
+/*
   //RONALDINHO SOCCER
   console.log("EH");
   firebase.firestore().collection("bets").add({
@@ -1093,7 +1206,7 @@ export function pruebas() {
         code: "21714008",
         degreeId: "1725"
       }
-    });
+    });*/
 }
 
 export function findTransactions() {

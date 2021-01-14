@@ -50,7 +50,7 @@ export default function SubjectModal({
       secondBet.value,
       subjectId
     );
-    alert("Apuesta realizada.");
+    // alert("Apuesta realizada.");
     setShowModal(false);
   }, []);
 

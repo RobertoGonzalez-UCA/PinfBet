@@ -396,44 +396,16 @@ export function iniciarCrearApuesta(
     return;
   }
 
-  var dineroApuesta = cantidadDinero + cantidadDineroNota;
-
-  firebase
-    .firestore()
-    .collection("users")
-    .where("uid", "==", uidApostante)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (doc.data().coins >= dineroApuesta) {
-          firebase
-            .firestore()
-            .collection("users")
-            .doc(doc.id)
-            .update({
-              coins: firebase.firestore.FieldValue.increment(-dineroApuesta)
-            });
-
-          console.log("Hold up");
-
-          crearApuestaSonAmigos(
-            uidApostante,
-            idAsignatura,
-            cantidadDinero,
-            uidApostado,
-            betNotaCheck,
-            valorBet,
-            cantidadDineroNota,
-            notaApostada
-          );
-        } else {
-          alert("Error. No se dispone del suficiente dinero");
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting /users/ documents: ", error);
-    });
+  crearApuestaSonAmigos(
+    uidApostante,
+    idAsignatura,
+    cantidadDinero,
+    uidApostado,
+    betNotaCheck,
+    valorBet,
+    cantidadDineroNota,
+    notaApostada
+  );
 }
 
 //Siguiente paso de crear apuesta
@@ -473,7 +445,7 @@ export function crearApuestaSonAmigos(
             notaApostada
           );
         } else {
-          alert("No sois amigos.");
+          alert("No se realizó la apuesta debido a que no sois amigos.");
         }
       });
     })
@@ -497,7 +469,7 @@ export function crearApuestaSonAmigos(
             notaApostada
           );
         } else {
-          alert("No sois amigos.");
+          alert("No se realizó la apuesta debido a que no sois amigos.");
         }
       });
     })
@@ -517,25 +489,53 @@ function encontrarDegree(
   cantidadDineroNota,
   notaApostada
 ) {
+  var dineroApuesta = cantidadDinero + cantidadDineroNota;
+
   firebase
     .firestore()
-    .collection("subjects")
-    .where("code", "==", idAsignatura) //Buscar documentacion update data
+    .collection("users")
+    .where("uid", "==", uidApostante)
     .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        escribirApuesta(
-          uidApostante,
-          idAsignatura,
-          cantidadDinero,
-          uidApostado,
-          betNotaCheck,
-          valorBet,
-          cantidadDineroNota,
-          notaApostada,
-          doc.data().degreeId
-        );
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().coins >= dineroApuesta) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(doc.id)
+            .update({
+              coins: firebase.firestore.FieldValue.increment(-dineroApuesta)
+            });
+
+          console.log("Hold up");
+
+          firebase
+            .firestore()
+            .collection("subjects")
+            .where("code", "==", idAsignatura) //Buscar documentacion update data
+            .get()
+            .then(function (querySnapshot) {
+              querySnapshot.forEach(function (docRef) {
+                escribirApuesta(
+                  uidApostante,
+                  idAsignatura,
+                  cantidadDinero,
+                  uidApostado,
+                  betNotaCheck,
+                  valorBet,
+                  cantidadDineroNota,
+                  notaApostada,
+                  docRef.data().degreeId
+                );
+              });
+            });
+        } else {
+          alert("Error. No se dispone del suficiente dinero");
+        }
       });
+    })
+    .catch(function (error) {
+      console.log("Error getting /users/ documents: ", error);
     });
 }
 
@@ -585,6 +585,8 @@ function escribirApuesta(
         .catch(function (error) {
           console.error("Error adding document: ", error);
         });
+
+      alert("Apuesta realizada correctamente");
 
       if (betNotaCheck === true) {
         escribirApuestaNota(
@@ -1112,6 +1114,8 @@ export function leerExpediente() {
           }
         }
       }
+
+      //Añadir transactions
       firebase
         .firestore()
         .collection("users")

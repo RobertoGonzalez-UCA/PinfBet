@@ -132,6 +132,7 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
           .catch(function (error) {
             console.error("Error removing friendship: ", error);
           });
+        alert("Se ha enviado una petición de amistad");
       });
     });
 
@@ -175,7 +176,7 @@ export async function solicitarAmistad(uidEmisor, uidReceptor) {
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        alert("Ya tienes amistad con este amigo");
+        alert("Ya tienes amistad con este usuario");
         yaHayAmistad(uidEmisor, uidReceptor);
       });
     });
@@ -318,6 +319,7 @@ export function cancelarAmistad(uidReceptor, uidSolicitante) {
         firebase.firestore().collection("friendships").doc(doc.id).delete();
         console.log(doc.id, " => ", doc.data());
       });
+      alert("Se ha eleminado la amistad");
     });
 
   friend

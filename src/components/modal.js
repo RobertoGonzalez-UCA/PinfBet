@@ -6,34 +6,43 @@ import Button from "../components/button";
 
 import { iniciarCrearApuesta } from "../db";
 
-export default function Modal({ nickname, uidApostado, subjectId }) {
-  const [showModal, setShowModal] = React.useState(false);
+export default function Modal({
+  nickname,
+  uidApostado,
+  subjectId
+}) {
+  const [
+    showModal,
+    setShowModal
+  ] = React.useState(false);
 
-  const handleSubmit = React.useCallback(async (event) => {
-    event.preventDefault();
-    const {
-      firstBet,
-      secondBet,
-      cantFirstBet,
-      cantSecondBet,
-      betNotaCheck
-    } = event.target.elements;
+  const handleSubmit = React.useCallback(
+    async (event) => {
+      event.preventDefault();
+      const {
+        firstBet,
+        secondBet,
+        cantFirstBet,
+        cantSecondBet,
+        betNotaCheck
+      } = event.target.elements;
 
-    iniciarCrearApuesta(
-      cantFirstBet.value,
-      cantSecondBet.value,
-      uidApostado,
-      firstBet.value,
-      betNotaCheck.checked,
-      secondBet.value,
-      subjectId
-    );
+      iniciarCrearApuesta(
+        cantFirstBet.value,
+        cantSecondBet.value,
+        uidApostado,
+        firstBet.value,
+        betNotaCheck.checked,
+        secondBet.value,
+        subjectId
+      );
 
-    alert("Apuesta realizada.");
-    window.setTimeout(function () {
-      window.location.reload();
-    }, 500);
-  }, []);
+      window.setTimeout(function () {
+        window.location.reload();
+      }, 500);
+    },
+    []
+  );
 
   return (
     <>
@@ -43,7 +52,9 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
         style={{
           transition: "all .15s ease"
         }}
-        onClick={() => setShowModal(true)}
+        onClick={() =>
+          setShowModal(true)
+        }
       >
         Apostar
       </button>
@@ -60,7 +71,11 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
                   </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
+                    onClick={() =>
+                      setShowModal(
+                        false
+                      )
+                    }
                   >
                     <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                       ×
@@ -77,18 +92,35 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
                     ></img>
                   </div>
                   <div className="pt-3 pb-7 relative flex justify-center">
-                    <Label className="text-2xl">{nickname}</Label>
+                    <Label className="text-2xl">
+                      {nickname}
+                    </Label>
                   </div>
                   <div className="pb-10 relative flex justify-center"></div>
 
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={
+                      handleSubmit
+                    }
+                  >
                     <div className="mb-5 relative flex items-center">
-                      <Label className="text-base mx-2">Aprueba/Suspende</Label>
-                      <Select id="firstBet" className="mr-7">
-                        <option value="true">Aprueba</option>
-                        <option value="false">Suspende</option>
+                      <Label className="text-base mx-2">
+                        Aprueba/Suspende
+                      </Label>
+                      <Select
+                        id="firstBet"
+                        className="mr-7"
+                      >
+                        <option value="true">
+                          Aprueba
+                        </option>
+                        <option value="false">
+                          Suspende
+                        </option>
                       </Select>
-                      <Label className="text-base mx-2">Cantidad</Label>
+                      <Label className="text-base mx-2">
+                        Cantidad
+                      </Label>
                       <Input
                         id="cantFirstBet"
                         type="number"
@@ -118,7 +150,9 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
                             max="10"
                           />
                         </div>
-                        <Label className="text-base mx-2">Cantidad</Label>
+                        <Label className="text-base mx-2">
+                          Cantidad
+                        </Label>
                         <Input
                           id="cantSecondBet"
                           type="number"
@@ -133,9 +167,14 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
                         variant="tertiary"
                         type="button"
                         style={{
-                          transition: "all .15s ease"
+                          transition:
+                            "all .15s ease"
                         }}
-                        onClick={() => setShowModal(false)}
+                        onClick={() =>
+                          setShowModal(
+                            false
+                          )
+                        }
                       >
                         Cancelar
                       </Button>
@@ -143,7 +182,8 @@ export default function Modal({ nickname, uidApostado, subjectId }) {
                         className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-green-600 outline-none focus:outline-none mr-1 mb-1"
                         type="submit"
                         style={{
-                          transition: "all .15s ease"
+                          transition:
+                            "all .15s ease"
                         }}
                       >
                         Apostar

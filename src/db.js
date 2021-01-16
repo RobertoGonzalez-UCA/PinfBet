@@ -727,24 +727,18 @@ export async function actualizarNota() {
       console.log("Error getting document:", error);
     });
 
-  if(nota < 5){
+  if (nota < 5) {
     firebase //Borrar notas despues de actualizar si han aprobado
-    .firestore()
-    .collection("userSubjects")
-    .where("uid", "==", user.uid) //Buscar documentacion update data
-    .where("subjectId", "==", subjectId)
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        firebase
-        .firestore()
-        .collection("userSubjects")
-        .doc(doc.id)
-        .delete()
+      .firestore()
+      .collection("userSubjects")
+      .where("uid", "==", user.uid) //Buscar documentacion update data
+      .where("subjectId", "==", subjectId)
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          firebase.firestore().collection("userSubjects").doc(doc.id).delete();
+        });
       });
-    });
   }
 }
 
@@ -1121,44 +1115,40 @@ export function leerExpediente() {
 
       //Añadir transactions
 
-        firebase
+      firebase
         .firestore()
         .collection("transactions")
         .add({
           uid_apostado: firebase.auth().currentUser.uid,
           type: "Propia",
-          value: false,
+          value: true,
           coins: calcularPinfCoins(parseFloat(media), totalCreditos)
         })
         .then(async function (docRef) {
-         
-         await firebase
-          .firestore()
-          .collection("users")
-          .where("uid", "==", usuario.uid)
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              firebase
-                .firestore()
-                .collection("users")
-                .doc(doc.id)
-                .update({
-                  coins: calcularPinfCoins(parseFloat(media), totalCreditos),
-                  transaction: docRef.id
-                });
+          await firebase
+            .firestore()
+            .collection("users")
+            .where("uid", "==", usuario.uid)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(doc.id)
+                  .update({
+                    coins: calcularPinfCoins(parseFloat(media), totalCreditos),
+                    transaction: docRef.id
+                  });
+              });
             });
-          });
 
           firebase
-          .firestore()
-          .collection("transactions")
-          .doc(docRef.id)
-          .delete();
-          
-
+            .firestore()
+            .collection("transactions")
+            .doc(docRef.id)
+            .delete();
         });
-
 
       alert("Datos actualizados ✓");
     };

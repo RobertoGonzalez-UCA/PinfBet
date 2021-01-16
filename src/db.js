@@ -727,7 +727,8 @@ export async function actualizarNota() {
       console.log("Error getting document:", error);
     });
 
-  /*  firebase //Borrar notas despues de actualizar
+  if(nota < 5){
+    firebase //Borrar notas despues de actualizar si han aprobado
     .firestore()
     .collection("userSubjects")
     .where("uid", "==", user.uid) //Buscar documentacion update data
@@ -743,7 +744,8 @@ export async function actualizarNota() {
         .doc(doc.id)
         .delete()
       });
-    });*/
+    });
+  }
 }
 
 async function fetchBetcontext(bet, nota, subjectId) {
@@ -1118,22 +1120,46 @@ export function leerExpediente() {
       }
 
       //Añadir transactions
-      firebase
+
+        firebase
         .firestore()
-        .collection("users")
-        .where("uid", "==", usuario.uid)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(doc.id)
-              .update({
-                coins: calcularPinfCoins(parseFloat(media), totalCreditos)
-              });
+        .collection("transactions")
+        .add({
+          uid_apostado: firebase.auth().currentUser.uid,
+          type: "Propia",
+          value: false,
+          coins: calcularPinfCoins(parseFloat(media), totalCreditos)
+        })
+        .then(async function (docRef) {
+         
+         await firebase
+          .firestore()
+          .collection("users")
+          .where("uid", "==", usuario.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              firebase
+                .firestore()
+                .collection("users")
+                .doc(doc.id)
+                .update({
+                  coins: calcularPinfCoins(parseFloat(media), totalCreditos),
+                  transaction: docRef.id
+                });
+            });
           });
+
+          firebase
+          .firestore()
+          .collection("transactions")
+          .doc(docRef.id)
+          .delete();
+          
+
         });
+
+
       alert("Datos actualizados ✓");
     };
   } else {

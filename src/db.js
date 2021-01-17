@@ -595,6 +595,8 @@ export async function actualizarNota(subjectId, nota) {
     return;
   }
 
+  nota = parseInt(nota, 10);
+
   //createTransactions(subjectId, nota, user);
 
   firebase //Esta parte se encarga de actualizar la nota
@@ -639,7 +641,7 @@ export async function actualizarNota(subjectId, nota) {
     })
     .catch(function (error) {});
 
-  if (nota > 5) {
+  if (nota >= 5) {
     firebase //Borrar notas despues de actualizar si han aprobado
       .firestore()
       .collection("userSubjects")
@@ -891,6 +893,8 @@ function auxApuesta(){
   var file = document.getElementById("expediente").files;
   var reader = new FileReader();
   var nota;
+  var contador = 0;
+  var convocatoria = 0;
 
   if (file[0] != undefined) {
     reader.readAsText(file[0]);
@@ -898,27 +902,41 @@ function auxApuesta(){
     reader.onload = function (e) {
       var result = reader.result;
       var lineas = result.split("\n");
+
       for (var linea of lineas) {
-        subjectId = "";
-        nota = "";
-        if (linea[1] == "2") {
-          for (var i in linea) {
-            if (i >= 1 && i < 9) {
-              subjectId += linea[i];
-            }
-          }
-          
-          for (i in linea) {
-            if (i >= 115 && i < 116) {
-              nota += linea[i];
-            }
-          }
-
-          nota = parseInt(nota, 10);
-
-          actualizarNota(subjectId, nota);
+        if (linea[0] == "A") {
+          convocatoria = contador;
         }
+        contador += 1;
       }
+
+      contador = 0;
+
+      for (var fila of lineas) {
+
+        if(contador > convocatoria) {
+            subjectId = "";
+            nota = "";
+            if (fila[1] == "2") {
+              for (var i in fila) {
+                if (i >= 1 && i < 9) {
+                  subjectId += fila[i];
+                }
+              }
+              
+              for (i in fila) {
+                if (i >= 115 && i < 116) {
+                  nota += fila[i];
+                }
+              }
+
+              nota = parseInt(nota, 10);
+
+              actualizarNota(subjectId, nota);
+            }
+      }
+      contador += 1;
+    }
     };
   } else {
     alert("No se ha introducido la matrícula.");

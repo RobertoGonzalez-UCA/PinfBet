@@ -916,7 +916,7 @@ function auxApuesta(){
 
         if(contador > convocatoria) {
             subjectId = "";
-            nota = "";
+            nota = 0;
             if (fila[1] == "2") {
               for (var i in fila) {
                 if (i >= 1 && i < 9) {
@@ -925,8 +925,8 @@ function auxApuesta(){
               }
               
               for (i in fila) {
-                if (i >= 115 && i < 116) {
-                  nota += fila[i];
+                if (i === 115) {
+                  nota = fila[i];
                 }
               }
 

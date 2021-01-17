@@ -172,3 +172,19 @@ function sonAmigos(uid_a, uid_b) {
     });
   return amigos;
 }
+
+export async function pruebas() {
+  var uidEmisor = firebase.auth().currentUser.uid;
+  var uidReceptor = document.getElementById("uidReceptor").value;
+
+  var friend = firebase.firestore().collection("friendships");
+
+  var gotcha = await friend
+    .where("uid_a", "==", uidEmisor)
+    .where("uid_b", "==", uidReceptor)
+    .where("status", "==", "ACCEPTED")
+    .get();
+
+  gotcha.on("value", (snapshot) => {});
+ 
+}

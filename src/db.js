@@ -816,40 +816,7 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
     .then(function () {})
     .catch(function (error) {});
 
-  /* await firebase
-    .firestore()
-    .collection("transactions")
-    .where(
-      "uid_apostado",
-      "==",
-      uid_apostado
-    )
-    .where("uid_apostante", "==", uid)
-    .where("coins", "==", aumento)
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (
-        doc
-      ) {
-        firebase
-          .firestore()
-          .collection("transactions")
-          .doc(doc.id)
-          .delete()
-          .then(function () {
-            console.log(
-              "Transaction successfully deleted!"
-            );
-          })
-          .catch(function (error) {
-            console.error(
-              "Error removing document: ",
-              error
-            );
-          });
-      });
-    });
-*/
+
 }
 
 export function createSubject() {
@@ -1073,51 +1040,6 @@ export async function comprobarNickname() {
         }
       });
     });
-}
-
-export async function pruebas() {
-  var uidEmisor = firebase.auth().currentUser.uid;
-  var uidReceptor = document.getElementById("uidReceptor").value;
-
-  var friend = firebase.firestore().collection("friendships");
-
-  var gotcha = await friend
-    .where("uid_a", "==", uidEmisor)
-    .where("uid_b", "==", uidReceptor)
-    .where("status", "==", "ACCEPTED")
-    .get();
-
-  gotcha.on("value", (snapshot) => {});
-  /*
-  //RONALDINHO SOCCER
-  console.log("EH");
-  firebase.firestore().collection("bets").add({
-    amount: 5,
-    betContextId: "twSrQBtGuBGiNeryKIYM",
-    type: "APRUEBA_SUSPENDE",
-    uid: "CzzhhlAokLW4mMTWz2DmDnxpi1U2",
-    value: true
-  });
-
-  firebase.firestore().collection("bets").add({
-    amount: 10,
-    betContextId: "twSrQBtGuBGiNeryKIYM",
-    type: "NOTA",
-    uid: "CzzhhlAokLW4mMTWz2DmDnxpi1U2",
-    value: 8
-  });
-
-  firebase
-    .firestore()
-    .collection("betContexts")
-    .doc("twSrQBtGuBGiNeryKIYM")
-    .set({
-      uid: "1HAabYbLxQZH12E1SOVJQC9QWIz1",
-      subjects: {
-        code: "21714008",
-        degreeId: "1725"
-      }
-    });*/
 }
 
 export function findTransactions() {

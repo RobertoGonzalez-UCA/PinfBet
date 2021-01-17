@@ -555,6 +555,7 @@ export function cursarAsignatura(degreeId, subjectId) {
   //var subjectId = document.getElementById("subjectId").value;
 
   var user = firebase.auth().currentUser;
+  
 
   firebase
     .firestore()
@@ -568,8 +569,45 @@ export function cursarAsignatura(degreeId, subjectId) {
     });
 }
 
+function deleteSubjects(){
+  var user = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection("userSubjects")
+    .where("uid", "==", user)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+        .firestore()
+        .collection("userSubjects")
+        .doc(doc.id)
+        .delete();
+      });
+    });
+
+}
+
 //Siguiente paso de cursar asignatura
-function completarCursar(degreeId, subjectId, user, nickname) {
+async function completarCursar(degreeId, subjectId, user, nickname) {
+
+  await firebase
+    .firestore()
+    .collection("userSubjects")
+    .where("uid", "==", user)
+    .where("subjectId", "==", subjectId)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        firebase
+        .firestore()
+        .collection("userSubjects")
+        .doc(doc.id)
+        .delete();
+      });
+    });
+
   firebase
     .firestore()
     .collection("userSubjects")
@@ -612,22 +650,19 @@ export async function actualizarNota(subjectId, nota) {
           .collection("userSubjects")
           .doc(doc.id)
           .update({ grade: nota }); //cambiar a nota introducida por el ususario
-      });
-    });
 
-  //Esta parte se encarga de encontrar los bets donde aparcece la persona original
-  await firebase
+          firebase
     .firestore()
     .collection("bets")
     .where("uid", "==", user.uid) //Buscar documentacion update data
     .get()
     .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        var bet = doc;
+      querySnapshot.forEach(function (docRef) {
+        var bet = docRef;
 
         fetchBetcontext(
           //Llamamos a funcion de buscar betContext relacionados
-          doc,
+          docRef,
           nota,
           subjectId
         );
@@ -640,6 +675,13 @@ export async function actualizarNota(subjectId, nota) {
       });
     })
     .catch(function (error) {});
+
+
+
+      });
+    });
+
+  //Esta parte se encarga de encontrar los bets donde aparcece la persona original
 
   if (nota >= 5) {
     firebase //Borrar notas despues de actualizar si han aprobado
@@ -671,7 +713,7 @@ async function fetchBetcontext(bet, nota, subjectId) {
           .collection("transactions")
           .add({
             uid_apostado: bet.data().uid,
-            nota: nota,
+            nota: nota.toString(),
             subjectId: subjectId,
             type: bet.data().type,
             value: false
@@ -859,7 +901,7 @@ export function leerMatricula() {
   if (file[0] != undefined) {
     reader.readAsText(file[0]);
 
-    reader.onload = function (e) {
+    reader.onload = async function (e) {
       var result = reader.result;
       var lineas = result.split("\n");
       for (var linea of lineas) {
@@ -910,13 +952,15 @@ function auxApuesta(){
         contador += 1;
       }
 
+      console.log(convocatoria);
+
       contador = 0;
 
       for (var fila of lineas) {
 
         if(contador > convocatoria) {
             subjectId = "";
-            nota = 0;
+            nota = "";
             if (fila[1] == "2") {
               for (var i in fila) {
                 if (i >= 1 && i < 9) {
@@ -925,12 +969,11 @@ function auxApuesta(){
               }
               
               for (i in fila) {
-                if (i === 115) {
+                if (i >= 115 && i < 116) {
                   nota = fila[i];
                 }
               }
 
-              nota = parseInt(nota, 10);
 
               actualizarNota(subjectId, nota);
             }

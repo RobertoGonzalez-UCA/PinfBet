@@ -584,10 +584,10 @@ function completarCursar(degreeId, subjectId, user, nickname) {
     .catch(function (error) {});
 }
 
-export async function actualizarNota() {
+export async function actualizarNota(subjectId, nota) {
   //Obtenemos la asignatura, la nota y el usuario actual. Solo necesitamos eso.
-  var subjectId = document.getElementById("subjectId").value;
-  var nota = document.getElementById("nota").value;
+  //var subjectId = document.getElementById("subjectId").value;
+  //var nota = document.getElementById("nota").value;
   var user = firebase.auth().currentUser;
 
   if (nota < 0 || nota > 10) {
@@ -639,7 +639,7 @@ export async function actualizarNota() {
     })
     .catch(function (error) {});
 
-  if (nota < 5) {
+  if (nota > 5) {
     firebase //Borrar notas despues de actualizar si han aprobado
       .firestore()
       .collection("userSubjects")
@@ -754,7 +754,7 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
     .update({
       coins: firebase.firestore.FieldValue.increment(aumento),
       uid_apostante: uid,
-      value: true
+      value: false
     })
     .then(function (docRef) {})
     .catch(function (error) {});
@@ -807,6 +807,16 @@ async function actualizarCoins(bet, nota, betContext, transaction) {
         }
       });
     });
+
+  await firebase
+    .firestore()
+    .collection("transactions")
+    .doc(transaction.id)
+    .update({
+      value: true
+    })
+    .then(function (docRef) {})
+    .catch(function (error) {});
 
   firebase
     .firestore()
@@ -877,6 +887,44 @@ export function leerMatricula() {
   }
 }
 
+function auxApuesta(){
+  var file = document.getElementById("expediente").files;
+  var reader = new FileReader();
+  var nota;
+
+  if (file[0] != undefined) {
+    reader.readAsText(file[0]);
+
+    reader.onload = function (e) {
+      var result = reader.result;
+      var lineas = result.split("\n");
+      for (var linea of lineas) {
+        subjectId = "";
+        nota = "";
+        if (linea[1] == "2") {
+          for (var i in linea) {
+            if (i >= 1 && i < 9) {
+              subjectId += linea[i];
+            }
+          }
+          
+          for (i in linea) {
+            if (i >= 115 && i < 116) {
+              nota += linea[i];
+            }
+          }
+
+          nota = parseInt(nota, 10);
+
+          actualizarNota(subjectId, nota);
+        }
+      }
+    };
+  } else {
+    alert("No se ha introducido la matrícula.");
+  };
+}
+
 export function leerExpediente() {
   var file = document.getElementById("expediente").files;
   var reader = new FileReader();
@@ -885,6 +933,9 @@ export function leerExpediente() {
     parcial = "",
     correcto = 0;
   var usuario = firebase.auth().currentUser;
+
+  auxApuesta();
+
   if (file[0] != undefined) {
     reader.readAsText(file[0]);
 
@@ -950,7 +1001,7 @@ export function leerExpediente() {
         }
       }
 
-      //Añadir transactions
+      var aumento = calcularPinfCoins(parseFloat(media), totalCreditos);
 
       firebase
         .firestore()
@@ -974,7 +1025,7 @@ export function leerExpediente() {
                   .collection("users")
                   .doc(doc.id)
                   .update({
-                    coins: calcularPinfCoins(parseFloat(media), totalCreditos),
+                    coins: firebase.firestore.FieldValue.increment(aumento),
                     transaction: docRef.id
                   });
               });
